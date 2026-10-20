@@ -22,7 +22,7 @@ describe("indexLineFor (a new project's index, in one honest line)", () => {
     const line = indexLineFor({ ...base, indexing: { pct: 42 } }, "app", true);
     expect(line).toMatchObject({ tone: "busy" });
     expect(line?.text).toContain("Indexing app · 42%");
-    expect(line?.text).toContain("never leaves this Mac");
+    expect(line?.text).toMatch(/never leaves this (Mac|computer)/); // the wording follows the platform
     expect(line?.text).toContain("You can start chatting now");
   });
 

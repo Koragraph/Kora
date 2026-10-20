@@ -31,7 +31,7 @@ async function daemon(f: Fx) {
     });
   });
   await new Promise<void>((r) => server.listen(ipcAddress(sockPath), r));
-  return { sockPath, close: () => { server.close(); fs.rmSync(dir, { recursive: true, force: true }); } };
+  return { sockPath, close: () => { server.close(); fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 }); } };
 }
 
 function bridge(sockPath: string, token: string | undefined) {
@@ -104,7 +104,7 @@ test('no token: every call explains how to get one; old daemon without outside a
   const old = net.createServer((cn) => { cn.setEncoding('utf8'); cn.on('data', (x: string) => { const m = JSON.parse(x.split('\n')[0]!); cn.write(JSON.stringify({ jsonrpc: '2.0', id: m.id, error: { code: -32601, message: 'unknown method' } }) + '\n'); }); });
   await new Promise<void>((r) => old.listen(ipcAddress(sp), r));
   const b2 = bridge(sp, 'kbo_x'); const c2 = rpc(b2);
-  try { await c2.init(); assert.match((await c2.call('list_blobs')).text, /does not have outside access/); } finally { b2.close(); old.close(); fs.rmSync(dir, { recursive: true, force: true }); }
+  try { await c2.init(); assert.match((await c2.call('list_blobs')).text, /does not have outside access/); } finally { b2.close(); old.close(); fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 }); }
 });
 
 test('daemon down: a clear tool error, not a crash', async () => {

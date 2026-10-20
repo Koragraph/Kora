@@ -8,6 +8,9 @@ import { callerKey, controlAllowed, ensureControlToken, isAgentOrigin, PRIVILEGE
 import { workerLaunchArgs } from '../session/fleet-tools';
 import { ipcAddress } from '../util/ipc-path';
 
+// A closed daemon's children can still write into its home for a moment: retry the removal (ENOTEMPTY on CI, 2026-10-20).
+const RM = { recursive: true, force: true, maxRetries: 10, retryDelay: 100 } as const;
+
 test('control-auth: privileged methods need the exact token; fleet-tool methods stay open', () => {
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'kora-ca-'));
   try {
@@ -20,7 +23,7 @@ test('control-auth: privileged methods need the exact token; fleet-tool methods 
       assert.equal(controlAllowed(m, undefined, home), false, m); assert.equal(controlAllowed(m, 'x'.repeat(t.length), home), false); assert.equal(controlAllowed(m, t, home), true);
     }
     for (const m of ['pane.list', 'pane.read', 'pane.kill', 'agent.spawn', 'agent.prompt', 'agent.wait', 'fleet.get', 'swarm.spawn', 'graph.tool', 'worktree.merge', 'chat.workers.ask', 'server.ping']) assert.equal(controlAllowed(m, undefined, home), true, m);
-  } finally { fs.rmSync(home, { recursive: true, force: true }); }
+  } finally { fs.rmSync(home, RM); }
 });
 
 test('control-auth: a Kora agent process is not the user; a plain terminal pane is', () => {
@@ -60,7 +63,7 @@ test('daemon: an agent that dials the socket cannot flip a thread to Full access
     a.close();
   } finally {
     for (const [k, v] of [['KORA_HOME', saved.h], ['KORA_SOCKET_PATH', saved.s], ['KORA_AGENT', saved.a], ['KORA_AUTO_INGEST', saved.i], ['KORA_PANE_ID', saved.pid], ['KORA_CALLER_KEY', saved.ck]] as const) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
-    await h.close(); fs.rmSync(home, { recursive: true, force: true });
+    await h.close(); fs.rmSync(home, RM);
   }
 });
 
@@ -126,7 +129,7 @@ test('daemon: a token-less caller cannot run a shell through agent.spawn, type i
     c.close();
   } finally {
     for (const [k, v] of [['KORA_HOME', saved.h], ['KORA_SOCKET_PATH', saved.s], ['KORA_AGENT', saved.a], ['KORA_AUTO_INGEST', saved.i]] as const) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
-    await h.close(); fs.rmSync(home, { recursive: true, force: true });
+    await h.close(); fs.rmSync(home, RM);
   }
 });
 
@@ -187,7 +190,7 @@ test('daemon A3-5: raw agent.spawn into a chat fleet is refused until chat.worke
     assert.ok(Array.isArray((await raw('pane.list', {}, 'p1')).result?.panes), 'a valid key still lists');
   } finally {
     for (const [k, v] of [['KORA_HOME', saved.h], ['KORA_SOCKET_PATH', saved.s], ['KORA_AGENT', saved.a], ['KORA_AUTO_INGEST', saved.i]] as const) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
-    await h.close(); fs.rmSync(home, { recursive: true, force: true });
+    await h.close(); fs.rmSync(home, RM);
   }
 });
 
@@ -255,7 +258,7 @@ test('2026-10-15 #2: a caller is believed only with its key, and a key proves on
     assert.equal(verifiedCaller('p1', undefined, home), undefined, 'a bare caller is no caller');
     assert.equal(verifiedCaller('p1', k.slice(1), home), undefined);
     assert.notEqual(callerKey('chat:T', home), callerKey('chat:V', home));
-  } finally { fs.rmSync(home, { recursive: true, force: true }); }
+  } finally { fs.rmSync(home, RM); }
 });
 
 test('round 2 #1: a scrubbed-env bridge gets its key from a one-time 0600 file, never from argv', () => {
@@ -272,7 +275,7 @@ test('round 2 #1: a scrubbed-env bridge gets its key from a one-time 0600 file, 
     assert.equal(takeCallerKeyFile(f), undefined, 'a second read gets nothing');
     const loose = path.join(home, 'run', 'loose'); fs.writeFileSync(loose, 'k', { mode: 0o644 });
     assert.equal(takeCallerKeyFile(loose), undefined, 'a group/world-readable file is not trusted');
-  } finally { fs.rmSync(home, { recursive: true, force: true }); }
+  } finally { fs.rmSync(home, RM); }
 });
 
 test('2026-10-15 #1: without the token a worktree is named by a pane of the caller\'s fleet, never by an arbitrary path', () => {
@@ -304,7 +307,7 @@ test('2026-10-15 #9: merge.verify and graph queries without the token stay in th
     assert.match(String(vetUncontrolledCall('merge.verify', { cwd: mine, refs: [other] }, deps('p1'))), /not a checkout/, 'a ref that is another checkout');
     assert.match(String(vetUncontrolledCall('graph.tool', { name: 'explore', paneId: 'p6', cwd: mine }, deps('p1'))), /not in your fleet/, 'counted against another fleet\'s pane');
     assert.equal(vetUncontrolledCall('graph.tool', { name: 'explore', paneId: 'p2' }, deps('p1')), null, 'no cwd: its worker pane\'s folder');
-  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(root, RM); }
 });
 
 test('A3-9: a token-less spawn needs an orchestrator that is the caller\'s own fleet', () => {
@@ -339,7 +342,7 @@ test('daemon A1 D3: over a real socket, a token-less agent cannot kill, read or 
     assert.equal((await raw('chat.events.backfill', { threadId: b, sinceSeq: 0 }, `chat:${a}`)).error?.code, -32001);
   } finally {
     for (const [k, v] of [['KORA_HOME', saved.h], ['KORA_SOCKET_PATH', saved.s], ['KORA_AGENT', saved.a], ['KORA_AUTO_INGEST', saved.i]] as const) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
-    await h.close(); fs.rmSync(home, { recursive: true, force: true });
+    await h.close(); fs.rmSync(home, RM);
   }
 });
 
@@ -386,7 +389,7 @@ test('daemon 2026-10-15 #2/#3: a forged caller is nobody; pane.list and events.s
     for (const id of ['p-lead', 'p-work', 'p-victim']) h.runtime.panes.delete(id);
   } finally {
     for (const [k, v] of [['KORA_HOME', saved.h], ['KORA_SOCKET_PATH', saved.s], ['KORA_AGENT', saved.a], ['KORA_AUTO_INGEST', saved.i]] as const) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
-    await h.close(); fs.rmSync(home, { recursive: true, force: true });
+    await h.close(); fs.rmSync(home, RM);
   }
 });
 
@@ -405,7 +408,7 @@ test('2026-10-15 #6: a reported transcript counts only as a regular file in an a
     assert.equal(agentTranscriptPath(path.join(proj, 'missing.jsonl'), null, home), null);
     assert.equal(agentTranscriptPath('rel/s.jsonl', null, home), null);
     assert.equal(agentTranscriptPath(path.join(acct, 'projects', 'a.jsonl'), acct, home), path.join(acct, 'projects', 'a.jsonl'), "the pane's CLAUDE_CONFIG_DIR");
-  } finally { fs.rmSync(home, { recursive: true, force: true }); }
+  } finally { fs.rmSync(home, RM); }
 });
 
 test('2026-10-15 #8: the client sends the control token only to a socket in a private folder', async () => {

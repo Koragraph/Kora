@@ -49,7 +49,7 @@ async function fixture() {
     });
   });
   await new Promise<void>((r) => server.listen(ipcAddress(sockPath), r));
-  return { store, kora, popo, fb, kTok, pTok, sockPath, close: () => { server.close(); fs.rmSync(dir, { recursive: true, force: true }); } };
+  return { store, kora, popo, fb, kTok, pTok, sockPath, close: () => { server.close(); fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 }); } };
 }
 
 function client(f: Awaited<ReturnType<typeof fixture>>, blobId: string, token: string) {

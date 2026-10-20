@@ -29,7 +29,7 @@ test('the Read hook exits within a few seconds when the daemon accepts but never
     child.on('exit', (c) => { clearTimeout(kill); resolve(c); });
   });
   const took = Date.now() - t0;
-  server.close(); fs.rmSync(dir, { recursive: true, force: true });
+  server.close(); fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
   assert.equal(code, 0, `hook did not exit by itself (code ${code})`);
   assert.ok(took < 8000, `hook lingered ${took} ms`);
   assert.ok(out.includes('updatedInput'), 'the Read is still bounded (the outline is optional)');

@@ -68,9 +68,9 @@ afterEach(() => {
   for (const b of bases.splice(0)) NodeFS.rmSync(b, { recursive: true, force: true });
 });
 
-// kora-runtime.sh is the macOS launcher (Windows runs kora-runtime.cjs).
+// kora-runtime.sh is the macOS launcher (Windows runs kora-runtime.cjs; Linux has no app): macOS only.
 // oxlint-disable-next-line kora/no-global-process-runtime -- a test skip condition, decided before any runtime exists
-describe.skipIf(process.platform === "win32")("kora-runtime.sh sync", () => {
+describe.skipIf(process.platform !== "darwin")("kora-runtime.sh sync", () => {
   it("installs, and two concurrent runs serialize without leaving a broken copy", async () => {
     const b = fakeBundle();
     const [x, y] = await Promise.all([done(run(b)), done(run(b))]);
@@ -141,7 +141,7 @@ const psWorks =
   NodeChildProcess.spawnSync("ps", ["-o", "command=", "-p", String(process.pid)]).status === 0;
 
 // oxlint-disable-next-line kora/no-global-process-runtime -- a test skip condition, decided before any runtime exists
-describe.skipIf(process.platform === "win32" || !psWorks)(
+describe.skipIf(process.platform !== "darwin" || !psWorks)(
   "kora-runtime.sh: a daemon that is up but silent",
   () => {
     it("stops exactly that pid (from daemon.pid) and carries on", async () => {

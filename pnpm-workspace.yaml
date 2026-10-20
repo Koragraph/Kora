@@ -8,10 +8,10 @@ packages:
 catalog:
   # Effect 4 (release candidate; the runtime, contracts and client all use it)
   effect: 4.0.0-rc.112
-  "@effect/atom-react": 4.0.0-rc.112
-  "@effect/platform-node": 4.0.0-rc.112
+  "@effect/atom-react": 4.0.5
+  "@effect/platform-node": 4.0.5
   "@effect/vitest": 4.0.0-rc.112
-  "@effect/tsgo": 0.41.0
+  "@effect/tsgo": 0.53.3
   # Build and test toolchain
   typescript: 7.0.2
   vite: npm:@voidzero-dev/vite-plus-core@0.3.0
@@ -26,7 +26,7 @@ catalog:
   "@legendapp/list": 3.3.5
   "@pierre/diffs": 1.3.0-beta.10
   "@noble/hashes": 1.8.0
-  yaml: ^2.9.0
+  yaml: ^2.9.1
 
 overrides:
   # --- Security floors: dependencies that ship inside the app ---------------------------------------------------

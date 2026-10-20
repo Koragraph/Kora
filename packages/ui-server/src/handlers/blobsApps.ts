@@ -30,7 +30,12 @@ const isBlobError = Schema.is(BlobError);
 
 function appsOf(operation: string): KoraAppsLike {
   const apps = runtimeFor(operation).apps;
-  if (!apps) throw fail(operation, "Connected apps are not available in this daemon yet. Restart Kora to finish updating it.", "unavailable");
+  if (!apps)
+    throw fail(
+      operation,
+      "Connected apps are not available in this daemon yet. Restart Kora to finish updating it.",
+      "unavailable",
+    );
   return apps;
 }
 
@@ -40,7 +45,11 @@ function toAppsError(operation: string, cause: unknown): BlobError {
   const c = cause as { name?: unknown; code?: unknown; message?: unknown } | null;
   if (c?.name === "AppsError" && typeof c.code === "string" && typeof c.message === "string")
     return fail(operation, c.message, c.code);
-  return fail(operation, "Connected apps hit an unexpected error. Try again; if it keeps happening, check Settings → Connections.", "upstream");
+  return fail(
+    operation,
+    "Connected apps hit an unexpected error. Try again; if it keeps happening, check Settings → Connections.",
+    "upstream",
+  );
 }
 
 const run = <A>(operation: string, body: () => Promise<A>) =>

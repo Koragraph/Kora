@@ -12,7 +12,10 @@ import { STACK, hireStarterOnDisk } from "../e2e/20-blobs/blobUi.mjs";
 import { loadBlob } from "../e2e/20-blobs/blobSeed.mjs";
 
 const HOST = "kora-local";
-const OUT = NodePath.resolve(NodePath.dirname(NodeURL.fileURLToPath(import.meta.url)), "../../docs/bots/assets");
+const OUT = NodePath.resolve(
+  NodePath.dirname(NodeURL.fileURLToPath(import.meta.url)),
+  "../../docs/bots/assets",
+);
 
 spec(
   "20-blobs-sprite-shots",

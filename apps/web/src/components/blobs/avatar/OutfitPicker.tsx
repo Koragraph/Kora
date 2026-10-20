@@ -158,7 +158,11 @@ export function OutfitPicker({
   }, [signature]);
 
   return (
-    <div className={["blob-picker", compact ? "blob-picker--compact" : "", className].filter(Boolean).join(" ")}>
+    <div
+      className={["blob-picker", compact ? "blob-picker--compact" : "", className]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <div className="blob-picker__stage">
         <button
           type="button"

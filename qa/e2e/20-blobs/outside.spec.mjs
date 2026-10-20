@@ -15,7 +15,11 @@ import { STACK, createBlob, home } from "./blobUi.mjs";
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "../../..");
 const ASSETS = path.resolve(HERE, "../../../docs/bots/assets");
-const ctl = (cmd) => execFileSync(process.execPath, [path.join(ROOT, "qa/stacks/stack.cjs"), cmd, String(STACK)], { stdio: "ignore", timeout: 90_000 });
+const ctl = (cmd) =>
+  execFileSync(process.execPath, [path.join(ROOT, "qa/stacks/stack.cjs"), cmd, String(STACK)], {
+    stdio: "ignore",
+    timeout: 90_000,
+  });
 const CLIENT = `Claude Desktop ${Date.now().toString(36).slice(-3)}`;
 let secret = null;
 let popo;
@@ -23,12 +27,16 @@ let popo;
 function proof(phase) {
   let out;
   try {
-    out = execFileSync(process.execPath, [path.join(ROOT, "qa/scripts/outside-mcp-proof.mjs"), String(STACK), phase], {
-      env: { ...process.env, KORA_TEAM_TOKEN: secret, MCP_CLIENT_NAME: CLIENT },
-      encoding: "utf8",
-      timeout: 120_000,
-      stdio: ["ignore", "pipe", "pipe"],
-    });
+    out = execFileSync(
+      process.execPath,
+      [path.join(ROOT, "qa/scripts/outside-mcp-proof.mjs"), String(STACK), phase],
+      {
+        env: { ...process.env, KORA_TEAM_TOKEN: secret, MCP_CLIENT_NAME: CLIENT },
+        encoding: "utf8",
+        timeout: 120_000,
+        stdio: ["ignore", "pipe", "pipe"],
+      },
+    );
   } catch (e) {
     out = String(e.stdout ?? "");
     if (!out) throw e;
@@ -66,7 +74,11 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await page.locator("[data-outside]").waitFor({ timeout: 60_000 });
       await page.locator("[data-snippets]").waitFor();
       // the snippet is the exact launch line for THIS install
-      await page.waitForFunction(() => !/Loading/.test(document.querySelector("[data-snippet]")?.textContent ?? "Loading"), null, { timeout: 30_000 });
+      await page.waitForFunction(
+        () => !/Loading/.test(document.querySelector("[data-snippet]")?.textContent ?? "Loading"),
+        null,
+        { timeout: 30_000 },
+      );
       const snippet = await page.locator("[data-snippet]").first().innerText();
       expect.match(snippet, /mcp/);
       expect.match(snippet, /--team/);
@@ -105,7 +117,10 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       const r = proof("live");
       const failed = r.checks.filter((c) => !c.ok);
       if (failed.length) throw new Error(`MCP proof failed: ${JSON.stringify(failed)}`);
-      fs.writeFileSync(path.join(path.dirname(home()), "outside-proof.json"), JSON.stringify(r, null, 2));
+      fs.writeFileSync(
+        path.join(path.dirname(home()), "outside-proof.json"),
+        JSON.stringify(r, null, 2),
+      );
     },
     { control: "Blobs › MCP bridge live proof", severity: "broken", ignoreErrors: true },
   );
@@ -116,7 +131,10 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await open(`/blobs/${popo.id}`, { wait: false });
       // the blob's landing forwards to its newest thread: the one the MCP client started
       await page.locator("[data-via]").first().waitFor({ timeout: 60_000 });
-      expect.match(await page.locator("[data-via]").first().innerText(), new RegExp(`via ${CLIENT}`));
+      expect.match(
+        await page.locator("[data-via]").first().innerText(),
+        new RegExp(`via ${CLIENT}`),
+      );
       await page.screenshot({ path: path.join(ASSETS, "i4a-outside-via.png") });
       await open("/settings/outside", { wait: false });
       await page.locator("[data-audit-row]").first().waitFor({ timeout: 30_000 });
@@ -140,14 +158,24 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await row.waitFor({ timeout: 30_000 });
       await row.locator("[data-revoke]").click();
       await page.locator("[data-revoke-confirm]").click();
-      await page.locator("[data-token-revoked]").filter({ hasText: CLIENT }).waitFor({ timeout: 20_000 });
+      await page
+        .locator("[data-token-revoked]")
+        .filter({ hasText: CLIENT })
+        .waitFor({ timeout: 20_000 });
       const r = proof("revoked");
       const failed = r.checks.filter((c) => !c.ok);
       if (failed.length) throw new Error(`revoked proof failed: ${JSON.stringify(failed)}`);
-      await page.locator("[data-audit-row][data-audit-ok='false']").first().waitFor({ timeout: 30_000 }).catch(async () => {
-        await page.getByRole("button", { name: "Refresh activity" }).click();
-        await page.locator("[data-audit-row][data-audit-ok='false']").first().waitFor({ timeout: 20_000 });
-      });
+      await page
+        .locator("[data-audit-row][data-audit-ok='false']")
+        .first()
+        .waitFor({ timeout: 30_000 })
+        .catch(async () => {
+          await page.getByRole("button", { name: "Refresh activity" }).click();
+          await page
+            .locator("[data-audit-row][data-audit-ok='false']")
+            .first()
+            .waitFor({ timeout: 20_000 });
+        });
     },
     { control: "Blobs › outside revoke", severity: "broken", ignoreErrors: true },
   );

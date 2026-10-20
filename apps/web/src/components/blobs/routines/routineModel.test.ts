@@ -192,6 +192,8 @@ describe("a once-routine in the past", () => {
     const past = cadenceFromDraft(base);
     expect(past.ok).toBe(false);
     expect(past.ok ? "" : past.error).toMatch(/already passed/);
-    expect(cadenceFromDraft(draftFromCadence({ kind: "once", at: Date.now() + 3_600_000 }, 0)).ok).toBe(true);
+    expect(
+      cadenceFromDraft(draftFromCadence({ kind: "once", at: Date.now() + 3_600_000 }, 0)).ok,
+    ).toBe(true);
   });
 });

@@ -53,11 +53,7 @@ function restoreRealWorker() {
 
 const pids = () =>
   fs.existsSync(pidFile())
-    ? fs
-        .readFileSync(pidFile(), "utf8")
-        .split("\n")
-        .filter(Boolean)
-        .map(Number)
+    ? fs.readFileSync(pidFile(), "utf8").split("\n").filter(Boolean).map(Number)
     : [];
 const alive = (pid) => {
   try {
@@ -100,7 +96,10 @@ spec("20-blobs", { stack: STACK }, async (t) => {
         await page.locator('[aria-label="Stop generation"]').first().click();
         const t1 = Date.now();
         while (pids().some(alive) && Date.now() - t1 < 30_000) await sleep(500);
-        expect.ok(!pids().some(alive), `Stop ended every helper (still alive: ${pids().filter(alive)})`);
+        expect.ok(
+          !pids().some(alive),
+          `Stop ended every helper (still alive: ${pids().filter(alive)})`,
+        );
         await sleep(8000); // ... and the queued third never starts afterwards
         expect.equal(pids().length, 2, "the queued helper was dropped, not started after Stop");
         covered("Helpers › Stop kills running and queued helpers");

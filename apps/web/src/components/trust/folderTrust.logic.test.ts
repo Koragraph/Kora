@@ -18,7 +18,11 @@ const status = (
 describe("shouldShowTrustPrompt", () => {
   it("asks in an untrusted, trustable folder", () => {
     expect(
-      shouldShowTrustPrompt({ status: status(), isAssistantLane: false, dismissedRoots: new Set() }),
+      shouldShowTrustPrompt({
+        status: status(),
+        isAssistantLane: false,
+        dismissedRoots: new Set(),
+      }),
     ).toBe(true);
   });
   it("stays quiet when trusted, untrustable, unknown, dismissed or on the assistant lane", () => {

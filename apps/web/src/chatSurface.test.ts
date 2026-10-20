@@ -55,7 +55,15 @@ describe("isLegacyChatPath (old Chat links redirect into Kora)", () => {
     expect(isLegacyChatPath("/chats")).toBe(true);
   });
   it("leaves every real route alone", () => {
-    for (const p of ["/", "/blobs", "/blobs/blob_kora", "/settings/chat", "/projects/h:p", "/h1/chatty", "/chatter"])
+    for (const p of [
+      "/",
+      "/blobs",
+      "/blobs/blob_kora",
+      "/settings/chat",
+      "/projects/h:p",
+      "/h1/chatty",
+      "/chatter",
+    ])
       expect(isLegacyChatPath(p)).toBe(false);
   });
 });

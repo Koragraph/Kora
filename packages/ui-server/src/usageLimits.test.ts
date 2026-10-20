@@ -7,7 +7,12 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 
 import type { KoraUsageLimitsReport } from "./host.ts";
-import { mergeUsageReport, toAgentUsageLimits, UsageLimitsService, usageProviderOf } from "./usageLimits.ts";
+import {
+  mergeUsageReport,
+  toAgentUsageLimits,
+  UsageLimitsService,
+  usageProviderOf,
+} from "./usageLimits.ts";
 import { daemonConfig } from "./config.ts";
 
 const hasUndefinedLeaf = (v: unknown): boolean =>
@@ -240,9 +245,13 @@ NodeTest.test(
   },
 );
 
-NodeTest.test("usageProviderOf: Claude, Codex and Antigravity threads draw on a plan; OpenCode and the rest do not", () => {
-  NodeAssert.equal(usageProviderOf("claude"), "claude");
-  NodeAssert.equal(usageProviderOf("codex"), "codex");
-  NodeAssert.equal(usageProviderOf("antigravity"), "antigravity");
-  for (const d of ["opencode", "acp", "api", "", null, undefined, 7]) NodeAssert.equal(usageProviderOf(d), null);
-});
+NodeTest.test(
+  "usageProviderOf: Claude, Codex and Antigravity threads draw on a plan; OpenCode and the rest do not",
+  () => {
+    NodeAssert.equal(usageProviderOf("claude"), "claude");
+    NodeAssert.equal(usageProviderOf("codex"), "codex");
+    NodeAssert.equal(usageProviderOf("antigravity"), "antigravity");
+    for (const d of ["opencode", "acp", "api", "", null, undefined, 7])
+      NodeAssert.equal(usageProviderOf(d), null);
+  },
+);

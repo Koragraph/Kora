@@ -16,7 +16,8 @@ export interface GroupMessageLike {
 }
 
 /** The key of a member's hidden provider thread inside one group thread. */
-export const memberThreadKey = (groupThreadId: string, blobId: string): string => `${groupThreadId}\u0000${blobId}`;
+export const memberThreadKey = (groupThreadId: string, blobId: string): string =>
+  `${groupThreadId}\u0000${blobId}`;
 
 /**
  * The shared transcript of a group thread. `seq` is the row's position (1-based) in the thread's message list, which only
@@ -31,15 +32,42 @@ export function groupMessagesOf(
     if (m.streaming) return;
     const ts = Date.parse(m.createdAt) || 0;
     if (m.kind === "note") {
-      out.push({ id: m.id, seq: i + 1, authorId: "system", authorName: "Kora", text: m.text, to: [], ts, kind: "note" });
+      out.push({
+        id: m.id,
+        seq: i + 1,
+        authorId: "system",
+        authorName: "Kora",
+        text: m.text,
+        to: [],
+        ts,
+        kind: "note",
+      });
       return;
     }
     if (m.role === "user") {
-      out.push({ id: m.id, seq: i + 1, authorId: "user", authorName: "You", text: m.text, to: [...(m.to ?? [])], ts, kind: "message" });
+      out.push({
+        id: m.id,
+        seq: i + 1,
+        authorId: "user",
+        authorName: "You",
+        text: m.text,
+        to: [...(m.to ?? [])],
+        ts,
+        kind: "message",
+      });
       return;
     }
     if (m.role === "assistant" && m.authorBlobId) {
-      out.push({ id: m.id, seq: i + 1, authorId: m.authorBlobId, authorName: nameOf(m.authorBlobId), text: m.text, to: [...(m.to ?? [])], ts, kind: "message" });
+      out.push({
+        id: m.id,
+        seq: i + 1,
+        authorId: m.authorBlobId,
+        authorName: nameOf(m.authorBlobId),
+        text: m.text,
+        to: [...(m.to ?? [])],
+        ts,
+        kind: "message",
+      });
     }
   });
   return out;
@@ -56,7 +84,11 @@ export function memberReplyText(messages: readonly ThreadMessage[], fromIndex: n
 
 /** A member's failure in the words the group's note uses ("could not answer: ..."): one short sentence, no stack. */
 export function friendlyMemberError(error: string): string {
-  const first = error.replace(/\s+/g, " ").trim().split(/(?<=[.!?])\s/)[0] ?? "";
+  const first =
+    error
+      .replace(/\s+/g, " ")
+      .trim()
+      .split(/(?<=[.!?])\s/)[0] ?? "";
   const clipped = first.length > 140 ? `${first.slice(0, 139).trimEnd()}...` : first;
   return clipped || "it failed";
 }

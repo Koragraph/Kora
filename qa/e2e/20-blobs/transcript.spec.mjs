@@ -7,7 +7,10 @@ import { fileURLToPath } from "node:url";
 import { spec } from "../lib/harness.mjs";
 import { loadBlob, seedBlobScenario, serveBlobFiles } from "./blobSeed.mjs";
 
-const ASSETS = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../docs/bots/assets");
+const ASSETS = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../../docs/bots/assets",
+);
 const STACK = Number(process.env.KORA_QA_BLOBS_STACK ?? 2);
 let scenario = null;
 
@@ -152,7 +155,10 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await deck.getByText("4 slides").waitFor({ timeout: 20_000 });
       // the first slide as the file really looks (macOS Quick Look in the daemon), not only a text excerpt
       await deck.locator("[data-first-page]").waitFor({ timeout: 30_000 });
-      expect.equal(await deck.locator("[data-first-page]").getAttribute("data-first-page"), "slides");
+      expect.equal(
+        await deck.locator("[data-first-page]").getAttribute("data-first-page"),
+        "slides",
+      );
       await deck.evaluate((el) => el.scrollIntoView({ block: "center" }));
       await sleep(700);
       fs.mkdirSync(ASSETS, { recursive: true });

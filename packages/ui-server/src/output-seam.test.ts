@@ -67,24 +67,27 @@ NodeTest.test(
   },
 );
 
-NodeTest.test("OutputSeam: a snapshot that finishes late is dropped once a newer one went out", () => {
-  const { out, seam } = make();
-  const slow = seam.begin();
-  seam.push("aaaa", 4);
-  const fast = seam.begin();
-  seam.push("bbbb", 8);
-  NodeAssert.equal(
-    seam.complete(fast, 4, () => out.push("S-fast")),
-    true,
-  );
-  NodeAssert.equal(seam.isOpen(slow), false);
-  NodeAssert.equal(
-    seam.complete(slow, 2, () => out.push("S-slow")),
-    false,
-  );
-  seam.push("cccc", 12);
-  NodeAssert.deepEqual(out, ["S-fast", "bbbb", "cccc"]);
-});
+NodeTest.test(
+  "OutputSeam: a snapshot that finishes late is dropped once a newer one went out",
+  () => {
+    const { out, seam } = make();
+    const slow = seam.begin();
+    seam.push("aaaa", 4);
+    const fast = seam.begin();
+    seam.push("bbbb", 8);
+    NodeAssert.equal(
+      seam.complete(fast, 4, () => out.push("S-fast")),
+      true,
+    );
+    NodeAssert.equal(seam.isOpen(slow), false);
+    NodeAssert.equal(
+      seam.complete(slow, 2, () => out.push("S-slow")),
+      false,
+    );
+    seam.push("cccc", 12);
+    NodeAssert.deepEqual(out, ["S-fast", "bbbb", "cccc"]);
+  },
+);
 
 NodeTest.test("OutputSeam: completing the same ticket twice delivers once", () => {
   const { out, seam } = make();

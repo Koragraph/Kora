@@ -13,7 +13,10 @@ import { loadBlob } from "./blobSeed.mjs";
 const { stack: stackEnv } = createRequire(import.meta.url)("../../stacks/env.cjs");
 const STACK = Number(process.env.KORA_QA_BLOBS_STACK ?? 2);
 const settingsFile = () => path.join(stackEnv(STACK).home, "blobs", "_settings.json");
-const ASSETS = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../docs/bots/assets");
+const ASSETS = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../../docs/bots/assets",
+);
 const resetDismissed = () => fs.rmSync(settingsFile(), { force: true });
 
 /** Kora's empty thread: where the landing sends a brand-new team, or her sidebar "New thread" when she has history. */
@@ -104,7 +107,9 @@ spec("20-blobs-gallery", { stack: STACK }, async (t) => {
         `the first row is even: ${heights.slice(0, 3)}`,
       );
       expect.ok(
-        (await page.locator("[data-template-card='popo']").innerText()).includes("Suggested routine"),
+        (await page.locator("[data-template-card='popo']").innerText()).includes(
+          "Suggested routine",
+        ),
         "Popo says it brings a (paused) routine",
       );
       const names = (await page.locator("[data-template-card]").allInnerTexts()).join("|");

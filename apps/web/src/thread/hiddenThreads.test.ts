@@ -10,6 +10,7 @@ describe("isHiddenThreadShell", () => {
   it("everything else is listed: user threads, Kora's delegated steps, continued threads", () => {
     expect(isHiddenThreadShell({})).toBe(false);
     expect(isHiddenThreadShell({ hidden: false, origin: null })).toBe(false);
-    for (const kind of ["user", "kora", "continue"]) expect(isHiddenThreadShell({ origin: { kind } })).toBe(false);
+    for (const kind of ["user", "kora", "continue"])
+      expect(isHiddenThreadShell({ origin: { kind } })).toBe(false);
   });
 });

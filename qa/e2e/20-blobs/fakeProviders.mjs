@@ -9,16 +9,27 @@ import { fileURLToPath } from "node:url";
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 
 export function fakeAcpAgent() {
-  return path.resolve(HERE, "../../../packages/runtime/src/session/drivers/fixtures/fake-acp-agent.cjs");
+  return path.resolve(
+    HERE,
+    "../../../packages/runtime/src/session/drivers/fixtures/fake-acp-agent.cjs",
+  );
 }
 
-export function startFakeOpenAI({ key = "sk-qa-123456", models = ["fake-small", "fake-large"] } = {}) {
+export function startFakeOpenAI({
+  key = "sk-qa-123456",
+  models = ["fake-small", "fake-large"],
+} = {}) {
   const seen = [];
   const server = http.createServer((req, res) => {
     let body = "";
     req.on("data", (c) => (body += c));
     req.on("end", () => {
-      seen.push({ method: req.method, url: req.url, auth: req.headers.authorization ?? null, body });
+      seen.push({
+        method: req.method,
+        url: req.url,
+        auth: req.headers.authorization ?? null,
+        body,
+      });
       if (req.headers.authorization !== `Bearer ${key}`) {
         res.statusCode = 401;
         res.setHeader("content-type", "application/json");
@@ -26,7 +37,9 @@ export function startFakeOpenAI({ key = "sk-qa-123456", models = ["fake-small", 
       }
       if (req.method === "GET" && req.url?.endsWith("/models")) {
         res.setHeader("content-type", "application/json");
-        return res.end(JSON.stringify({ object: "list", data: models.map((id) => ({ id, object: "model" })) }));
+        return res.end(
+          JSON.stringify({ object: "list", data: models.map((id) => ({ id, object: "model" })) }),
+        );
       }
       if (req.method === "POST" && req.url?.endsWith("/chat/completions")) {
         let last = "";
@@ -44,7 +57,9 @@ export function startFakeOpenAI({ key = "sk-qa-123456", models = ["fake-small", 
         res.write(chunk({ role: "assistant", content: "" }));
         for (const w of text.match(/\S+\s*/g) ?? []) res.write(chunk({ content: w }));
         res.write(chunk({}, "stop"));
-        res.write(`data: ${JSON.stringify({ id: "c1", object: "chat.completion.chunk", choices: [], usage: { prompt_tokens: 20, completion_tokens: 9, total_tokens: 29 } })}\n\n`);
+        res.write(
+          `data: ${JSON.stringify({ id: "c1", object: "chat.completion.chunk", choices: [], usage: { prompt_tokens: 20, completion_tokens: 9, total_tokens: 29 } })}\n\n`,
+        );
         res.write("data: [DONE]\n\n");
         return res.end();
       }
@@ -55,7 +70,17 @@ export function startFakeOpenAI({ key = "sk-qa-123456", models = ["fake-small", 
   return new Promise((resolve) =>
     server.listen(0, "127.0.0.1", () => {
       const port = server.address().port;
-      resolve({ port, url: `http://127.0.0.1:${port}/v1`, key, seen, close: () => new Promise((r) => { server.closeAllConnections?.(); server.close(() => r()); }) });
+      resolve({
+        port,
+        url: `http://127.0.0.1:${port}/v1`,
+        key,
+        seen,
+        close: () =>
+          new Promise((r) => {
+            server.closeAllConnections?.();
+            server.close(() => r());
+          }),
+      });
     }),
   );
 }

@@ -52,7 +52,11 @@ export function authorizeDevProxy(proxy: {
   proxy.on("proxyReqWs", apply as (...args: never[]) => void);
   // When the daemon goes away, close the browser's socket at once so the page sees the close event now (the proxy
   // otherwise leaves it half open for ~20 s and the "Offline" chip is late). Dev proxy only; the desktop app connects directly.
-  proxy.on("proxyReqWs", ((proxyReq: NodeHttp.ClientRequest, _req: unknown, socket: NodeNet.Socket) => {
+  proxy.on("proxyReqWs", ((
+    proxyReq: NodeHttp.ClientRequest,
+    _req: unknown,
+    socket: NodeNet.Socket,
+  ) => {
     proxyReq.on("upgrade", (_res: unknown, upstream: NodeNet.Socket) => {
       const drop = () => {
         if (!socket.destroyed) socket.destroy();

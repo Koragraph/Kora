@@ -27,7 +27,12 @@ function restartDaemon(broker, { freshVault = false } = {}) {
     env.KORA_QA_BROKER_URL = broker.url;
     env.KORA_QA_COMPOSIO_API = broker.apiBase;
   }
-  const ctl = (cmd) => execFileSync(process.execPath, [path.join(ROOT, "qa/stacks/stack.cjs"), cmd, String(STACK)], { env, stdio: "ignore", timeout: 90_000 });
+  const ctl = (cmd) =>
+    execFileSync(process.execPath, [path.join(ROOT, "qa/stacks/stack.cjs"), cmd, String(STACK)], {
+      env,
+      stdio: "ignore",
+      timeout: 90_000,
+    });
   ctl("stop");
   // a broker token from an earlier run belongs to a broker that no longer exists: a fresh fake means a fresh install
   if (freshVault) {
@@ -66,7 +71,11 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       const text = await card.innerText();
       expect.ok(/Connected apps aren.t set up yet/.test(text), text);
       expect.ok(/paste your own Composio key/i.test(text), text);
-      expect.equal(await page.locator("[data-apps-grid]").count(), 0, "no grid of dead Connect buttons");
+      expect.equal(
+        await page.locator("[data-apps-grid]").count(),
+        0,
+        "no grid of dead Connect buttons",
+      );
       expect.equal(await page.locator("[data-apps-error]").count(), 0, "not an error state either");
       await page.locator("[data-guide-toggle]").click();
       const guide = await page.locator("[data-setup-guide]").innerText();
@@ -76,7 +85,12 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       // Settings › Connections says the same, with the key field
       await open("/settings/connections", { wait: false });
       await page.locator("[data-connections-key] [data-byo-input]").waitFor({ timeout: 40_000 });
-      await page.waitForFunction(() => /Not set up yet/.test(document.querySelector("[data-connections]")?.textContent ?? ""), null, { timeout: 20_000 });
+      await page.waitForFunction(
+        () =>
+          /Not set up yet/.test(document.querySelector("[data-connections]")?.textContent ?? ""),
+        null,
+        { timeout: 20_000 },
+      );
       covered("Settings › Connections not set up");
 
       // a bad key is refused by the daemon's own check (it calls Composio) and nothing is stored
@@ -99,23 +113,49 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await open("/apps", { wait: false });
       await page.locator("[data-apps-market]").waitFor({ timeout: 60_000 });
       await page.locator("[data-app-card]").first().waitFor({ timeout: 20_000 });
-      expect.ok(/0 of 750 free app calls used this month/.test(await page.locator("[data-apps-page]").innerText()), "the usage meter");
+      expect.ok(
+        /0 of 750 free app calls used this month/.test(
+          await page.locator("[data-apps-page]").innerText(),
+        ),
+        "the usage meter",
+      );
       expect.equal(await page.locator("[data-app-card]").count(), 8, "first page of the catalog");
       await page.locator("[data-apps-more]").click();
-      await page.waitForFunction(() => document.querySelectorAll("[data-app-card]").length === 14, null, { timeout: 15_000 });
+      await page.waitForFunction(
+        () => document.querySelectorAll("[data-app-card]").length === 14,
+        null,
+        { timeout: 15_000 },
+      );
       covered("Apps › marketplace grid + show more");
 
       await page.locator("[data-apps-search]").fill("slack");
-      await page.waitForFunction(() => document.querySelectorAll("[data-app-card]").length === 1, null, { timeout: 15_000 });
-      expect.equal(await page.locator("[data-app-card]").first().getAttribute("data-app-card"), "slack");
+      await page.waitForFunction(
+        () => document.querySelectorAll("[data-app-card]").length === 1,
+        null,
+        { timeout: 15_000 },
+      );
+      expect.equal(
+        await page.locator("[data-app-card]").first().getAttribute("data-app-card"),
+        "slack",
+      );
       await page.locator("[data-apps-search]").fill("");
-      await page.waitForFunction(() => document.querySelectorAll("[data-app-card]").length >= 8, null, { timeout: 15_000 });
+      await page.waitForFunction(
+        () => document.querySelectorAll("[data-app-card]").length >= 8,
+        null,
+        { timeout: 15_000 },
+      );
       covered("Apps › search");
 
       const cats = page.locator("[data-apps-categories] button");
       await cats.filter({ hasText: /^Email$/ }).click();
-      await page.waitForFunction(() => document.querySelectorAll("[data-app-card]").length === 2, null, { timeout: 10_000 });
-      const slugs = await page.locator("[data-app-card]").evaluateAll((els) => els.map((e) => e.getAttribute("data-app-card")).sort());
+      await page.waitForFunction(
+        () => document.querySelectorAll("[data-app-card]").length === 2,
+        null,
+        { timeout: 10_000 },
+      );
+      const slugs = await page
+        .locator("[data-app-card]")
+        .evaluateAll((els) => els.map((e) => e.getAttribute("data-app-card")).sort());
       expect.deepEqual(slugs, ["gmail", "outlook"]);
       await cats.filter({ hasText: /^All$/ }).click();
       covered("Apps › categories");
@@ -142,20 +182,31 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       const gmail = page.locator('[data-connected-app="gmail"]');
       await gmail.waitFor({ timeout: 15_000 });
       expect.ok(/Connected/.test(await gmail.innerText()));
-      expect.equal(broker.state.accounts.filter((a) => a.toolkit === "gmail" && a.status === "ACTIVE").length, 1);
+      expect.equal(
+        broker.state.accounts.filter((a) => a.toolkit === "gmail" && a.status === "ACTIVE").length,
+        1,
+      );
       covered("Apps › connect → account listed as Connected");
 
       // a second account of the same app asks for a label first
       await gmail.locator('[data-add-account="gmail"]').click();
       const label = page.locator("[data-account-label-input]");
       await label.waitFor();
-      expect.equal(await page.locator("[data-label-continue]").isDisabled(), true, "no label, no Continue");
+      expect.equal(
+        await page.locator("[data-label-continue]").isDisabled(),
+        true,
+        "no label, no Continue",
+      );
       await label.fill("Work");
       await page.locator("[data-label-continue]").click();
       const href2 = await page.locator("[data-connect-link]").getAttribute("href");
       await broker.completeLink(href2);
       await page.locator("[data-connect-done]").click();
-      await page.waitForFunction(() => document.querySelectorAll('[data-connected-app="gmail"] [data-account]').length === 2, null, { timeout: 15_000 });
+      await page.waitForFunction(
+        () => document.querySelectorAll('[data-connected-app="gmail"] [data-account]').length === 2,
+        null,
+        { timeout: 15_000 },
+      );
       const rows = await gmail.locator("[data-account-label]").allInnerTexts();
       expect.deepEqual(rows.sort(), ["Main account", "Work"]);
       expect.ok(/2 of 5/.test(await gmail.innerText()));
@@ -165,13 +216,28 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await gmail.locator('[data-add-account="gmail"]').click();
       await page.locator("[data-account-label-input]").fill("work");
       expect.equal(await page.locator("[data-label-continue]").isDisabled(), true);
-      expect.ok(/already have an account called/.test(await page.locator("[data-dialog]").last().innerText().catch(() => "")) || true);
+      expect.ok(
+        /already have an account called/.test(
+          await page
+            .locator("[data-dialog]")
+            .last()
+            .innerText()
+            .catch(() => ""),
+        ) || true,
+      );
       await page.keyboard.press("Escape");
 
       // disconnect: asks, then revokes upstream
-      await gmail.locator("[data-account]", { hasText: "Work" }).locator("[data-disconnect]").click();
+      await gmail
+        .locator("[data-account]", { hasText: "Work" })
+        .locator("[data-disconnect]")
+        .click();
       await page.locator("[data-disconnect-confirm]").click();
-      await page.waitForFunction(() => document.querySelectorAll('[data-connected-app="gmail"] [data-account]').length === 1, null, { timeout: 15_000 });
+      await page.waitForFunction(
+        () => document.querySelectorAll('[data-connected-app="gmail"] [data-account]').length === 1,
+        null,
+        { timeout: 15_000 },
+      );
       expect.equal(broker.state.accounts.filter((a) => a.toolkit === "gmail").length, 1);
       covered("Apps › disconnect (confirm, revoked upstream)");
     },
@@ -182,9 +248,16 @@ spec("20-blobs", { stack: STACK }, async (t) => {
     "per-blob grants: None by default; Choose → the app switch and single tools are saved as the profile's grants",
     async ({ page, open, sleep, expect, covered }) => {
       B = await createBlob(page, open, `Appy${rand()}`);
-      expect.deepEqual(profileOf(B.id).toolGrants.apps, { mode: "none", allow: [] }, "a new blob can use no app");
+      expect.deepEqual(
+        profileOf(B.id).toolGrants.apps,
+        { mode: "none", allow: [] },
+        "a new blob can use no app",
+      );
       await open(`/blobs/${B.id}`, { wait: false });
-      await page.locator(`[data-blob-id] [data-blob-row][aria-label^="${B.name}"]`).first().waitFor({ timeout: 40_000 });
+      await page
+        .locator(`[data-blob-id] [data-blob-row][aria-label^="${B.name}"]`)
+        .first()
+        .waitFor({ timeout: 40_000 });
       // the blob's edit dialog from the roster context: open via the profile panel
       await openPanel(page, open, B.id, "profile");
       await page.locator("[data-edit-blob]").click();
@@ -192,14 +265,19 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await page.locator('[data-editor-section="apps"]').click();
       const editor = page.locator("[data-app-grants]");
       await editor.waitFor({ timeout: 20_000 });
-      expect.equal(await editor.locator('[data-grant-mode="none"]').getAttribute("aria-checked"), "true");
+      expect.equal(
+        await editor.locator('[data-grant-mode="none"]').getAttribute("aria-checked"),
+        "true",
+      );
       covered("Grants › default None");
       await editor.locator('[data-grant-mode="list"]').click();
       const app = editor.locator('[data-grant-app="gmail"]');
       await app.waitFor();
       await app.locator('[data-grant-whole="gmail"]').click();
       await page.locator("[data-editor-save]").click();
-      await page.waitForFunction(() => !document.querySelector("[data-blob-editor]"), null, { timeout: 15_000 });
+      await page.waitForFunction(() => !document.querySelector("[data-blob-editor]"), null, {
+        timeout: 15_000,
+      });
       await sleep(600);
       expect.deepEqual(profileOf(B.id).toolGrants.apps, { mode: "list", allow: ["toolkit:gmail"] });
       covered("Grants › the app switch saves toolkit:gmail");
@@ -215,9 +293,14 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await page.locator('[data-grant-whole="gmail"]').click(); // off
       await page.locator('[data-grant-tool="GMAIL_FETCH_EMAILS"]').click();
       await page.locator("[data-editor-save]").click();
-      await page.waitForFunction(() => !document.querySelector("[data-blob-editor]"), null, { timeout: 15_000 });
+      await page.waitForFunction(() => !document.querySelector("[data-blob-editor]"), null, {
+        timeout: 15_000,
+      });
       await sleep(600);
-      expect.deepEqual(profileOf(B.id).toolGrants.apps, { mode: "list", allow: ["GMAIL_FETCH_EMAILS"] });
+      expect.deepEqual(profileOf(B.id).toolGrants.apps, {
+        mode: "list",
+        allow: ["GMAIL_FETCH_EMAILS"],
+      });
       covered("Grants › a single tool");
       // the rest of the grants (mcp / computer) survived the write
       expect.deepEqual(profileOf(B.id).toolGrants.computer, { browser: false, vm: false });
@@ -227,7 +310,9 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await page.locator('[data-editor-section="apps"]').click();
       await page.locator('[data-grant-whole="gmail"]').click();
       await page.locator("[data-editor-save]").click();
-      await page.waitForFunction(() => !document.querySelector("[data-blob-editor]"), null, { timeout: 15_000 });
+      await page.waitForFunction(() => !document.querySelector("[data-blob-editor]"), null, {
+        timeout: 15_000,
+      });
       await sleep(600);
     },
     { control: "Apps › per-blob grants", severity: "broken" },
@@ -238,43 +323,94 @@ spec("20-blobs", { stack: STACK }, async (t) => {
     async ({ page, open, sleep, expect, covered }) => {
       await open("/blobs", { wait: false });
       await page.locator("[data-blobs-roster]").waitFor({ timeout: 40_000 });
-      const sent = JSON.stringify({ tool: "GMAIL_SEND_EMAIL", toolkit: "gmail", arguments_json: JSON.stringify({ to: "sam@acme.com", subject: "Invoice 12" }) });
+      const sent = JSON.stringify({
+        tool: "GMAIL_SEND_EMAIL",
+        toolkit: "gmail",
+        arguments_json: JSON.stringify({ to: "sam@acme.com", subject: "Invoice 12" }),
+      });
       await say(page, B.name, `[stub:tool apps_run ${sent}]`);
       const panel = page.locator('[data-blob-card="approval"][data-approval-state="open"]').first();
       await panel.waitFor({ timeout: 45_000 });
       const detail = await panel.innerText();
-      expect.ok(/Send email on gmail/i.test(detail) && /to: sam@acme\.com/.test(detail) && /subject: Invoice 12/.test(detail), `the card shows the tool and the key args: ${detail}`);
+      expect.ok(
+        /Send email on gmail/i.test(detail) &&
+          /to: sam@acme\.com/.test(detail) &&
+          /subject: Invoice 12/.test(detail),
+        `the card shows the tool and the key args: ${detail}`,
+      );
       expect.ok(/Gmail/.test(detail), "and names the app");
-      expect.equal(await page.locator("[data-agent-model-picker]").first().isVisible(), true, "the composer stays usable beside the card");
+      expect.equal(
+        await page.locator("[data-agent-model-picker]").first().isVisible(),
+        true,
+        "the composer stays usable beside the card",
+      );
       covered("Approval › app action card with tool + key args");
       expect.equal(broker.state.executed.length, 0, "nothing ran before the answer");
       await page.locator('[data-approval-action="decline"]').first().click();
-      await page.waitForFunction(() => /said no/i.test(document.body.innerText), null, { timeout: 30_000 });
+      await page.waitForFunction(() => /said no/i.test(document.body.innerText), null, {
+        timeout: 30_000,
+      });
       expect.equal(broker.state.executed.length, 0, "Deny: the app was never called");
       covered("Approval › Deny");
 
       await say(page, B.name, `[stub:tool apps_run ${sent}]`);
-      await page.locator('[data-blob-card="approval"][data-approval-state="open"]').first().waitFor({ timeout: 45_000 });
+      await page
+        .locator('[data-blob-card="approval"][data-approval-state="open"]')
+        .first()
+        .waitFor({ timeout: 45_000 });
       await page.locator('[data-approval-action="accept"]').first().click();
-      await page.waitForFunction(() => /apps_run -> /.test(document.body.innerText), null, { timeout: 30_000 });
+      await page.waitForFunction(() => /apps_run -> /.test(document.body.innerText), null, {
+        timeout: 30_000,
+      });
       await sleep(600);
-      expect.equal(broker.state.executed.filter((e) => e.via === "broker" && e.tool === "GMAIL_SEND_EMAIL").length, 1, "Allow: exactly one call");
+      expect.equal(
+        broker.state.executed.filter((e) => e.via === "broker" && e.tool === "GMAIL_SEND_EMAIL")
+          .length,
+        1,
+        "Allow: exactly one call",
+      );
       covered("Approval › Allow runs it once");
 
       // reading never asks
-      const read = JSON.stringify({ tool: "GMAIL_FETCH_EMAILS", toolkit: "gmail", arguments_json: "{}" });
+      const read = JSON.stringify({
+        tool: "GMAIL_FETCH_EMAILS",
+        toolkit: "gmail",
+        arguments_json: "{}",
+      });
       await say(page, B.name, `[stub:tool apps_run ${read}]`);
-      await page.waitForFunction(() => (document.body.innerText.match(/apps_run -> /g) ?? []).length >= 2, null, { timeout: 30_000 });
-      expect.equal(await page.locator('[data-blob-card="approval"][data-approval-state="open"]').count(), 0, "a read opens no approval");
+      await page.waitForFunction(
+        () => (document.body.innerText.match(/apps_run -> /g) ?? []).length >= 2,
+        null,
+        { timeout: 30_000 },
+      );
+      expect.equal(
+        await page.locator('[data-blob-card="approval"][data-approval-state="open"]').count(),
+        0,
+        "a read opens no approval",
+      );
       covered("Approval › reads are free");
 
       // the decision log in the blob's Profile tab
       await openPanel(page, open, B.id, "profile");
       const log = page.locator("[data-decision-log]");
       await log.waitFor({ timeout: 20_000 });
-      const rows = await log.locator("[data-decision]").evaluateAll((els) => els.map((e) => `${e.getAttribute("data-decision")}:${e.getAttribute("data-decision-reason")}`));
-      expect.ok(rows.includes("deny:user_denied") && rows.includes("allow:user_approved") && rows.includes("allow:granted"), rows.join(", "));
-      expect.ok(!(await log.innerText()).includes("sam@acme.com"), "the log never holds the arguments");
+      const rows = await log
+        .locator("[data-decision]")
+        .evaluateAll((els) =>
+          els.map(
+            (e) => `${e.getAttribute("data-decision")}:${e.getAttribute("data-decision-reason")}`,
+          ),
+        );
+      expect.ok(
+        rows.includes("deny:user_denied") &&
+          rows.includes("allow:user_approved") &&
+          rows.includes("allow:granted"),
+        rows.join(", "),
+      );
+      expect.ok(
+        !(await log.innerText()).includes("sam@acme.com"),
+        "the log never holds the arguments",
+      );
       covered("Profile › decision log (allow, deny, reason)");
     },
     { control: "Apps › outbound approval", severity: "broken" },
@@ -285,7 +421,11 @@ spec("20-blobs", { stack: STACK }, async (t) => {
     async ({ page, open, sleep, expect, covered }) => {
       await open("/blobs", { wait: false });
       await page.locator("[data-blobs-roster]").waitFor({ timeout: 40_000 });
-      const call = JSON.stringify({ tool: "SLACK_FETCH_MESSAGES", toolkit: "slack", arguments_json: "{}" });
+      const call = JSON.stringify({
+        tool: "SLACK_FETCH_MESSAGES",
+        toolkit: "slack",
+        arguments_json: "{}",
+      });
       await say(page, B.name, `[stub:tool apps_run ${call}]`);
       // not granted yet (only gmail is): the chip is "Allow", but Slack is not connected at all, so it is Connect
       const card = page.locator('[data-app-connect-card="slack"]');
@@ -299,9 +439,18 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await page.locator('[data-connect-dialog="connected"]').waitFor({ timeout: 25_000 });
       await page.locator("[data-connect-done]").click();
       await sleep(800);
-      expect.ok(profileOf(B.id).toolGrants.apps.allow.includes("toolkit:slack"), "connecting from this blob's chip allowed Slack for this blob");
-      expect.ok(profileOf(B.id).toolGrants.apps.allow.includes("toolkit:gmail"), "and kept what it had");
-      expect.equal(await card.locator('[data-connect-chip="slack"]').getAttribute("data-chip-state"), "connected");
+      expect.ok(
+        profileOf(B.id).toolGrants.apps.allow.includes("toolkit:slack"),
+        "connecting from this blob's chip allowed Slack for this blob",
+      );
+      expect.ok(
+        profileOf(B.id).toolGrants.apps.allow.includes("toolkit:gmail"),
+        "and kept what it had",
+      );
+      expect.equal(
+        await card.locator('[data-connect-chip="slack"]').getAttribute("data-chip-state"),
+        "connected",
+      );
       covered("Chips › connect from a blob's chat allows the app for that blob");
     },
     { control: "Apps › connect chip in a blob's chat", severity: "broken" },
@@ -322,9 +471,15 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       const before = broker.state.executed.length;
       await open("/blobs", { wait: false });
       await page.locator("[data-blobs-roster]").waitFor({ timeout: 40_000 });
-      const call = JSON.stringify({ tool: "GMAIL_FETCH_EMAILS", toolkit: "gmail", arguments_json: "{}" });
+      const call = JSON.stringify({
+        tool: "GMAIL_FETCH_EMAILS",
+        toolkit: "gmail",
+        arguments_json: "{}",
+      });
       await say(page, B.name, `[stub:tool apps_run ${call}]`);
-      await page.waitForFunction(() => /used up/i.test(document.body.innerText), null, { timeout: 45_000 });
+      await page.waitForFunction(() => /used up/i.test(document.body.innerText), null, {
+        timeout: 45_000,
+      });
       expect.equal(broker.state.executed.length, before, "a capped call is never made");
       covered("Apps › capped call answers in plain words");
       // the card's button leads to the key field
@@ -345,12 +500,19 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await page.locator("[data-byo-input]").fill("ak_rejected_key_00000");
       await page.locator("[data-byo-save]").click();
       await page.locator("[data-byo-error]").waitFor({ timeout: 15_000 });
-      expect.equal(fs.existsSync(path.join(secretsDir(), "composio-byo-key")), false, "a key Composio refuses is never stored");
+      expect.equal(
+        fs.existsSync(path.join(secretsDir(), "composio-byo-key")),
+        false,
+        "a key Composio refuses is never stored",
+      );
       expect.ok(!(await page.content()).includes("ak_rejected_key_00000") || true);
       await page.locator("[data-byo-input]").fill("ak_qa_good_key_123456");
       await page.locator("[data-byo-save]").click();
       await page.locator('[data-byo-state="set"]').waitFor({ timeout: 20_000 });
-      expect.ok(/No limit/.test(await page.locator("[data-connections]").innerText()), "no limit on your own key");
+      expect.ok(
+        /No limit/.test(await page.locator("[data-connections]").innerText()),
+        "no limit on your own key",
+      );
       const stored = fs.readFileSync(path.join(secretsDir(), "composio-byo-key"), "utf8");
       expect.ok(stored.includes("ak_qa_good_key_123456"), "kept in the secret store");
       expect.ok(!(await page.content()).includes("ak_qa_good_key_123456"), "never shown again");
@@ -359,7 +521,10 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       // the account list now comes from the user's own Composio project (the fake's BYO account), and the cap card is gone
       await open("/apps", { wait: false });
       await page.locator('[data-connected-app="gmail"]').waitFor({ timeout: 40_000 });
-      expect.ok(/From my own key/.test(await page.locator('[data-connected-app="gmail"]').innerText()), "the BYO account, not the broker's");
+      expect.ok(
+        /From my own key/.test(await page.locator('[data-connected-app="gmail"]').innerText()),
+        "the BYO account, not the broker's",
+      );
       expect.equal(await page.locator("[data-cap-card]").count(), 0);
       expect.ok(/Using your Composio key/.test(await page.locator("[data-apps-page]").innerText()));
       covered("Apps › BYO key priority over the broker");
@@ -368,17 +533,30 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       const usedBefore = broker.state.used;
       await open("/blobs", { wait: false });
       await page.locator("[data-blobs-roster]").waitFor({ timeout: 40_000 });
-      const read = JSON.stringify({ tool: "GMAIL_FETCH_EMAILS", toolkit: "gmail", arguments_json: "{}" });
+      const read = JSON.stringify({
+        tool: "GMAIL_FETCH_EMAILS",
+        toolkit: "gmail",
+        arguments_json: "{}",
+      });
       await say(page, B.name, `[stub:tool apps_run ${read}]`);
-      await page.waitForFunction(() => /your own key/i.test(document.body.innerText), null, { timeout: 45_000 });
-      expect.ok(broker.state.executed.some((e) => e.via === "byo"), "executed through the BYO path");
+      await page.waitForFunction(() => /your own key/i.test(document.body.innerText), null, {
+        timeout: 45_000,
+      });
+      expect.ok(
+        broker.state.executed.some((e) => e.via === "byo"),
+        "executed through the BYO path",
+      );
       expect.equal(broker.state.used, usedBefore, "and never counted against the broker's month");
       covered("Apps › BYO calls bypass the broker's cap");
 
       await open("/settings/connections", { wait: false });
       await page.locator("[data-byo-clear]").click();
       await page.locator('[data-byo-state="empty"]').waitFor({ timeout: 20_000 });
-      expect.equal(fs.existsSync(path.join(secretsDir(), "composio-byo-key")), false, "Remove deletes the secret");
+      expect.equal(
+        fs.existsSync(path.join(secretsDir(), "composio-byo-key")),
+        false,
+        "Remove deletes the secret",
+      );
       covered("Settings › Remove key → broker again");
     },
     { control: "Settings › Connections BYO key", severity: "broken" },
@@ -392,15 +570,23 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await open("/apps", { wait: false });
       const banner = page.locator('[data-apps-error="unauthorized"]');
       await banner.waitFor({ timeout: 60_000 });
-      expect.ok(/does not know this install/i.test(await banner.innerText()), await banner.innerText());
+      expect.ok(
+        /does not know this install/i.test(await banner.innerText()),
+        await banner.innerText(),
+      );
       expect.equal(await page.locator("[data-apps-grid]").count(), 0, "no dead grid");
       covered("Apps › unknown install: plain explanation");
       await page.locator("[data-apps-reset]").click();
       try {
         await page.locator("[data-app-card]").first().waitFor({ timeout: 20_000 });
       } catch (e) {
-        const err = await page.locator("[data-apps-error]").innerText().catch(() => "(no banner)");
-        throw new Error(`after Reset: banner=${JSON.stringify(err)} requests=${JSON.stringify(broker.state.requests.slice(-14))}`);
+        const err = await page
+          .locator("[data-apps-error]")
+          .innerText()
+          .catch(() => "(no banner)");
+        throw new Error(
+          `after Reset: banner=${JSON.stringify(err)} requests=${JSON.stringify(broker.state.requests.slice(-14))}`,
+        );
       }
       expect.equal(await page.locator("[data-apps-error]").count(), 0);
       expect.equal(broker.state.registered, 1, "a fresh install was registered after the reset");

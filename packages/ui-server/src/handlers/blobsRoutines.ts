@@ -33,7 +33,12 @@ import { callAsync, fail, profileOf, runtimeFor } from "./blobs.ts";
 
 function routinesOf(operation: string): KoraRoutinesLike {
   const r = runtimeFor(operation).routines;
-  if (!r) throw fail(operation, "Routines are not available in this daemon yet. Restart Kora to finish updating it.", "unavailable");
+  if (!r)
+    throw fail(
+      operation,
+      "Routines are not available in this daemon yet. Restart Kora to finish updating it.",
+      "unavailable",
+    );
   return r;
 }
 
@@ -47,10 +52,18 @@ function runWire(run: Record<string, unknown> | null | undefined): Record<string
 
 function routineWire(view: KoraRoutineJson): Record<string, unknown> {
   const v = view as Record<string, unknown>;
-  return { ...v, live: runWire(v.live as Record<string, unknown> | null), lastRun: runWire(v.lastRun as Record<string, unknown> | null) };
+  return {
+    ...v,
+    live: runWire(v.live as Record<string, unknown> | null),
+    lastRun: runWire(v.lastRun as Record<string, unknown> | null),
+  };
 }
 
-function unwrap<T>(operation: string, r: { ok: true; value: T } | { ok: false; message: string }, code = "invalid"): T {
+function unwrap<T>(
+  operation: string,
+  r: { ok: true; value: T } | { ok: false; message: string },
+  code = "invalid",
+): T {
   if (!r.ok) throw fail(operation, r.message, code);
   return r.value;
 }
@@ -78,7 +91,9 @@ const routinesStream = (): Stream.Stream<RoutinesChangedEvent> =>
           };
         }
       } catch (cause) {
-        host().log(`[kora-ui] routines.subscribe: unavailable (${String((cause as Error)?.message ?? cause)})`);
+        host().log(
+          `[kora-ui] routines.subscribe: unavailable (${String((cause as Error)?.message ?? cause)})`,
+        );
       }
       yield* Effect.addFinalizer(() => Effect.sync(off));
       // seed frame: a client that subscribes after a change re-reads once
@@ -112,7 +127,11 @@ export const blobsRoutinesHandlers: HandlerRecord = {
       return {
         routines: svc.list(i.blobId).map(routineWire),
         runs: svc.runs(i.blobId).map((r) => runWire(r)),
-        webhook: { baseUrl: status.baseUrl, receiverUp: status.receiverUp, port: status.webhookPort },
+        webhook: {
+          baseUrl: status.baseUrl,
+          receiverUp: status.receiverUp,
+          port: status.webhookPort,
+        },
       };
     });
   },
@@ -182,21 +201,31 @@ export const blobsRoutinesHandlers: HandlerRecord = {
   [BLOB_METHODS.routinesCreateTrigger]: (input) => {
     const i = input as RoutineCreateTriggerInput;
     return callAsync("routinesCreateTrigger", async () =>
-      unwrap("routinesCreateTrigger", routinesOf("routinesCreateTrigger").createTrigger(i.routineId, i.label)),
+      unwrap(
+        "routinesCreateTrigger",
+        routinesOf("routinesCreateTrigger").createTrigger(i.routineId, i.label),
+      ),
     );
   },
 
   [BLOB_METHODS.routinesRotateTrigger]: (input) => {
     const i = input as RoutineTriggerIdInput;
     return callAsync("routinesRotateTrigger", async () =>
-      unwrap("routinesRotateTrigger", routinesOf("routinesRotateTrigger").rotateTrigger(i.routineId, i.triggerId)),
+      unwrap(
+        "routinesRotateTrigger",
+        routinesOf("routinesRotateTrigger").rotateTrigger(i.routineId, i.triggerId),
+      ),
     );
   },
 
   [BLOB_METHODS.routinesDeleteTrigger]: (input) => {
     const i = input as RoutineTriggerIdInput;
     return callAsync("routinesDeleteTrigger", async () => {
-      unwrap("routinesDeleteTrigger", routinesOf("routinesDeleteTrigger").deleteTrigger(i.routineId, i.triggerId), "not_found");
+      unwrap(
+        "routinesDeleteTrigger",
+        routinesOf("routinesDeleteTrigger").deleteTrigger(i.routineId, i.triggerId),
+        "not_found",
+      );
       return {};
     });
   },
@@ -204,7 +233,11 @@ export const blobsRoutinesHandlers: HandlerRecord = {
   [BLOB_METHODS.routinesConfirm]: (input) => {
     const i = input as RoutineConfirmInput;
     return callAsync("routinesConfirm", async () => {
-      const card = unwrap("routinesConfirm", routinesOf("routinesConfirm").confirm(i.token, i.accept), "expired") as RoutineConfirmCardPayload;
+      const card = unwrap(
+        "routinesConfirm",
+        routinesOf("routinesConfirm").confirm(i.token, i.accept),
+        "expired",
+      ) as RoutineConfirmCardPayload;
       // the transcript's card flips to its answered state (the answer also comes back to the card that was clicked)
       chatEngine().updateBlobCard(card);
       return card;

@@ -39,13 +39,20 @@ const s = stackEnv(n);
 const env = { ...childEnv(s), KORA_TEAM_TOKEN: token };
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [path.join(ROOT, "packages/runtime/bin/kora.js"), "mcp", "--team", "--socket", s.env.KORA_SOCKET_PATH],
+  args: [
+    path.join(ROOT, "packages/runtime/bin/kora.js"),
+    "mcp",
+    "--team",
+    "--socket",
+    s.env.KORA_SOCKET_PATH,
+  ],
   env,
   stderr: "pipe",
 });
 const client = new Client({ name: "Claude Desktop", version: "0.0.1" }, { capabilities: {} });
 const out = { phase, checks: [] };
-const check = (name, ok, detail = null) => out.checks.push({ name, ok: !!ok, ...(detail != null ? { detail } : {}) });
+const check = (name, ok, detail = null) =>
+  out.checks.push({ name, ok: !!ok, ...(detail != null ? { detail } : {}) });
 const text = (r) => (r?.content ?? []).map((c) => c.text ?? "").join("\n");
 const json = (r) => {
   try {
@@ -80,41 +87,96 @@ try {
     const tools = await client.listTools();
     const names = tools.tools.map((t) => t.name).sort();
     out.tools = names;
-    for (const must of ["list_blobs", "get_blob", "list_threads", "read_thread", "search", "send_message", "ask_kora", "wait_for", "set_model", "interrupt", "list_outputs"])
+    for (const must of [
+      "list_blobs",
+      "get_blob",
+      "list_threads",
+      "read_thread",
+      "search",
+      "send_message",
+      "ask_kora",
+      "wait_for",
+      "set_model",
+      "interrupt",
+      "list_outputs",
+    ])
       check(`tool ${must}`, names.includes(must));
-    check("no approval / delete / settings / secrets tools", !names.some((x) => /approv|delet|setting|secret|memory|grant|hire|soul|browser/i.test(x)), names.join(","));
+    check(
+      "no approval / delete / settings / secrets tools",
+      !names.some((x) => /approv|delet|setting|secret|memory|grant|hire|soul|browser/i.test(x)),
+      names.join(","),
+    );
 
     const blobs = json(await client.callTool({ name: "list_blobs", arguments: {} }));
     const popo = blobs?.blobs?.find((b) => b.name === "Popo");
     out.blobs = blobs?.blobs?.map((b) => b.name);
     check("list_blobs shows the team", !!popo && blobs.blobs.some((b) => b.name === "Kora"));
 
-    const sent = await client.callTool({ name: "send_message", arguments: { blob: "Popo", text: "[stub:say Popo heard the outside client] hello from MCP" } });
+    const sent = await client.callTool({
+      name: "send_message",
+      arguments: { blob: "Popo", text: "[stub:say Popo heard the outside client] hello from MCP" },
+    });
     const sentJson = json(sent);
-    check("send_message returns a thread at once", !sent.isError && !!sentJson?.thread, text(sent).slice(0, 200));
+    check(
+      "send_message returns a thread at once",
+      !sent.isError && !!sentJson?.thread,
+      text(sent).slice(0, 200),
+    );
     const thread = sentJson?.thread;
     out.thread = thread;
 
-    const waited = await client.callTool({ name: "wait_for", arguments: { thread, timeout_s: 45 } });
+    const waited = await client.callTool({
+      name: "wait_for",
+      arguments: { thread, timeout_s: 45 },
+    });
     const waitedJson = json(waited);
     out.waited = waitedJson;
-    check("wait_for ends settled with the reply", waitedJson?.status === "settled" && /Popo heard the outside client/.test(waitedJson?.reply ?? ""), text(waited).slice(0, 300));
+    check(
+      "wait_for ends settled with the reply",
+      waitedJson?.status === "settled" &&
+        /Popo heard the outside client/.test(waitedJson?.reply ?? ""),
+      text(waited).slice(0, 300),
+    );
 
     const read = await client.callTool({ name: "read_thread", arguments: { thread } });
     const readJson = json(read);
     out.messages = readJson?.messages;
-    check("read_thread returns the transcript with the via client on the user row", readJson?.messages?.some((r) => r.role === "user" && r.via === CLIENT_NAME) === true, text(read).slice(0, 400));
-    check("read_thread has the assistant reply", readJson?.messages?.some((r) => r.role === "assistant" && /heard the outside client/.test(r.text)) === true);
+    check(
+      "read_thread returns the transcript with the via client on the user row",
+      readJson?.messages?.some((r) => r.role === "user" && r.via === CLIENT_NAME) === true,
+      text(read).slice(0, 400),
+    );
+    check(
+      "read_thread has the assistant reply",
+      readJson?.messages?.some(
+        (r) => r.role === "assistant" && /heard the outside client/.test(r.text),
+      ) === true,
+    );
 
-    const threads = json(await client.callTool({ name: "list_threads", arguments: { blob: "Popo" } }));
+    const threads = json(
+      await client.callTool({ name: "list_threads", arguments: { blob: "Popo" } }),
+    );
     check("list_threads lists it", !!threads?.threads?.some((t) => t.id === thread));
-    const found = json(await client.callTool({ name: "search", arguments: { query: "heard the outside" } }));
-    check("search finds the thread", !!found?.hits?.some((h) => h.kind === "thread" && h.id === thread), JSON.stringify(found).slice(0, 200));
+    const found = json(
+      await client.callTool({ name: "search", arguments: { query: "heard the outside" } }),
+    );
+    check(
+      "search finds the thread",
+      !!found?.hits?.some((h) => h.kind === "thread" && h.id === thread),
+      JSON.stringify(found).slice(0, 200),
+    );
     const outputs = await client.callTool({ name: "list_outputs", arguments: { blob: "Popo" } });
     check("list_outputs answers", !outputs.isError);
     const bad = await client.callTool({ name: "send_message", arguments: { blob: "Popo" } });
-    check("bad arguments are an error, not a crash", bad.isError === true && /text is required/i.test(text(bad)), text(bad));
-    const unknown = await client.callTool({ name: "answer_approval", arguments: { id: "x", allow: true } });
+    check(
+      "bad arguments are an error, not a crash",
+      bad.isError === true && /text is required/i.test(text(bad)),
+      text(bad),
+    );
+    const unknown = await client.callTool({
+      name: "answer_approval",
+      arguments: { id: "x", allow: true },
+    });
     check("a forbidden tool does not exist", unknown.isError === true, text(unknown));
   }
 } catch (e) {

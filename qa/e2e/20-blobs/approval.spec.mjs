@@ -18,7 +18,8 @@ let B = null;
 
 const OPEN = '[data-blob-card="approval"][data-approval-state="open"]';
 const SETTLED = (state) => `[data-blob-card="approval"][data-approval-state="${state}"]`;
-const rowOf = (page) => page.locator(`[data-blob-id] [data-blob-row][aria-label^="${NAME}"]`).first();
+const rowOf = (page) =>
+  page.locator(`[data-blob-id] [data-blob-row][aria-label^="${NAME}"]`).first();
 
 async function hireAsk(page, open) {
   await open("/blobs", { wait: false });
@@ -62,7 +63,9 @@ spec("20-blobs", { stack: STACK }, async (t) => {
         `the full command is shown: ${text}`,
       );
       expect.ok(
-        (await card.locator("[data-approval-cwd]").innerText()).includes(path.basename(B.workspace)),
+        (await card.locator("[data-approval-cwd]").innerText()).includes(
+          path.basename(B.workspace),
+        ),
         "the folder it would run in is shown",
       );
       expect.equal(
@@ -73,17 +76,26 @@ spec("20-blobs", { stack: STACK }, async (t) => {
         (await card.locator('[data-approval-action="acceptAlways"]').innerText()).trim(),
         "Always for this blob",
       );
-      expect.equal((await card.locator('[data-approval-action="decline"]').innerText()).trim(), "Deny");
+      expect.equal(
+        (await card.locator('[data-approval-action="decline"]').innerText()).trim(),
+        "Deny",
+      );
       // the card is a row of the transcript, not a panel over the composer
       const box = page.locator('[contenteditable="true"]').last();
       expect.equal(await box.isVisible(), true, "the composer is still there");
       const cardBox = await card.boundingBox();
       const composerBox = await box.boundingBox();
-      expect.ok(cardBox.y + cardBox.height <= composerBox.y, "the card sits above the composer, never over it");
+      expect.ok(
+        cardBox.y + cardBox.height <= composerBox.y,
+        "the card sits above the composer, never over it",
+      );
       expect.equal(await page.locator("[data-agent-model-picker]").first().isVisible(), true);
       await box.click();
       await page.keyboard.type("a draft I can still write");
-      expect.ok((await box.innerText()).includes("a draft I can still write"), "and it still takes text");
+      expect.ok(
+        (await box.innerText()).includes("a draft I can still write"),
+        "and it still takes text",
+      );
       await page.keyboard.press("Meta+a");
       await page.keyboard.press("Backspace");
       fs.mkdirSync(ASSETS, { recursive: true });
@@ -114,7 +126,9 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await card.waitFor({ timeout: 45_000 });
       await card.locator('[data-approval-action="acceptAlways"]').click();
       await page.locator(SETTLED("always")).first().waitFor({ timeout: 30_000 });
-      expect.ok((await page.locator(SETTLED("always")).first().innerText()).includes("Always allowed"));
+      expect.ok(
+        (await page.locator(SETTLED("always")).first().innerText()).includes("Always allowed"),
+      );
       await sleep(500);
       const rules = readJson("blobs", B.id, "profile.json").toolGrants?.approvals ?? [];
       expect.ok(
@@ -136,9 +150,13 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await list.waitFor({ timeout: 20_000 });
       expect.ok((await list.innerText()).includes("echo"));
       await list.locator("[data-always-remove]").first().click();
-      await page.waitForFunction(() => !document.querySelector("[data-blob-always-allowed]"), null, {
-        timeout: 20_000,
-      });
+      await page.waitForFunction(
+        () => !document.querySelector("[data-blob-always-allowed]"),
+        null,
+        {
+          timeout: 20_000,
+        },
+      );
       expect.equal(
         (readJson("blobs", B.id, "profile.json").toolGrants?.approvals ?? []).length,
         0,
@@ -175,9 +193,15 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await page.locator('[aria-label="Stop generation"]').first().click();
       await page.locator(SETTLED("cancelled")).first().waitFor({ timeout: 30_000 });
       expect.ok(
-        (await page.locator(SETTLED("cancelled")).first().innerText()).includes("Stopped before an answer"),
+        (await page.locator(SETTLED("cancelled")).first().innerText()).includes(
+          "Stopped before an answer",
+        ),
       );
-      expect.equal(await page.locator(OPEN).count(), 0, "no card is left waiting for a turn that is gone");
+      expect.equal(
+        await page.locator(OPEN).count(),
+        0,
+        "no card is left waiting for a turn that is gone",
+      );
       covered("Approval › Stop closes the open card");
     },
     { control: "Approval › deny / stop", severity: "broken" },

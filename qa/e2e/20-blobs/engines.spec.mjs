@@ -46,8 +46,15 @@ async function hireOn(page, open, name, tab, modelText) {
   await page.locator('[data-editor-section="permissions"]').click();
   await page.locator('[data-permission="auto"]').click();
   await page.locator("[data-editor-save]").click();
-  await page.locator(`[data-blob-id] [data-blob-row][aria-label^="${name}"]`).first().waitFor({ timeout: 25_000 });
-  await page.waitForFunction(() => /^\/(draft|kora-local)\//.test(location.pathname), null, { timeout: 30_000 }).catch(() => {});
+  await page
+    .locator(`[data-blob-id] [data-blob-row][aria-label^="${name}"]`)
+    .first()
+    .waitFor({ timeout: 25_000 });
+  await page
+    .waitForFunction(() => /^\/(draft|kora-local)\//.test(location.pathname), null, {
+      timeout: 30_000,
+    })
+    .catch(() => {});
   await page.waitForTimeout(800);
 }
 
@@ -70,8 +77,10 @@ let tmp = null;
 
 /** Every run starts from "nothing set up": the daemon reads these files on every call, so removing them is enough. */
 function resetEngineState() {
-  for (const f of ["engines.json", "claude-accounts.json"]) fs.rmSync(path.join(home(), f), { force: true });
-  for (const d of ["engine-secrets", "accounts"]) fs.rmSync(path.join(home(), d), { recursive: true, force: true });
+  for (const f of ["engines.json", "claude-accounts.json"])
+    fs.rmSync(path.join(home(), f), { force: true });
+  for (const d of ["engine-secrets", "accounts"])
+    fs.rmSync(path.join(home(), d), { recursive: true, force: true });
 }
 
 spec("20-blobs", { stack: STACK }, async (t) => {
@@ -80,7 +89,8 @@ spec("20-blobs", { stack: STACK }, async (t) => {
     async ({ page, open, expect, covered }) => {
       resetEngineState();
       await openEngines(page, open);
-      for (const s of ["builtin", "accounts", "acp", "api"]) await page.locator(`[data-engines-${s}]`).waitFor();
+      for (const s of ["builtin", "accounts", "acp", "api"])
+        await page.locator(`[data-engines-${s}]`).waitFor();
       const text = await page.locator("main").innerText();
       expect.match(text, /Claude/);
       expect.match(text, /Codex/);
@@ -92,9 +102,19 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       if (await toggle.count()) {
         await toggle.click();
         // an agent that is not installed is a row with the sentence, not a missing row
-        expect.match(await page.locator("[data-acp-row]").last().innerText(), /not found on this Mac|Ready/);
+        expect.match(
+          await page.locator("[data-acp-row]").last().innerText(),
+          /not found on this Mac|Ready/,
+        );
       }
-      for (const preset of ["openrouter", "deepseek", "groq", "lmstudio", "ollama", "anthropic-api"])
+      for (const preset of [
+        "openrouter",
+        "deepseek",
+        "groq",
+        "lmstudio",
+        "ollama",
+        "anthropic-api",
+      ])
         expect.ok(await page.locator(`[data-api-preset="${preset}"]`).count(), `preset ${preset}`);
       covered("engines page sections");
       await page.evaluate(() => window.scrollTo(0, 0));
@@ -127,18 +147,34 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       expect.match(await row.locator("[data-api-result]").innerText(), /rejected the API key/);
       await row.locator("[data-api-key]").fill(fake.key);
       await row.locator("[data-api-test]").click();
-      await page.waitForFunction((sel) => /Connected\. 2 models available\./.test(document.querySelector(sel)?.textContent ?? ""), '[data-api-row="fake-ai"] [data-api-result]');
-      expect.ok(fake.seen.every((s) => s.method === "GET" && s.url.endsWith("/models")), "Test sends no chat message");
+      await page.waitForFunction(
+        (sel) =>
+          /Connected\. 2 models available\./.test(document.querySelector(sel)?.textContent ?? ""),
+        '[data-api-row="fake-ai"] [data-api-result]',
+      );
+      expect.ok(
+        fake.seen.every((s) => s.method === "GET" && s.url.endsWith("/models")),
+        "Test sends no chat message",
+      );
       await row.locator("[data-api-key-save]").click();
-      await page.waitForFunction(() => /key saved/.test(document.querySelector('[data-api-row="fake-ai"]')?.textContent ?? ""));
+      await page.waitForFunction(() =>
+        /key saved/.test(document.querySelector('[data-api-row="fake-ai"]')?.textContent ?? ""),
+      );
       await row.locator("[data-api-models]").click();
-      expect.match(await row.locator("[data-api-models-result]").innerText(), /fake-small, fake-large/);
+      expect.match(
+        await row.locator("[data-api-models-result]").innerText(),
+        /fake-small, fake-large/,
+      );
       expect.ok(!(await page.content()).includes(fake.key), "the key is not on the page");
       const cfg = fs.readFileSync(path.join(home(), "engines.json"), "utf8");
       expect.ok(!cfg.includes(fake.key), "the key is not in engines.json");
       expect.ok(cfg.includes("fake-ai"));
       const secret = path.join(home(), "engine-secrets", "api-fake-ai");
-      expect.equal(fs.readFileSync(secret, "utf8").trim(), fake.key, "the key is in the secret store");
+      expect.equal(
+        fs.readFileSync(secret, "utf8").trim(),
+        fake.key,
+        "the key is in the secret store",
+      );
       expect.equal(fs.statSync(secret).mode & 0o777, 0o600);
       covered("api endpoint add/test/key/models");
       // a preset added without a key stays listed, unavailable, with the reason (the picker greys it)
@@ -176,7 +212,12 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await row.getByLabel("Hermes path").fill(process.execPath);
       await row.getByLabel("Hermes arguments").fill(fakeAcpAgent());
       await row.locator("[data-acp-save]").click();
-      await page.waitForFunction(() => /Ready/.test(document.querySelector('[data-acp-row="acp-hermes"]')?.textContent ?? ""), null, { timeout: 20_000 });
+      await page.waitForFunction(
+        () =>
+          /Ready/.test(document.querySelector('[data-acp-row="acp-hermes"]')?.textContent ?? ""),
+        null,
+        { timeout: 20_000 },
+      );
       await row.locator("[data-acp-models]").click();
       await row.locator("[data-acp-models-result]").waitFor({ timeout: 40_000 });
       covered("acp agent path/args/models");
@@ -221,7 +262,12 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       const dir = /CLAUDE_CONFIG_DIR='([^']+)'/.exec(cmd)[1];
       // the Claude CLI sets up its own config files when asked for the sign-in status; Kora copies no login and no history into it
       const made = fs.readdirSync(dir);
-      expect.ok(!made.includes(".credentials.json") && !made.includes("projects") && !made.includes("settings.json"), `no login or history copied (${made.join(", ")})`);
+      expect.ok(
+        !made.includes(".credentials.json") &&
+          !made.includes("projects") &&
+          !made.includes("settings.json"),
+        `no login or history copied (${made.join(", ")})`,
+      );
       await row.getByRole("button", { name: "Copy" }).click();
       expect.equal(await page.evaluate(() => navigator.clipboard.readText()), cmd);
       await row.locator("[data-account-check]").click();
@@ -237,26 +283,41 @@ spec("20-blobs", { stack: STACK }, async (t) => {
     },
   );
 
-  t.test("the model picker offers every engine as its own tab; an engine that cannot run is greyed with its reason", async ({ page, open, expect }) => {
-    await open("/blobs", { wait: false });
-    await page.locator("[data-blobs-roster]").waitFor({ timeout: 40_000 });
-    await page.locator("[data-new-blob], [data-blobs-empty] button").first().click();
-    await page.locator("[data-blob-editor]").waitFor();
-    await page.locator('[data-editor-section="model"]').click();
-    await page.locator('[data-model-mode="pick"]').click();
-    await page.locator("[data-blob-editor] [data-agent-model-picker]").first().click();
-    const tabs = await page.locator("[data-model-picker-agent]").evaluateAll((els) => els.map((e) => e.getAttribute("data-model-picker-agent")));
-    for (const want of ["claude", "codex", "claude-work", "api-fake-ai", "acp-hermes", "api-groq"]) expect.ok(tabs.includes(want), `${want} tab (${tabs.join(", ")})`);
-    // Groq has no key: its tab is there, greyed, and says why
-    const groq = page.locator('[data-model-picker-agent="api-groq"]');
-    expect.ok(await groq.isDisabled(), "greyed: it cannot be picked");
-    expect.match((await groq.getAttribute("aria-label")) ?? "", /needs an API key/i);
-    await shot(page, "picker-groups");
-    // the provider row scrolls sideways: show the far end too (ACP and API groups sit there)
-    await page.locator("[data-model-picker-nav]").evaluate((el) => { el.scrollLeft = el.scrollWidth; });
-    await page.waitForTimeout(300);
-    await shot(page, "picker-groups-more");
-  });
+  t.test(
+    "the model picker offers every engine as its own tab; an engine that cannot run is greyed with its reason",
+    async ({ page, open, expect }) => {
+      await open("/blobs", { wait: false });
+      await page.locator("[data-blobs-roster]").waitFor({ timeout: 40_000 });
+      await page.locator("[data-new-blob], [data-blobs-empty] button").first().click();
+      await page.locator("[data-blob-editor]").waitFor();
+      await page.locator('[data-editor-section="model"]').click();
+      await page.locator('[data-model-mode="pick"]').click();
+      await page.locator("[data-blob-editor] [data-agent-model-picker]").first().click();
+      const tabs = await page
+        .locator("[data-model-picker-agent]")
+        .evaluateAll((els) => els.map((e) => e.getAttribute("data-model-picker-agent")));
+      for (const want of [
+        "claude",
+        "codex",
+        "claude-work",
+        "api-fake-ai",
+        "acp-hermes",
+        "api-groq",
+      ])
+        expect.ok(tabs.includes(want), `${want} tab (${tabs.join(", ")})`);
+      // Groq has no key: its tab is there, greyed, and says why
+      const groq = page.locator('[data-model-picker-agent="api-groq"]');
+      expect.ok(await groq.isDisabled(), "greyed: it cannot be picked");
+      expect.match((await groq.getAttribute("aria-label")) ?? "", /needs an API key/i);
+      await shot(page, "picker-groups");
+      // the provider row scrolls sideways: show the far end too (ACP and API groups sit there)
+      await page.locator("[data-model-picker-nav]").evaluate((el) => {
+        el.scrollLeft = el.scrollWidth;
+      });
+      await page.waitForTimeout(300);
+      await shot(page, "picker-groups-more");
+    },
+  );
 
   // the fixtures are servers: close them, or this process never exits
   t.test("cleanup: the fake OpenAI server and the temp folder go", async ({ expect }) => {
@@ -265,4 +326,3 @@ spec("20-blobs", { stack: STACK }, async (t) => {
     expect.ok(true);
   });
 });
-

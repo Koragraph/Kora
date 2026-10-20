@@ -35,33 +35,52 @@ describe("latestBrowserSignalTurn", () => {
   });
   it("opens on the real Claude blob shape (mcp__kora__browser_*, the driver's tool.started)", () => {
     expect(isBrowserToolName("mcp__kora__browser_navigate")).toBe(true);
-    expect(latestBrowserSignalTurn([tool("mcp__kora__browser_navigate", "turn_mv0tcnug0002r0")])).toBe("turn_mv0tcnug0002r0");
+    expect(
+      latestBrowserSignalTurn([tool("mcp__kora__browser_navigate", "turn_mv0tcnug0002r0")]),
+    ).toBe("turn_mv0tcnug0002r0");
   });
   it("is null without browser activity", () => {
     expect(latestBrowserSignalTurn([tool("Read")])).toBeNull();
   });
   it("returns the newest turn that used the browser", () => {
-    expect(latestBrowserSignalTurn([tool("browser_navigate", "t1"), tool("browser_click", "t2")])).toBe("t2");
+    expect(
+      latestBrowserSignalTurn([tool("browser_navigate", "t1"), tool("browser_click", "t2")]),
+    ).toBe("t2");
   });
   it("counts an unanswered browser approval, not an answered one", () => {
     const ask = act({
       kind: "approval.requested",
       tone: "approval",
-      payload: { requestId: "r1", args: { kind: "app-action", appName: "Browser", tool: "browser" } },
+      payload: {
+        requestId: "r1",
+        args: { kind: "app-action", appName: "Browser", tool: "browser" },
+      },
     });
     expect(latestBrowserSignalTurn([ask])).toBe("t1");
-    const done = act({ kind: "approval.resolved", tone: "info", payload: { requestId: "r1", decision: "accept" } });
+    const done = act({
+      kind: "approval.resolved",
+      tone: "info",
+      payload: { requestId: "r1", decision: "accept" },
+    });
     expect(latestBrowserSignalTurn([ask, done])).toBeNull();
   });
   it("ignores non-browser approvals", () => {
-    const ask = act({ kind: "approval.requested", tone: "approval", payload: { requestId: "r2", args: { command: "ls" } } });
+    const ask = act({
+      kind: "approval.requested",
+      tone: "approval",
+      payload: { requestId: "r2", args: { command: "ls" } },
+    });
     expect(latestBrowserSignalTurn([ask])).toBeNull();
   });
 });
 
 describe("decideBrowserAutoOpen", () => {
-  const go = (h: Map<string, Set<string>>, signalTurn: string | null, live: string | null = "t1", key = "th") =>
-    decideBrowserAutoOpen({ threadKey: key, signalTurn, liveTurnId: live, handled: h });
+  const go = (
+    h: Map<string, Set<string>>,
+    signalTurn: string | null,
+    live: string | null = "t1",
+    key = "th",
+  ) => decideBrowserAutoOpen({ threadKey: key, signalTurn, liveTurnId: live, handled: h });
 
   it("opens once per turn, even if the user then closes the panel (no second open in that turn)", () => {
     const h = new Map<string, Set<string>>();
@@ -95,13 +114,35 @@ describe("decideBrowserAutoOpen", () => {
 
 describe("real tool-event shapes", () => {
   it("fires on a plain browser tool call (payload toolName), an MCP-prefixed one, and an ACP title-only one", () => {
-    expect(latestBrowserSignalTurn([act({ kind: "mcp_tool_call", payload: { toolName: "browser_navigate", input: {} } })])).toBe("t1");
-    expect(latestBrowserSignalTurn([act({ kind: "mcp_tool_call", payload: { toolName: "mcp__kora-blobs__browser_click" } })])).toBe("t1");
+    expect(
+      latestBrowserSignalTurn([
+        act({ kind: "mcp_tool_call", payload: { toolName: "browser_navigate", input: {} } }),
+      ]),
+    ).toBe("t1");
+    expect(
+      latestBrowserSignalTurn([
+        act({ kind: "mcp_tool_call", payload: { toolName: "mcp__kora-blobs__browser_click" } }),
+      ]),
+    ).toBe("t1");
     expect(isBrowserToolName("kora_blobs: browser_navigate")).toBe(true);
     expect(isBrowserToolName("kora_blobs: recall")).toBe(false);
-    expect(latestBrowserSignalTurn([{ ...act({ kind: "dynamic_tool_call", payload: {} }), summary: "kora_blobs: browser_open" } as ChatThreadActivity])).toBe("t1");
+    expect(
+      latestBrowserSignalTurn([
+        {
+          ...act({ kind: "dynamic_tool_call", payload: {} }),
+          summary: "kora_blobs: browser_open",
+        } as ChatThreadActivity,
+      ]),
+    ).toBe("t1");
   });
   it("a tool RESULT row never counts", () => {
-    expect(latestBrowserSignalTurn([{ ...act({ kind: "tool_result", payload: { status: "done" } }), summary: "browser_navigate done" } as ChatThreadActivity])).toBe(null);
+    expect(
+      latestBrowserSignalTurn([
+        {
+          ...act({ kind: "tool_result", payload: { status: "done" } }),
+          summary: "browser_navigate done",
+        } as ChatThreadActivity,
+      ]),
+    ).toBe(null);
   });
 });

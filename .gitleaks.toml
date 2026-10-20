@@ -5,3 +5,6 @@ useDefault = true
 [allowlist]
 description = "fake credentials in tests"
 paths = ['''(^|/)[^/]+\.test\.(ts|tsx|js|mjs|cjs)$''', '''(^|/)test/fixtures/''']
+# Kora's own browser-storage key names ("kora.surface.v1", "kora:client-prefs:v1"): names, not secrets. gitleaks'
+# generic-api-key rule read one as a key (the first public CI run, 2026-10-20).
+regexes = ['''^kora[.:][A-Za-z0-9.:_-]+$''']

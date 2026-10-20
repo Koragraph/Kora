@@ -239,9 +239,12 @@ export function doneSummary(
   const added = result.blobs.filter((b) => !replacedNames.includes(b.name));
   const parts: string[] = [];
   if (added.length) parts.push(`Added ${plural(added.length, "blob")}`);
-  if (result.groups.length) parts.push(`${parts.length ? "added" : "Added"} ${plural(result.groups.length, "group")}`);
+  if (result.groups.length)
+    parts.push(`${parts.length ? "added" : "Added"} ${plural(result.groups.length, "group")}`);
   if (replaced.length)
-    parts.push(`${parts.length ? "replaced" : "Replaced"} ${replaced.map((b) => b.name).join(", ")}`);
+    parts.push(
+      `${parts.length ? "replaced" : "Replaced"} ${replaced.map((b) => b.name).join(", ")}`,
+    );
   return parts.length ? parts.join(" and ") : "Nothing was imported";
 }
 

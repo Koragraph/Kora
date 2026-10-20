@@ -279,14 +279,18 @@ test('restart modes: resume keeps --resume <session>; cheap starts fresh with a 
 });
 
 test('zero-setup: ensureSetup installs enforcement once for a repo with nothing installed', async () => {
+  // A repo of its own: `repo` is trusted at the top of this file, and other tests may have set it up already, so the
+  // untrusted half only held by test order (it failed on CI, 2026-10-20).
+  const fresh = fs.mkdtempSync(path.join(os.tmpdir(), 'nh-fresh-'));
+  spawnSync('git', ['init', '-q', '-b', 'main'], { cwd: fresh }); fs.writeFileSync(path.join(fresh, 'a.js'), 'function a(){}\n');
   // untrusted (pl5 S2-1): nothing is written into the folder
-  const snap = () => execSync('git status --porcelain --untracked-files=all', { cwd: repo, encoding: 'utf8' });
+  const snap = () => execSync('git status --porcelain --untracked-files=all', { cwd: fresh, encoding: 'utf8' });
   const before = snap();
-  assert.equal(await handle.runtime.ensureSetup(repo), null, 'an untrusted folder is not set up');
+  assert.equal(await handle.runtime.ensureSetup(fresh), null, 'an untrusted folder is not set up');
   assert.equal(snap(), before, 'and its tree is untouched');
-  (require('../trust/store') as typeof import('../trust/store')).trustFolder(repo);
-  const text = await handle.runtime.ensureSetup(repo);
+  (require('../trust/store') as typeof import('../trust/store')).trustFolder(fresh);
+  const text = await handle.runtime.ensureSetup(fresh);
   assert.ok(text === null || /^kora: set up .* for /.test(text), String(text));
-  if (text) assert.ok(fs.existsSync(path.join(repo, 'AGENTS.md')) || fs.existsSync(path.join(repo, 'CLAUDE.md')) || fs.existsSync(path.join(repo, '.claude', 'settings.json')), 'something was written into the repo');
-  assert.equal(await handle.runtime.ensureSetup(repo), null, 'second call is a no-op');
+  if (text) assert.ok(fs.existsSync(path.join(fresh, 'AGENTS.md')) || fs.existsSync(path.join(fresh, 'CLAUDE.md')) || fs.existsSync(path.join(fresh, '.claude', 'settings.json')), 'something was written into the repo');
+  assert.equal(await handle.runtime.ensureSetup(fresh), null, 'second call is a no-op');
 });

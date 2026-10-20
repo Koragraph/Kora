@@ -29,10 +29,17 @@ export async function createBlob(page, open, name) {
   await page.locator('[data-editor-section="model"]').click();
   await page.locator('[data-model-mode="pick"]').click();
   await page.locator("[data-editor-save]").click();
-  await page.locator(`[data-blob-id] [data-blob-row][aria-label^="${name}"]`).first().waitFor({ timeout: 20_000 });
+  await page
+    .locator(`[data-blob-id] [data-blob-row][aria-label^="${name}"]`)
+    .first()
+    .waitFor({ timeout: 20_000 });
   // The /blobs landing is still forwarding to a thread; a click on the new blob's row while it does can leave the second landing on
   // its spinner (two navigations racing, see BlobLanding). Let the first one finish.
-  await page.waitForFunction(() => /^\/(draft|kora-local)\//.test(location.pathname), null, { timeout: 30_000 }).catch(() => {});
+  await page
+    .waitForFunction(() => /^\/(draft|kora-local)\//.test(location.pathname), null, {
+      timeout: 30_000,
+    })
+    .catch(() => {});
   await page.waitForTimeout(800);
   return loadBlob(STACK, name);
 }
@@ -62,14 +69,22 @@ export function hireStarterOnDisk(templateId, name) {
   } catch {
     /* not hired yet */
   }
-  const ctl = (cmd) => execFileSync(process.execPath, [path.join(ROOT, "qa/stacks/stack.cjs"), cmd, String(STACK)], { stdio: "ignore", timeout: 90_000 });
+  const ctl = (cmd) =>
+    execFileSync(process.execPath, [path.join(ROOT, "qa/stacks/stack.cjs"), cmd, String(STACK)], {
+      stdio: "ignore",
+      timeout: 90_000,
+    });
   ctl("stop");
   const code = `
     const { BlobStore } = require(${JSON.stringify(path.join(ROOT, "packages/runtime/dist/blobs/store"))});
     const { hireTemplate } = require(${JSON.stringify(path.join(ROOT, "packages/runtime/dist/blobs/templates"))});
     const r = hireTemplate(new BlobStore(), ${JSON.stringify(templateId)}, { defaultEngine: { instanceId: "claude", model: "sonnet", effort: null } });
     if (!r.profile) { console.error(JSON.stringify(r)); process.exit(1); }`;
-  execFileSync(process.execPath, ["-e", code], { env: childEnv(stackEnv(STACK)), stdio: "inherit", timeout: 60_000 });
+  execFileSync(process.execPath, ["-e", code], {
+    env: childEnv(stackEnv(STACK)),
+    stdio: "inherit",
+    timeout: 60_000,
+  });
   ctl("start");
   return loadBlob(STACK, name);
 }

@@ -185,7 +185,11 @@ function readSchedules(root: string): LegacySchedule[] {
 export function instructionsOf(raw: string, title: string): string {
   const lines = raw.replace(/\r\n/g, "\n").split("\n");
   while (lines.length && !lines[0]!.trim()) lines.shift();
-  if (lines.length && /^#\s+/.test(lines[0]!) && lines[0]!.replace(/^#\s+/, "").trim().toLowerCase() === title.trim().toLowerCase())
+  if (
+    lines.length &&
+    /^#\s+/.test(lines[0]!) &&
+    lines[0]!.replace(/^#\s+/, "").trim().toLowerCase() === title.trim().toLowerCase()
+  )
     lines.shift();
   return lines.join("\n").trim();
 }
@@ -214,7 +218,8 @@ export function buildPlan(home: string, engine: MigrationEngine): PlanEntry[] {
 
   const keyOf = (root: string): { key: string; kind: "general" | "project" } => {
     const rel = path.relative(chats, path.resolve(root));
-    if (rel === "general" || rel.startsWith("general" + path.sep)) return { key: "general", kind: "general" };
+    if (rel === "general" || rel.startsWith("general" + path.sep))
+      return { key: "general", kind: "general" };
     const m = /^projects[\\/]([^\\/]+)/.exec(rel);
     if (m) return { key: `projects/${m[1]}`, kind: "project" };
     return { key: `path/${rel || "root"}`, kind: "project" };
@@ -230,14 +235,24 @@ export function buildPlan(home: string, engine: MigrationEngine): PlanEntry[] {
     let e = entries.get(key);
     if (!e) {
       const r = rootOfKey(key);
-      e = { key, kind, title: kind === "general" ? "General" : path.basename(r), root: r, projectIds: [], threadIds: [], folder: null, engine: null };
+      e = {
+        key,
+        kind,
+        title: kind === "general" ? "General" : path.basename(r),
+        root: r,
+        projectIds: [],
+        threadIds: [],
+        folder: null,
+        engine: null,
+      };
       entries.set(key, e);
     }
     return e;
   };
 
   // folders on disk
-  if (fs.existsSync(legacyGeneralDir(home))) ensure(legacyGeneralDir(home)).folder = readFolder(legacyGeneralDir(home), "General");
+  if (fs.existsSync(legacyGeneralDir(home)))
+    ensure(legacyGeneralDir(home)).folder = readFolder(legacyGeneralDir(home), "General");
   try {
     for (const d of fs.readdirSync(legacyProjectsDir(home), { withFileTypes: true })) {
       if (!d.isDirectory() || d.name.startsWith(".")) continue;
@@ -259,10 +274,14 @@ export function buildPlan(home: string, engine: MigrationEngine): PlanEntry[] {
   }
   // threads
   for (const t of threads) {
-    const e = ensure(isLegacy(t.cwd) ? t.cwd : (heads.find((h) => h.id === t.projectId)?.workspaceRoot ?? t.cwd));
+    const e = ensure(
+      isLegacy(t.cwd) ? t.cwd : (heads.find((h) => h.id === t.projectId)?.workspaceRoot ?? t.cwd),
+    );
     e.threadIds.push(t.threadId);
   }
-  return [...entries.values()].sort((a, b) => (a.kind === b.kind ? a.key.localeCompare(b.key) : a.kind === "general" ? -1 : 1));
+  return [...entries.values()].sort((a, b) =>
+    a.kind === b.kind ? a.key.localeCompare(b.key) : a.kind === "general" ? -1 : 1,
+  );
 }
 
 // ── memory.md -> facts ───────────────────────────────────────────────────────────────────────────────────
@@ -279,7 +298,10 @@ export function parseMemoryLines(raw: string): { facts: string[]; skipped: strin
   let fenced = false;
   let comment = false;
   const push = (text: string, original: string): void => {
-    const key = text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    const key = text
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
     if (!key || seen.has(key)) return;
     seen.add(key);
     if (text.length <= MAX_FACT_CHARS) {
@@ -317,7 +339,8 @@ export function parseMemoryLines(raw: string): { facts: string[]; skipped: strin
       if (!line.includes("-->")) comment = true;
       continue;
     }
-    if (!line || line.startsWith("#") || /^[-=*_]{3,}$/.test(line) || line.startsWith("|---")) continue;
+    if (!line || line.startsWith("#") || /^[-=*_]{3,}$/.test(line) || line.startsWith("|---"))
+      continue;
     line = line
       .replace(/^>+\s*/, "")
       .replace(/^([-*+•]|\d+[.)])\s+/, "")
@@ -328,7 +351,16 @@ export function parseMemoryLines(raw: string): { facts: string[]; skipped: strin
     if (PLACEHOLDER.test(line) || !/[A-Za-z0-9]{3}/.test(line) || line.length < 6) continue;
     push(line, line0.trim());
   }
-  return { facts: facts.slice(0, MAX_FACTS_PER_PROJECT), skipped: facts.length > MAX_FACTS_PER_PROJECT ? [...skipped, `${facts.length - MAX_FACTS_PER_PROJECT} more lines (the per-project limit is ${MAX_FACTS_PER_PROJECT})`] : skipped };
+  return {
+    facts: facts.slice(0, MAX_FACTS_PER_PROJECT),
+    skipped:
+      facts.length > MAX_FACTS_PER_PROJECT
+        ? [
+            ...skipped,
+            `${facts.length - MAX_FACTS_PER_PROJECT} more lines (the per-project limit is ${MAX_FACTS_PER_PROJECT})`,
+          ]
+        : skipped,
+  };
 }
 
 // ── schedules -> routines ────────────────────────────────────────────────────────────────────────────────
@@ -342,7 +374,10 @@ type RoutineCadenceInput =
 const pad = (n: number): string => String(n).padStart(2, "0");
 
 /** Chat's hourly/daily/weekdays/weekly/once -> the routine engine's cadences; null when it cannot be read. */
-export function cadenceToRoutine(c: LegacySchedule["cadence"], tz: string): RoutineCadenceInput | null {
+export function cadenceToRoutine(
+  c: LegacySchedule["cadence"],
+  tz: string,
+): RoutineCadenceInput | null {
   if (!c || typeof c.kind !== "string") return null;
   const m = /^(\d{1,2}):(\d{2})$/.exec((c.time ?? "").trim());
   const hh = m ? Math.min(23, Number(m[1])) : 9;
@@ -430,7 +465,14 @@ export interface MigrationReport {
   backupDir: string | null;
   archivedChatsDir: string | null;
 }
-export type MigrationStatus = "off" | "already" | "deferred" | "nothing" | "dry-run" | "done" | "partial";
+export type MigrationStatus =
+  | "off"
+  | "already"
+  | "deferred"
+  | "nothing"
+  | "dry-run"
+  | "done"
+  | "partial";
 export interface MigrationOutcome {
   status: MigrationStatus;
   report: MigrationReport | null;
@@ -454,18 +496,26 @@ export function renderNotice(report: MigrationReport): string {
         : `- **${e.title}** is now a blob called **${e.blobName ?? e.title}**${detail}. Its folder is in your Blobs folder.`,
     );
   }
-  const left = report.entries.flatMap((e) => e.skipped.map((s) => `${e.kind === "general" ? "General" : e.title}: ${s}`));
+  const left = report.entries.flatMap((e) =>
+    e.skipped.map((s) => `${e.kind === "general" ? "General" : e.title}: ${s}`),
+  );
   if (left.length) {
     lines.push("", "I could not move these:", ...left.slice(0, 25).map((s) => `- ${s}`));
     if (left.length > 25) lines.push(`- ...and ${left.length - 25} more`);
   }
-  lines.push("", "Nothing was deleted. The old Chat folders and conversations are kept as a backup" + (report.archivedChatsDir ? ` in ${report.archivedChatsDir}` : "") + ".");
+  lines.push(
+    "",
+    "Nothing was deleted. The old Chat folders and conversations are kept as a backup" +
+      (report.archivedChatsDir ? ` in ${report.archivedChatsDir}` : "") +
+      ".",
+  );
   return lines.join("\n");
 }
 
 // ── helpers ──────────────────────────────────────────────────────────────────────────────────────────────
 
-const stamp = (t: number): string => new Date(t).toISOString().replace(/[-:]/g, "").replace(/\..*$/, "").replace("T", "-");
+const stamp = (t: number): string =>
+  new Date(t).toISOString().replace(/[-:]/g, "").replace(/\..*$/, "").replace("T", "-");
 const dateOnly = (t: number): string => new Date(t).toISOString().slice(0, 10);
 
 function backupStores(home: string, t: number): string {
@@ -474,7 +524,11 @@ function backupStores(home: string, t: number): string {
   for (const name of ["chat", "chats", "kora-daemon"]) {
     const src = path.join(home, name);
     if (!fs.existsSync(src)) continue;
-    fs.cpSync(src, path.join(dir, name), { recursive: true, preserveTimestamps: true, mode: fs.constants.COPYFILE_FICLONE });
+    fs.cpSync(src, path.join(dir, name), {
+      recursive: true,
+      preserveTimestamps: true,
+      mode: fs.constants.COPYFILE_FICLONE,
+    });
   }
   return dir;
 }
@@ -567,7 +621,8 @@ function soulFor(title: string, instructions: string): string {
     `You are the assistant for the "${title}" project. This work moved over from Kora Chat, so the brief below is your standing instructions: keep going the way it says.`,
     "",
     "## Standing brief (from the old project)",
-    instructions || "The project had no written instructions. When it matters, ask the user what the project is about, and keep what you learn in your working notes.",
+    instructions ||
+      "The project had no written instructions. When it matters, ask the user what the project is about, and keep what you learn in your working notes.",
     "",
     "## How you work",
     "- Short, warm replies; do the work properly. Put finished files in outputs/.",
@@ -627,7 +682,8 @@ export async function runChatMigration(deps: ChatMigrationDeps): Promise<Migrati
   const plan = buildPlan(home, engine);
 
   if (plan.length === 0 && !prior) {
-    if (deps.mode === "run") writeJson(path.join(home, MARKER), { version: 1, at: now(), status: "nothing" });
+    if (deps.mode === "run")
+      writeJson(path.join(home, MARKER), { version: 1, at: now(), status: "nothing" });
     return { status: "nothing", report: null };
   }
 
@@ -653,7 +709,9 @@ export async function runChatMigration(deps: ChatMigrationDeps): Promise<Migrati
         schedules: p.folder?.schedules.length ?? 0,
       })),
     });
-    log(`[chat-migration] dry run: ${plan.length} area(s), nothing changed (report: ${path.join(home, DRY_RUN_REPORT)})`);
+    log(
+      `[chat-migration] dry run: ${plan.length} area(s), nothing changed (report: ${path.join(home, DRY_RUN_REPORT)})`,
+    );
     return { status: "dry-run", report };
   }
 
@@ -665,7 +723,13 @@ export async function runChatMigration(deps: ChatMigrationDeps): Promise<Migrati
   }
 
   // ── journal + backup ────────────────────────────────────────────────────────────────────────────────
-  const state: State = prior ?? { version: 1, startedAt: now(), backupDir: null, entries: {}, noticeThreadId: null };
+  const state: State = prior ?? {
+    version: 1,
+    startedAt: now(),
+    backupDir: null,
+    entries: {},
+    noticeThreadId: null,
+  };
   const save = (): void => writeJson(statePath, state);
   if (!state.backupDir || !fs.existsSync(state.backupDir)) {
     state.backupDir = backupStores(home, now());
@@ -673,7 +737,8 @@ export async function runChatMigration(deps: ChatMigrationDeps): Promise<Migrati
     log(`[chat-migration] backup written to ${state.backupDir}`);
   }
 
-  const allNames = (): Set<string> => new Set(blobs.store.list({ includeArchived: true }).map((b) => b.name.toLowerCase()));
+  const allNames = (): Set<string> =>
+    new Set(blobs.store.list({ includeArchived: true }).map((b) => b.name.toLowerCase()));
   const defaults = (() => {
     try {
       const d = blobs.store.defaults?.();
@@ -699,7 +764,10 @@ export async function runChatMigration(deps: ChatMigrationDeps): Promise<Migrati
     });
     const rep = st.rep;
     // a resumed run: what the plan sees now (threads not yet moved) adds to what the journal already counts
-    rep.threadsFound = Math.max(rep.threadsFound, st.moved.length + p.threadIds.filter((t) => !st.moved.includes(t)).length);
+    rep.threadsFound = Math.max(
+      rep.threadsFound,
+      st.moved.length + p.threadIds.filter((t) => !st.moved.includes(t)).length,
+    );
     try {
       // 1. the target blob
       let target: BlobProfile | null = null;
@@ -755,11 +823,19 @@ export async function runChatMigration(deps: ChatMigrationDeps): Promise<Migrati
         rep.skipped.push(...parsed.skipped.map((x) => `memory line not saved: "${x}"`));
         const addFact = blobs.memory.addFact;
         if (parsed.facts.length && !addFact) {
-          rep.skipped.push("memory is not available in this build: memory.md was left in the backup");
+          rep.skipped.push(
+            "memory is not available in this build: memory.md was left in the backup",
+          );
         } else if (parsed.facts.length && addFact) {
           const have = new Set(
-            ((await blobs.memory.listFacts({ scope: "blob", blobId: target.id })) as Array<{ text?: string }>).map((f) =>
-              String(f.text ?? "").toLowerCase().trim(),
+            (
+              (await blobs.memory.listFacts({ scope: "blob", blobId: target.id })) as Array<{
+                text?: string;
+              }>
+            ).map((f) =>
+              String(f.text ?? "")
+                .toLowerCase()
+                .trim(),
             ),
           );
           for (const text of parsed.facts) {
@@ -788,7 +864,9 @@ export async function runChatMigration(deps: ChatMigrationDeps): Promise<Migrati
           if (st.routines[sid]) continue;
           const cadence = cadenceToRoutine(s.cadence, tz);
           if (!cadence || !String(s.prompt ?? "").trim()) {
-            rep.skipped.push(`routine "${title}" has no readable ${cadence ? "prompt" : "schedule"}`);
+            rep.skipped.push(
+              `routine "${title}" has no readable ${cadence ? "prompt" : "schedule"}`,
+            );
             continue;
           }
           // the thread the reports go to: the one the last run made, else the project's newest chat, else a new one
@@ -816,18 +894,27 @@ export async function runChatMigration(deps: ChatMigrationDeps): Promise<Migrati
           if (r.ok) {
             st.routines[sid] = String((r.value as { id?: string } | null)?.id ?? sid);
             rep.routinesCreated += 1;
-            if (s.enabled === true && expired) rep.skipped.push(`routine "${title}" was a one-time schedule whose time has passed: kept, paused`);
+            if (s.enabled === true && expired)
+              rep.skipped.push(
+                `routine "${title}" was a one-time schedule whose time has passed: kept, paused`,
+              );
             save();
           } else rep.skipped.push(`routine "${title}": ${r.message}`);
         }
       } else if (p.kind === "project" && p.folder?.schedules.length && !blobs.routines) {
-        rep.skipped.push("routines are not available in this build: schedules.json was left in the backup");
+        rep.skipped.push(
+          "routines are not available in this build: schedules.json was left in the backup",
+        );
       }
 
       // 5. threads
       for (const threadId of p.threadIds) {
         if (st.moved.includes(threadId)) continue;
-        const res = await engine.moveThread(threadId, { id: target.id, workspace: target.workspace }, rewrites);
+        const res = await engine.moveThread(
+          threadId,
+          { id: target.id, workspace: target.workspace },
+          rewrites,
+        );
         if (res.moved) {
           st.moved.push(threadId);
           delete st.failed[threadId];
@@ -861,18 +948,35 @@ export async function runChatMigration(deps: ChatMigrationDeps): Promise<Migrati
 
   // ── the notice, then the old folder aside, then the marker ──────────────────────────────────────────
   const worthSaying = reports.some(
-    (e) => e.threadsFound || e.filesCopied || e.factsAdded || e.routinesCreated || e.skipped.length || e.kind === "project",
+    (e) =>
+      e.threadsFound ||
+      e.filesCopied ||
+      e.factsAdded ||
+      e.routinesCreated ||
+      e.skipped.length ||
+      e.kind === "project",
   );
   let archived: string | null = null;
-  const draft: MigrationReport = { at: now(), mode: "run", entries: reports, backupDir: state.backupDir, archivedChatsDir: null };
+  const draft: MigrationReport = {
+    at: now(),
+    mode: "run",
+    entries: reports,
+    backupDir: state.backupDir,
+    archivedChatsDir: null,
+  };
   if (unmigrated === 0 && fs.existsSync(legacyChatsDir(home))) {
     let target = path.join(home, `chats.migrated-${dateOnly(now())}`);
-    for (let i = 2; fs.existsSync(target); i++) target = path.join(home, `chats.migrated-${dateOnly(now())}-${i}`);
+    for (let i = 2; fs.existsSync(target); i++)
+      target = path.join(home, `chats.migrated-${dateOnly(now())}-${i}`);
     archived = target;
     draft.archivedChatsDir = target;
   }
   if (worthSaying && !(state.noticeThreadId && engine.threadExists(state.noticeThreadId))) {
-    state.noticeThreadId = engine.postNotice(CHIEF_BLOB_ID, "Moved your Chat projects into Kora", renderNotice(draft));
+    state.noticeThreadId = engine.postNotice(
+      CHIEF_BLOB_ID,
+      "Moved your Chat projects into Kora",
+      renderNotice(draft),
+    );
     save();
   }
   if (archived) {

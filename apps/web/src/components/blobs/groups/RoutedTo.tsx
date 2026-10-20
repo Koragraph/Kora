@@ -54,7 +54,10 @@ export function RoutedTo(props: {
 }) {
   const note = routeNote(props.why, props.recipients.length);
   if (props.recipients.length === 0 && !note) return null;
-  const Icon = props.why === "auto" || props.why === "auto:keyword" || props.why?.startsWith("auto-fallback") ? SparklesIcon : AtSignIcon;
+  const Icon =
+    props.why === "auto" || props.why === "auto:keyword" || props.why?.startsWith("auto-fallback")
+      ? SparklesIcon
+      : AtSignIcon;
   return (
     <div
       data-routed-to={props.recipients.map((r) => r.id).join(",")}

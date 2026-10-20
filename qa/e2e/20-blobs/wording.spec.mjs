@@ -34,7 +34,10 @@ spec("20-blobs", { stack: STACK }, async (t) => {
           labels = await group
             .locator("[data-permission-mode]")
             .evaluateAll((els) => els.map((e) => e.innerText.split("\n")[0].trim()));
-          expect.ok(!FORBIDDEN.test(await group.innerText()), `menu copy: ${await group.innerText()}`);
+          expect.ok(
+            !FORBIDDEN.test(await group.innerText()),
+            `menu copy: ${await group.innerText()}`,
+          );
         }
         await page.keyboard.press("Escape");
       }
@@ -57,7 +60,10 @@ spec("20-blobs", { stack: STACK }, async (t) => {
       await page.locator('[data-editor-section="permissions"]').click();
       const editor = await page.locator('[role="dialog"]').last().innerText();
       expect.ok(!FORBIDDEN.test(editor), `editor: ${editor.slice(0, 200)}`);
-      expect.ok(/Ask/.test(editor) && /Auto/.test(editor) && /Full/.test(editor), `editor text: ${editor.slice(0, 400)}`);
+      expect.ok(
+        /Ask/.test(editor) && /Auto/.test(editor) && /Full/.test(editor),
+        `editor text: ${editor.slice(0, 400)}`,
+      );
       covered("Wording › editor, panel tabs and chat free of Code wording");
     },
     { control: "Wording › Blobs speak Blobs", severity: "wrong" },

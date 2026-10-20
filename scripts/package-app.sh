@@ -349,7 +349,10 @@ else
   trap cleanup_smoke EXIT INT TERM
 
   say "running launch smoke test on $APP_NAME.app (port $SMOKE_PORT, temp home $SMOKE_HOME)"
+  # KORA_DISABLE_UPDATES: a release build outside /Applications asks to move itself there; with Kora.app running, the
+  # move hands focus to it and the smoke app quits ("app exited unexpectedly", the 0.1.14 release, 2026-10-20).
   ELECTRON_ENABLE_LOGGING=1 \
+  KORA_DISABLE_UPDATES=1 \
   KORA_HOME="$SMOKE_HOME" \
   KORA_PORT="$SMOKE_PORT" \
   KORA_UI_PORT="$SMOKE_PORT" \

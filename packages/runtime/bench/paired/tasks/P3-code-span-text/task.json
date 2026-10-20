@@ -1,0 +1,15 @@
+{
+  "id": "P3-code-span-text",
+  "title": "Inline code vanishes from text output",
+  "kind": "bug-report",
+  "repo": "mdlite",
+  "prompts": [
+    "Bug report: inline code spans disappear wherever mdlite turns inline content into plain text.\n\n- `mdlite --text` and `renderText('Run `npm test` now')` drop the code: the output reads `Run  now`.\n- A table of contents built from `# The `init` command` lists the heading as `The  command` and links to `#the-command`, and heading ids come out the same way.\n\nExpected: the text of a code span is kept exactly as written, including runs of spaces inside the span (`a `x  y` b` gives `a x  y b`), in the plain-text output, in the table-of-contents entries and in heading ids and anchors (ids keep their usual slug rules, so `The `init` command` gives `the-init-command`). Find the cause and fix it at its source, then make sure nothing else was working around it. Add tests and run the whole suite."
+  ],
+  "timeLimitSec": 900,
+  "maxTurns": 50,
+  "startState": { "overlay": "overlay", "visibleTests": "fail" },
+  "grade": { "hidden": "hidden", "hiddenMode": "add", "commands": [["--test"]] },
+  "reference": { "revert": ["src/parser/utils.js", "src/renderer/text.js", "src/plugins/toc.js"] },
+  "notes": "P3 cross-module bug. The shared text-extraction helper (src/parser/utils.js plainText) drops code nodes; the symptom shows in the plain-text renderer, the TOC plugin and heading ids. Two callers (src/renderer/text.js and src/plugins/toc.js) squeeze double spaces, a workaround for the dropped span, so a fix at the helper alone still fails the hidden space-preservation tests. Three visible tests fail in the start state (they pass once the helper is fixed). The reference reverts all three files to the original."
+}

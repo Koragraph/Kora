@@ -1,0 +1,67 @@
+id = "opencode"
+version = "1.18.32-kora"
+min_engine_version = 2
+
+# Tool-specific ruleset for the OpenCode TUI (swarm workers), written against the TUI source at v1.18.32 and the
+# screens in manifests/fixtures/opencode/*.txt. The fixtures are SYNTHESIZED from the source (each file's header
+# names its source); confirm them live at CP2 (docs/swarm/S3-LIVE-CHECKLIST.md). Degraded mode: when the kora-state
+# plugin does not load, these rules are the only state signal, and `esc interrupt` alone still tells working from idle.
+#
+# Source anchors (packages/tui/src/…):
+#   routes/session/permission.tsx:385-405  "△ Permission required" + options "Allow once / Allow always / Reject"
+#   routes/session/permission.tsx:481-486  "△ Reject permission" / "Tell OpenCode what to do differently"
+#   routes/session/question.tsx:496-510    "↑↓ select", "enter submit|confirm|toggle", "esc dismiss"
+#   component/prompt/index.tsx:1573        "<message> [retrying in <dur> attempt #<n>]"
+#   component/prompt/index.tsx:1587-1590   "esc interrupt" / "esc again to interrupt" (only while status != idle)
+#   component/prompt/index.tsx:1319        placeholder "Ask anything… \"…\""
+#   component/prompt/index.tsx:1678-1680   footer "<palette key> commands" (shown idle AND busy, never on retry)
+#
+# The generic numbered-choice / y-n rules are gone on purpose: they false-positived on lists the agent printed.
+
+[[rules]]
+id = "permission_required"
+state = "blocked"
+priority = 300
+region = "bottom_non_empty_lines(25)"
+visible_blocker = true
+any = [
+  { contains = ["permission required", "allow once"] },
+  { contains = ["reject permission", "tell opencode what to do differently"] },
+]
+
+[[rules]]
+id = "question_dialog"
+state = "blocked"
+priority = 250
+region = "bottom_non_empty_lines(30)"
+line_regex = ['esc\s+dismiss', 'enter\s+(submit|confirm|toggle)']
+visible_blocker = true
+
+[[rules]]
+id = "retrying"
+state = "working"
+priority = 150
+region = "bottom_non_empty_lines(6)"
+line_regex = ['\[retrying (in [^\]]*? )?attempt #\d+\]']
+visible_working = true
+
+[[rules]]
+id = "esc_interrupt"
+state = "working"
+priority = 100
+region = "bottom_non_empty_lines(4)"
+line_regex = ['esc\s+(again to )?interrupt']
+visible_working = true
+
+[[rules]]
+id = "idle_prompt"
+state = "idle"
+priority = 10
+region = "bottom_non_empty_lines(8)"
+visible_idle = true
+any = [
+  { contains = ["ask anything"] },
+  # The footer wraps "ctrl+p" and "commands" onto separate lines when the cwd path is long (captured live v1.18.32,
+  # fixtures/opencode/live-idle-miss.txt), so match the key alone; busy screens also show it but esc_interrupt outranks this.
+  { line_regex = ['ctrl\+p\b'] },
+]

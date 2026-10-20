@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!-- Code-graph freshness glyph: three connected nodes (declarations + edges). Uses
+       currentColor so the composer chip can tint it by freshness (green/amber/blue/grey). -->
+  <path d="M7.4 7.2 12 16.6M7.4 7.2 16.8 8.6M12 16.6 16.8 8.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="7.4" cy="7.2" r="2.7" fill="currentColor"/>
+  <circle cx="16.8" cy="8.6" r="2.7" fill="currentColor"/>
+  <circle cx="12" cy="16.6" r="2.7" fill="currentColor"/>
+</svg>

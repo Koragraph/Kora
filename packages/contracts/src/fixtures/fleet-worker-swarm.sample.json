@@ -1,0 +1,58 @@
+{
+  "paneId": "p7",
+  "terminalId": "worker:p7",
+  "agent": "opencode",
+  "account": null,
+  "title": "Add input validation to the signup form",
+  "state": "idle",
+  "blocker": null,
+  "steered": false,
+  "steeredAt": null,
+  "cwd": "/Users/example/.kora/worktrees/app/kora-opencode-3",
+  "worktree": {
+    "path": "/Users/example/.kora/worktrees/app/kora-opencode-3",
+    "branch": "kora/opencode-3",
+    "mainRoot": "/Users/example/Projects/app"
+  },
+  "costUsd": null,
+  "contextPct": null,
+  "exitCode": null,
+  "createdAt": 1790000200000,
+  "lastOutputAt": 1790000500000,
+  "swarm": {
+    "taskId": "s3",
+    "provider": "zen",
+    "model": "opencode/big-pickle",
+    "modelLabel": "big-pickle",
+    "phase": "done",
+    "attempt": 2,
+    "attempts": [
+      {
+        "paneId": "p5",
+        "provider": "openrouter",
+        "model": "openrouter/qwen/qwen3-coder:free",
+        "outcome": "rate-limited",
+        "at": 1790000200000
+      },
+      {
+        "paneId": "p7",
+        "provider": "zen",
+        "model": "opencode/big-pickle",
+        "outcome": "ok",
+        "at": 1790000300000
+      }
+    ],
+    "report": {
+      "bytes": 2150,
+      "updatedAt": 1790000500000,
+      "preview": "## Done\nAdded zod validation to src/signup/form.ts; 3 new tests pass."
+    },
+    "supersededBy": null,
+    "previousPaneIds": ["p5"],
+    "verify": {
+      "state": "passed",
+      "bounces": 1,
+      "summary": "merge gate clean after 1 bounce (broken caller in src/signup/submit.ts fixed)"
+    }
+  }
+}

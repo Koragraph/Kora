@@ -1,0 +1,144 @@
+{
+ "note": "Own fixture prompts (no real user text) for the injection-recall replay. Repo under test = a copy of packages/runtime/src/graph + server/swarm-*.ts. expect: a symbol name the injection must name, '-' = must NOT inject (chatter / wrong-target risk), '*' = any injection with a relevant declaration is fine. files: the file(s) the agent touched in the previous turn (what a driver reports to noteEntities).",
+ "sessions": [
+  {
+   "id": "exact",
+   "turns": [
+    {
+     "p": "what does chooseWindow do",
+     "expect": "chooseWindow"
+    },
+    {
+     "p": "who calls decideRead",
+     "expect": "decideRead"
+    },
+    {
+     "p": "where is swarmPaneEnv defined",
+     "expect": "swarmPaneEnv"
+    },
+    {
+     "p": "explain how packetReadHints builds its map",
+     "expect": "*"
+    }
+   ]
+  },
+  {
+   "id": "prose",
+   "turns": [
+    {
+     "p": "how does the bounded read pick a window for a big file",
+     "expect": "chooseWindow"
+    },
+    {
+     "p": "where do we decide whether a repo is indexed before a read gets rewritten",
+     "expect": "*"
+    },
+    {
+     "p": "how does the graph worker handle a replaced store",
+     "expect": "*"
+    }
+   ]
+  },
+  {
+   "id": "edit-nouns",
+   "turns": [
+    {
+     "p": "make the window size a little bigger when the hit is a class",
+     "expect": "chooseWindow"
+    },
+    {
+     "p": "add a cooldown so the swarm catalog does not refresh so often",
+     "expect": "refreshSwarmCatalog"
+    },
+    {
+     "p": "the lock holder check should also log who holds it",
+     "expect": "lockHolder"
+    }
+   ]
+  },
+  {
+   "id": "followup-symbol",
+   "turns": [
+    {
+     "p": "what does lockHolder do",
+     "expect": "lockHolder"
+    },
+    {
+     "p": "ok now make that function return the pid too",
+     "expect": "*",
+     "carry": true
+    },
+    {
+     "p": "and add a test for it",
+     "expect": "-"
+    }
+   ]
+  },
+  {
+   "id": "followup-file",
+   "turns": [
+    {
+     "p": "hmm lets look at the offload pool",
+     "expect": "-"
+    },
+    {
+     "p": "why is that file so slow to start",
+     "expect": "*",
+     "files": [
+      "src/graph/offload.ts"
+     ]
+    },
+    {
+     "p": "ok now split the helper in that file into two",
+     "expect": "-"
+    },
+    {
+     "p": "the same file again, what about the shutdown path",
+     "expect": "-"
+    }
+   ]
+  },
+  {
+   "id": "chatter",
+   "turns": [
+    {
+     "p": "thanks that looks good",
+     "expect": "-"
+    },
+    {
+     "p": "what do you think about the pricing page copy",
+     "expect": "-"
+    },
+    {
+     "p": "lets talk about onboarding for a bit, i am not sure it is clear enough",
+     "expect": "-"
+    },
+    {
+     "p": "can you summarise what we did so far",
+     "expect": "-"
+    },
+    {
+     "p": "do it",
+     "expect": "-"
+    },
+    {
+     "p": "i think we should ship this tomorrow, any objections",
+     "expect": "-"
+    }
+   ]
+  },
+  {
+   "id": "deictic-no-context",
+   "turns": [
+    {
+     "p": "fix that function",
+     "expect": "-"
+    },
+    {
+     "p": "why does it fail",
+     "expect": "-"
+    }
+   ]
+  }
+ ]
+}

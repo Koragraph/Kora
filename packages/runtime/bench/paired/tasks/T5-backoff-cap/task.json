@@ -1,0 +1,15 @@
+{
+  "id": "T5-backoff-cap",
+  "title": "Retries wait too long when maxDelay is set",
+  "kind": "bug-report",
+  "repo": "taskflow",
+  "prompts": [
+    "Users report that jobs with a retry policy that sets `maxDelay` wait far too long between retries. With baseDelay 100, factor 2 and maxDelay 1000, the second retry waited a full second instead of 200 ms, and every later retry waited exactly one second. Policies without maxDelay behave correctly. Find the cause and fix it, then run the tests."
+  ],
+  "timeLimitSec": 600,
+  "maxTurns": 40,
+  "startState": { "overlay": "overlay", "visibleTests": "pass" },
+  "grade": { "hidden": "hidden", "hiddenMode": "add", "commands": [["--test"]] },
+  "reference": { "revert": ["src/util/clamp.js"] },
+  "notes": "Planted bug in src/util/clamp.js (Math.max instead of Math.min). retry.js is the obvious place to look, the cause is one helper away. Visible tests never set a finite maxDelay."
+}

@@ -1,0 +1,9 @@
+# LF everywhere (the formatter expects it), even with core.autocrlf on Windows.
+* text=auto eol=lf
+# cmd.exe parses batch files reliably only with CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+# Binary assets
+*.png binary
+*.icns binary
+*.m4a binary

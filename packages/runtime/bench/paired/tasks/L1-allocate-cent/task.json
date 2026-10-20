@@ -1,0 +1,15 @@
+{
+  "id": "L1-allocate-cent",
+  "title": "Payment split loses a cent",
+  "kind": "bug-report",
+  "repo": "ledgerkit",
+  "prompts": [
+    "Finance says our ledger stops balancing when we record a payment that is split equally across several invoices. Example: a $100.00 payment split equally across three open invoices fails with an \"entry out of balance\" error, one cent short. Find the root cause and fix it. Keep the public API the same, and run the tests when you're done."
+  ],
+  "timeLimitSec": 600,
+  "maxTurns": 40,
+  "startState": { "overlay": "overlay", "visibleTests": "pass" },
+  "grade": { "hidden": "hidden", "hiddenMode": "add", "commands": [["--test"]] },
+  "reference": { "revert": ["src/money.js"] },
+  "notes": "Planted bug: Money.allocate hands out one cent too few of the leftover cents. The visible suite only splits evenly, so it stays green. The symptom (ledger imbalance) is two modules away from the cause."
+}

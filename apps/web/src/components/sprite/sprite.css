@@ -1,0 +1,338 @@
+/* Pixel sprite motion. Everything moves in WHOLE sprite pixels with steps() timing; `--px-u` is
+   one sprite pixel in CSS px (set per instance). CSS transforms on SVG children use user units, so
+   `translate(0, -1px)` inside the 12x12 viewBox is exactly one sprite pixel. Mono, no hue. */
+
+.px-sprite {
+  display: inline-block;
+  flex-shrink: 0;
+  line-height: 0;
+  vertical-align: middle;
+  position: relative;
+  --lx: 0;
+  --ly: 0;
+  --ex: 0;
+  --ey: 0;
+  image-rendering: pixelated;
+}
+.px-sprite__svg {
+  display: block;
+  overflow: visible;
+  width: 100%;
+  height: 100%;
+  shape-rendering: crispEdges;
+}
+
+.px-legs--a,
+.px-legs--b,
+.px-eyes-happy,
+.px-lid {
+  opacity: 0;
+}
+.px-lid {
+  animation: px-blink var(--px-blink, 5s) steps(1) var(--px-delay, 0s) infinite;
+}
+
+/* pointer-follow: BlobAvatar writes whole-pixel --ex/--ey in {-1,0,1} */
+.px-look {
+  transform: translate(calc(var(--ex, 0) * 1px), calc(var(--ey, 0) * 1px));
+}
+.px-sprite[data-state="idle"] .px-eyes-happy {
+  opacity: 0;
+}
+
+/* ── states ── */
+.px-sprite[data-state="idle"] .px-st {
+  animation: px-idle 3.6s steps(1) var(--px-delay, 0s) infinite;
+}
+.px-sprite[data-state="walk"] .px-st {
+  animation: px-walk-bob 0.5s steps(1) infinite;
+}
+.px-sprite[data-state="walk"] .px-legs--rest {
+  opacity: 0;
+}
+.px-sprite[data-state="walk"] .px-legs--a {
+  animation: px-fa 0.5s steps(1) infinite;
+  opacity: 1;
+}
+.px-sprite[data-state="walk"] .px-legs--b {
+  animation: px-fb 0.5s steps(1) infinite;
+}
+.px-sprite[data-state="wait"] .px-st {
+  animation: px-bob 0.8s steps(1) var(--px-delay, 0s) infinite;
+}
+.px-sprite[data-state="done"] .px-st {
+  animation: px-hop-once 0.6s steps(1) 1;
+}
+.px-sprite[data-state="fail"] .px-st {
+  animation: px-shake-once 0.6s steps(1) 1;
+}
+.px-sprite[data-state="sleep"] .px-mark {
+  animation: px-bob 1.6s steps(1) var(--px-delay, 0s) infinite;
+}
+.px-sprite[data-state="off"] {
+  opacity: 0.55;
+}
+.px-sprite[data-state="off"] .px-mark {
+  display: none;
+}
+.px-mouth {
+  animation: px-fb 0.5s steps(1) infinite;
+  opacity: 0;
+}
+
+@keyframes px-idle {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  70% {
+    transform: translate(0, -1px);
+  }
+  78% {
+    transform: translate(0, 0);
+  }
+  86% {
+    transform: translate(0, -1px);
+  }
+  94% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes px-walk-bob {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, -1px);
+  }
+}
+@keyframes px-fa {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes px-fb {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes px-bob {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, -1px);
+  }
+}
+@keyframes px-blink {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  94% {
+    opacity: 1;
+  }
+  97% {
+    opacity: 0;
+  }
+}
+@keyframes px-hop-once {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(0, -2px);
+  }
+  50% {
+    transform: translate(0, 0);
+  }
+  75% {
+    transform: translate(0, -1px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes px-shake-once {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-1px, 0);
+  }
+  40% {
+    transform: translate(1px, 0);
+  }
+  60% {
+    transform: translate(-1px, 0);
+  }
+  80% {
+    transform: translate(1px, 0);
+  }
+}
+
+/* ── reactions (data-reaction on the root; whole pixels; happy eyes while it plays) ── */
+.px-sprite[data-reaction] .px-st {
+  animation: none;
+}
+.px-sprite[data-reaction="wave"] .px-st {
+  animation: px-wave 1.65s steps(1) 1;
+}
+.px-sprite[data-reaction="celebrate"] .px-st {
+  animation: px-celebrate 1.45s steps(1) 1;
+}
+.px-sprite[data-reaction="nod"] .px-st {
+  animation: px-nod 0.75s steps(1) 1;
+}
+.px-sprite[data-reaction="hop"] .px-st {
+  animation: px-hop-once 0.5s steps(1) 1;
+}
+.px-sprite[data-reaction="shake"] .px-st {
+  animation: px-shake-once 0.5s steps(1) 1;
+}
+.px-sprite[data-reaction="wave"] .px-eyes,
+.px-sprite[data-reaction="celebrate"] .px-eyes {
+  opacity: 0;
+}
+.px-sprite[data-reaction="wave"] .px-eyes-happy,
+.px-sprite[data-reaction="celebrate"] .px-eyes-happy {
+  opacity: 1;
+}
+@keyframes px-wave {
+  0% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(0, -1px);
+  }
+  20% {
+    transform: translate(0, 0);
+  }
+  30% {
+    transform: translate(0, -1px);
+  }
+  40% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, -1px);
+  }
+  60% {
+    transform: translate(0, 0);
+  }
+  70% {
+    transform: translate(0, -1px);
+  }
+  80%,
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes px-celebrate {
+  0% {
+    transform: translate(0, 0);
+  }
+  15% {
+    transform: translate(0, -2px);
+  }
+  35% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, -2px);
+  }
+  70% {
+    transform: translate(0, -1px);
+  }
+  85%,
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes px-nod {
+  0%,
+  50%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25%,
+  75% {
+    transform: translate(0, 1px);
+  }
+}
+
+/* ── still + reduced motion: one static frame; the state stays readable from the pixels ── */
+.px-sprite--still .px-mouth,
+.px-sprite--reduced .px-mouth {
+  opacity: 1;
+}
+.px-sprite--still *,
+.px-sprite--reduced * {
+  animation: none !important;
+}
+.px-sprite--still .px-lid,
+.px-sprite--reduced .px-lid {
+  opacity: 0;
+}
+.px-sprite--still[data-state="walk"] .px-legs--rest,
+.px-sprite--reduced[data-state="walk"] .px-legs--rest,
+.px-sprite--still[data-state="walk"] .px-legs--b,
+.px-sprite--reduced[data-state="walk"] .px-legs--b {
+  opacity: 0;
+}
+.px-sprite--still[data-state="walk"] .px-legs--a,
+.px-sprite--reduced[data-state="walk"] .px-legs--a {
+  opacity: 1;
+}
+/* press-to-react on a still sprite: one ~1 s gesture (two hops, happy eyes), then back to the frame. */
+@keyframes px-press {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10%,
+  25% {
+    transform: translate(0, -2px);
+  }
+  35%,
+  50% {
+    transform: translate(0, 0);
+  }
+  60%,
+  75% {
+    transform: translate(0, -2px);
+  }
+  85% {
+    transform: translate(0, 0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .px-sprite--still[data-reaction="press"]:not(.px-sprite--reduced) .px-st {
+    animation: px-press 1s steps(1) 1 !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-sprite * {
+    animation: none !important;
+  }
+  .px-sprite .px-lid {
+    opacity: 0;
+  }
+  .px-sprite .px-mouth {
+    opacity: 1;
+  }
+  .px-sprite[data-state="walk"] .px-legs--rest,
+  .px-sprite[data-state="walk"] .px-legs--b {
+    opacity: 0;
+  }
+  .px-sprite[data-state="walk"] .px-legs--a {
+    opacity: 1;
+  }
+}

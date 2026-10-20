@@ -1,0 +1,19 @@
+# synthesized from source packages/tui/src/routes/home.tsx + component/prompt/index.tsx:1319,1673-1680 @v1.18.32; confirm live at CP2
+# expect: idle (idle_prompt)
+---8<---
+
+
+
+                                   █▀▀█ █▀▀█ █▀▀█ █▀▀▄ █▀▀▀ █▀▀█ █▀▀▄ █▀▀▀
+                                   █  █ █  █ █▀▀▀ █  █ █    █  █ █  █ █▀▀▀
+                                   ▀▀▀▀ █▀▀▀ ▀▀▀▀ ▀  ▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀  ▀▀▀▀
+
+            ┃
+            ┃  Ask anything… "What is the tech stack of this project?"
+            ┃
+            ┃  Build  Big Pickle OpenCode Zen
+            ╹▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+                                                      tab agents  ctrl+p commands
+
+
+  ~/.kora/worktrees/app/kora-opencode-3                                      1.18.32

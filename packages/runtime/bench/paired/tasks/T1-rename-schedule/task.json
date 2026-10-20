@@ -1,0 +1,15 @@
+{
+  "id": "T1-rename-schedule",
+  "title": "Rename Scheduler.scheduleJob to submitJob",
+  "kind": "rename-refactor",
+  "repo": "taskflow",
+  "prompts": [
+    "Rename the Scheduler method `scheduleJob` to `submitJob` everywhere: the code and its callers, the CLI help text, the docs and README, the tests, and the log and error messages that spell the old name. `rescheduleJob` is a different method: leave it alone. Keep the test suite green."
+  ],
+  "timeLimitSec": 600,
+  "maxTurns": 40,
+  "startState": { "visibleTests": "pass" },
+  "grade": { "hidden": "hidden", "hiddenMode": "replace-test-dir", "commands": [["--test"]] },
+  "reference": { "overlay": "reference" },
+  "notes": "38 references over src, docs, README and tests; 9 of them are the decoy `rescheduleJob`. A blind find-and-replace of the substring breaks it. Grading replaces test/ with the renamed suite plus a scan that the old name is gone from src, docs and README."
+}

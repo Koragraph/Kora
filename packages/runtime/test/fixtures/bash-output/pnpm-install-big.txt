@@ -1,0 +1,16 @@
+Progress: resolved 1, reused 0, downloaded 0, added 0
+[WARN] deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142
+[WARN] deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+[WARN] 8 deprecated subdependencies found: @humanwhocodes/config-array@0.13.0, @humanwhocodes/object-schema@2.0.3, glob@7.2.3, glob@8.1.0, har-validator@5.1.5, inflight@1.0.6, rimraf@3.0.2, uuid@3.4.0
+Packages: +246
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 246, reused 72, downloaded 168, added 0
+Progress: resolved 246, reused 72, downloaded 174, added 246, done
+
+dependencies:
++ eslint 8.57.1 (10.12.0 is available) deprecated
++ express 4.21.2 (5.3.0 is available)
++ mocha 10.8.2 (12.0.3 is available)
++ request 2.88.2 deprecated
+
+Done in 1.6s using pnpm v11.10.0

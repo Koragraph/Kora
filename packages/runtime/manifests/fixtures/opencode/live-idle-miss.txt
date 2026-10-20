@@ -1,0 +1,42 @@
+# captured live v1.18.32 (swarm-live.test.ts)
+# expect: idle-miss
+---8<---
+  ┃                                                                                                                                         
+  ┃  PONG                                                                                           Swarm task: create hello.txt with       
+  ┃                                                                                                 PONG                                    
+                                                                                                                                            
+  ┃                                                                                                 Context                                 
+  ┃  # Wrote /var/folders/_w/3mcw5qdj4rdfyvfw_pv00xwh0000gn/T/kora-oc-live-N5iAep/.kora/swarm/      8,878 tokens                            
+  ┃  s1.md                                                                                          4% used                                 
+  ┃                                                                                                 $0.00 spent                             
+  ┃    1 ## Status                                                                                                                          
+  ┃    2 done                                                                                       LSP                                     
+  ┃    3                                                                                            LSPs are disabled                       
+  ┃    4 ## Changes                                                                                                                         
+  ┃    5 - hello.txt:1 — created file containing exactly the word `PONG`                                                                    
+  ┃    6                                                                                                                                    
+  ┃    7 ## Check                                                                                                                           
+  ┃    8 Command: `cat hello.txt`                                                                                                           
+  ┃    9 Output:                                                                                                                            
+  ┃   10 ```                                                                                                                                
+  ┃   11 PONG                                                                                                                               
+  ┃   12 ```                                                                                                                                
+  ┃   13                                                                                                                                    
+  ┃   14 ## Findings                                                                                                                        
+  ┃   15 - hello.txt contains exactly `PONG` (verified via `cat`).                                    ⬖ Getting started                ✕    
+  ┃   16                                                                                                                                    
+  ┃   17 ## Blockers                                                                                    OpenCode includes free models       
+  ┃   18 none                                                                                           so you can start immediately.       
+  ┃                                                                                                                                         
+                                                                                                        Connect from 75+ providers to       
+     done — hello.txt created with PONG, check passed, report written.                                  use other models, including         
+                                                                                                        Claude, GPT, Gemini etc             
+     ▣  Build · Big Pickle · 11.2s                                                                                                          
+                                                                                                        Connect provider        /connect    
+  ┃                                                                                                                                         
+  ┃                                                                                                                                         
+  ┃                                                                                                 /private/var/folders/_w/                
+  ┃  Build auto · Big Pickle OpenCode Zen                                                           3mcw5qdj4rdfyvfw_pv00xwh0000gn/T/kora-  
+  ╹▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀    oc-live-N5iAep:main                     
+   /private/var/folders/_w/3mcw5qdj4rdfyvfw_pv00xwh0000gn/T/kora-oc-live-.9K (4%) ctrl+p                                                    
+   N5iAep                                                                         commands          • OpenCode 1.18.32                      

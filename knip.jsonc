@@ -1,0 +1,55 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  // Exported types are part of our contracts even before they have consumers.
+  "rules": { "types": "off", "nsTypes": "off" },
+  // These executables are supplied by the OS or installed separately from npm.
+  "ignoreBinaries": ["file", "mkfifo", "pkill", "plutil"],
+  // The runtime is a plain-tsc CommonJS package with its own test runner.
+  "ignoreWorkspaces": ["packages/runtime"],
+  "workspaces": {
+    ".": {
+      // Root-level config and scripts only.
+      "project": ["*.{js,mjs,cjs,ts,mts,cts}"],
+      // qa/ harness scripts resolve playwright-core from this root install.
+      "ignoreDependencies": ["playwright-core"],
+    },
+    "scripts": {
+      // Knip loads its preprocessor through a CLI option.
+      "entry": ["knip-keep-schemas.ts", "lib/latest-mac-yml.mjs"],
+      // knip-keep-schemas.test.ts builds a throwaway project that resolves `effect` from here.
+      "ignoreDependencies": ["effect"],
+    },
+    "apps/desktop": {
+      // Electron loads these bundles by filename rather than importing them.
+      "entry": [
+        "src/main.ts!",
+        "src/preload.ts!",
+        "src/web-pick-preload.ts!",
+        "src/web-pip-preload.ts!",
+        // Bundled into the pick preload by scripts/pick-main-world-plugin.ts (not imported from source).
+        "src/web/PickMainWorld.ts!",
+        "src/web/Annotation.css!",
+        // Run by scripts/package-app.sh --sign (release builds).
+        "scripts/sign-mac-app.mjs",
+        // Run by scripts/package-app.sh on the packaged Electron binary.
+        "scripts/flip-fuses.mjs",
+      ],
+      // Release tooling runs electron-builder from this workspace, outside its package scripts.
+      "ignoreDependencies": ["electron-builder"],
+      // CommonJS module.exports consumed by the packaging shell scripts (knip --fix would corrupt it).
+      "ignoreIssues": { "resources/kora-runtime-manifest.cjs": ["exports"] },
+    },
+    "apps/web": {
+      // Run by hand to pre-warm the Vite dependency cache in a fresh checkout.
+      "entry": ["scripts/warm-dep-cache.ts"],
+      // UI component modules are copied and adapted as cohesive sets. Keep their
+      // named subcomponents even before they have callers; the file audit still
+      // reports an entire component module when nothing imports it.
+      "ignoreIssues": { "src/components/ui/*.tsx": ["exports", "nsExports", "duplicates"] },
+    },
+    "packages/*": {
+      // These workspace packages are private to this monorepo.
+      "includeEntryExports": true,
+    },
+  },
+}

@@ -1,0 +1,9 @@
+id = "koragent"
+version = "0.0.0-kora"
+min_engine_version = 2
+
+# Koragent (swarm workers, swarm.workerBackend = "koragent") reports its own state on the pane's event stream
+# (`--event-stream unix:~/.kora/panes/<paneId>.sock`, protocol/koragent.ts): `session.state` is authoritative and the
+# pane's screen is never scraped for it. This manifest is deliberately empty — a Koragent started by hand in a plain
+# shell pane falls back to the tracker's output-flowing heuristic until its TUI is known well enough to write rules
+# against captured screens (Phase C).

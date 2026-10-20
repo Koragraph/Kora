@@ -1,0 +1,31 @@
+/* Blob avatar wrapper: the sprite itself (components/sprite/sprite.css) owns all art and motion. This only
+   positions the wrapper and the Chief badge. Monochrome only, no hue. */
+
+.blob-av {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+/* ── Chief badge: a quiet pill hung under the sprite ── */
+.blob-av__badge {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 0.03em);
+  transform: translateX(-50%);
+  padding: 0.1em 0.55em 0.12em;
+  border-radius: 999px;
+  background: rgba(237, 237, 240, 0.1);
+  color: rgba(237, 237, 240, 0.72);
+  font:
+    500 10px/1.2 Helvetica,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+}

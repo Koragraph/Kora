@@ -1,0 +1,7 @@
+# Secret scanning (CI "Secret scan" job). Test files hold fake tokens on purpose: they test Kora's own redaction.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "fake credentials in tests"
+paths = ['''(^|/)[^/]+\.test\.(ts|tsx|js|mjs|cjs)$''', '''(^|/)test/fixtures/''']

@@ -1,0 +1,42 @@
+# captured live v1.18.32 (swarm-live.test.ts)
+# expect: permission
+---8<---
+                                                                                                                                            
+  ┃                                                                                                 Create edit-me.txt containing OK        
+  ┃  Create a file named edit-me.txt containing OK. Do nothing else.                                                                        
+  ┃                                                                                                 Context                                 
+                                                                                                    0 tokens                                
+     ← Write edit-me.txt                                                                            0% used                                 
+                                                                                                    $0.00 spent                             
+     ▣  Build · Big Pickle                                                                                                                  
+                                                                                                    LSP                                     
+                                                                                                    LSPs are disabled                       
+                                                                                                                                            
+                                                                                                                                            
+                                                                                                                                            
+                                                                                                                                            
+                                                                                                                                            
+                                                                                                                                            
+                                                                                                                                            
+                                                                                                                                            
+                                                                                                                                            
+                                                                                                                                            
+                                                                                                                                            
+                                                                                                                                            
+                                                                                                      ⬖ Getting started                ✕    
+                                                                                                                                            
+  ┃                                                                                                     OpenCode includes free models       
+  ┃  △ Permission required                                                                              so you can start immediately.       
+  ┃    → Edit edit-me.txt                                                                                                                   
+  ┃                                                                                                     Connect from 75+ providers to       
+  ┃                                               1 + OK                                                use other models, including         
+  ┃                                                                                                     Claude, GPT, Gemini etc             
+  ┃                                                                                                                                         
+  ┃                                                                                                     Connect provider        /connect    
+  ┃                                                                                                                                         
+  ┃                                                                                                                                         
+  ┃                                                                                                 /private/var/folders/_w/                
+  ┃                                                                                                 3mcw5qdj4rdfyvfw_pv00xwh0000gn/T/kora-  
+  ┃                                                                                                 oc-live-lpotmS:main                     
+  ┃   Allow once   Allow always   Reject           ctrl+f fullscreen  ⇆ select  enter confirm                                               
+  ┃                                                                                                 • OpenCode 1.18.32                      

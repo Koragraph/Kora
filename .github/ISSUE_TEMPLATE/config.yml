@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and discussion
+    url: https://github.com/Koragraph/Kora/discussions
+    about: How do I…? Is this expected? Ideas still taking shape.
+  - name: Report a security problem
+    url: https://github.com/Koragraph/Kora/security/advisories/new
+    about: Privately, please. See SECURITY.md.
+  - name: Download Kora
+    url: https://github.com/agilkatakam/kora/releases/latest
+    about: Signed and notarized builds for Apple Silicon Macs.

@@ -1,0 +1,10 @@
+{
+  "name": "taskflow",
+  "version": "1.3.0",
+  "description": "In-process job queue and scheduler with retries, backoff, cron and pluggable stores.",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": { "taskflow": "src/cli/index.js" },
+  "scripts": { "test": "node --test" },
+  "license": "MIT"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "Kora",
+  "short_name": "Kora",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "type": "image/png", "sizes": "180x180" },
+    { "src": "/favicon-32x32.png", "type": "image/png", "sizes": "32x32" }
+  ]
+}

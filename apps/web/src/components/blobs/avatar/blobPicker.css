@@ -1,0 +1,207 @@
+/* Outfit picker + gallery chrome. Ink greys only. */
+.blob-picker {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  color: #ededf0;
+}
+.blob-picker__stage {
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+  gap: 14px;
+  width: 224px;
+  padding: 18px 12px 16px;
+  border-radius: 20px;
+  background: #1f2024;
+  border: 1px solid rgba(237, 237, 240, 0.08);
+}
+.blob-picker__preview {
+  display: grid;
+  place-items: center;
+  width: 200px;
+  height: 200px;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  cursor: pointer;
+}
+.blob-picker__preview:focus-visible,
+.blob-picker__option:focus-visible {
+  outline: 2px solid rgba(237, 237, 240, 0.85);
+  outline-offset: 2px;
+}
+.blob-picker__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1 1 320px;
+  min-width: 280px;
+}
+.blob-picker__row-label {
+  margin-bottom: 8px;
+  font:
+    600 11px/1 Helvetica,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #878a93;
+}
+.blob-picker__options {
+  /* one row, always: the swatches share the width (up to 56px each) instead of wrapping to a second line */
+  display: grid;
+  grid-template-columns: repeat(var(--blob-picker-cols, 11), minmax(0, 56px));
+  gap: 4px;
+}
+.blob-picker__option {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 1;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(237, 237, 240, 0.08);
+  border-radius: 14px;
+  background: #1f2024;
+  color: #878a93;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    transform 120ms ease;
+}
+.blob-picker__option:hover {
+  background: #26272c;
+  border-color: rgba(237, 237, 240, 0.2);
+  transform: translateY(-1px);
+}
+.blob-picker__option[data-checked] {
+  background: #2c2d33;
+  border-color: rgba(237, 237, 240, 0.85);
+  color: #ededf0;
+}
+.blob-picker__option:active {
+  transform: scale(0.96);
+}
+@media (prefers-reduced-motion: reduce) {
+  .blob-picker__option {
+    transition: none;
+  }
+  .blob-picker__option:hover,
+  .blob-picker__option:active {
+    transform: none;
+  }
+}
+
+/* ── gallery ── */
+.blob-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 24px;
+  background: #18191c;
+  color: #ededf0;
+  font:
+    13px/1.4 Helvetica,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+}
+.blob-gallery h2 {
+  margin: 0 0 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #878a93;
+}
+.blob-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 10px;
+}
+.blob-gallery__cell {
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px 6px 10px;
+  border-radius: 14px;
+  background: #1f2024;
+  border: 1px solid rgba(237, 237, 240, 0.06);
+  min-height: 104px;
+  text-align: center;
+  color: #878a93;
+  font-size: 11px;
+}
+.blob-gallery__sizes {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 22px;
+  padding: 18px;
+  border-radius: 14px;
+  background: #1f2024;
+}
+.blob-gallery__size {
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+  gap: 8px;
+  color: #878a93;
+  font-size: 11px;
+}
+.blob-gallery__buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.blob-gallery__btn {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(237, 237, 240, 0.2);
+  background: transparent;
+  color: #ededf0;
+  font: inherit;
+  cursor: pointer;
+}
+.blob-gallery__btn:hover {
+  background: rgba(237, 237, 240, 0.08);
+}
+.blob-gallery__cell strong {
+  color: #ededf0;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.blob-picker__shuffle {
+  gap: 6px;
+  padding-inline: 12px;
+}
+.blob-picker__shuffle svg {
+  width: 14px;
+  height: 14px;
+}
+
+.blob-picker--compact {
+  gap: 16px;
+}
+.blob-picker--compact .blob-picker__stage {
+  width: 168px;
+  padding: 10px 10px 12px;
+  gap: 8px;
+}
+.blob-picker--compact .blob-picker__preview {
+  width: 120px;
+  height: 120px;
+}
+.blob-picker--compact .blob-picker__rows {
+  flex-basis: 260px;
+  min-width: 240px;
+}

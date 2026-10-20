@@ -1,0 +1,15 @@
+{
+  "id": "M2-inline-regression",
+  "title": "Emphasis tests are red",
+  "kind": "fix-failing-tests",
+  "repo": "mdlite",
+  "prompts": [
+    "The inline formatting tests are failing in this repo after a refactor of the inline parser. Find what broke and fix the source so the whole suite passes. Do not edit, skip or delete any tests."
+  ],
+  "timeLimitSec": 600,
+  "maxTurns": 40,
+  "startState": { "overlay": "overlay", "visibleTests": "fail" },
+  "grade": { "hidden": "hidden", "hiddenMode": "replace-test-dir", "commands": [["--test"]] },
+  "reference": { "revert": ["src/parser/inline.js"] },
+  "notes": "Three regressions in src/parser/inline.js: intraword underscore check dropped, the *** run capped at two, and * and _ removed from the escapable set. Three visible tests fail (two in inline.test.js, plus the intraword-underscore case in inline-intraword.test.js); grading replaces test/ with the original suite plus four more cases."
+}

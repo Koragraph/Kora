@@ -1,0 +1,801 @@
+TAP version 13
+# Subtest: passes case 1 - adds numbers and checks result
+ok 1 - passes case 1 - adds numbers and checks result
+  ---
+  duration_ms: 0.507625
+  type: 'test'
+  ...
+# Subtest: passes case 2 - adds numbers and checks result
+ok 2 - passes case 2 - adds numbers and checks result
+  ---
+  duration_ms: 0.04575
+  type: 'test'
+  ...
+# Subtest: passes case 3 - adds numbers and checks result
+ok 3 - passes case 3 - adds numbers and checks result
+  ---
+  duration_ms: 0.037583
+  type: 'test'
+  ...
+# Subtest: passes case 4 - adds numbers and checks result
+ok 4 - passes case 4 - adds numbers and checks result
+  ---
+  duration_ms: 0.043833
+  type: 'test'
+  ...
+# Subtest: passes case 5 - adds numbers and checks result
+ok 5 - passes case 5 - adds numbers and checks result
+  ---
+  duration_ms: 0.03575
+  type: 'test'
+  ...
+# Subtest: passes case 6 - adds numbers and checks result
+ok 6 - passes case 6 - adds numbers and checks result
+  ---
+  duration_ms: 0.031291
+  type: 'test'
+  ...
+# Subtest: passes case 7 - adds numbers and checks result
+ok 7 - passes case 7 - adds numbers and checks result
+  ---
+  duration_ms: 0.081917
+  type: 'test'
+  ...
+# Subtest: passes case 8 - adds numbers and checks result
+ok 8 - passes case 8 - adds numbers and checks result
+  ---
+  duration_ms: 0.041334
+  type: 'test'
+  ...
+# Subtest: passes case 9 - adds numbers and checks result
+ok 9 - passes case 9 - adds numbers and checks result
+  ---
+  duration_ms: 0.041083
+  type: 'test'
+  ...
+# Subtest: passes case 10 - adds numbers and checks result
+ok 10 - passes case 10 - adds numbers and checks result
+  ---
+  duration_ms: 0.067917
+  type: 'test'
+  ...
+# Subtest: passes case 11 - adds numbers and checks result
+ok 11 - passes case 11 - adds numbers and checks result
+  ---
+  duration_ms: 0.0365
+  type: 'test'
+  ...
+# Subtest: passes case 12 - adds numbers and checks result
+ok 12 - passes case 12 - adds numbers and checks result
+  ---
+  duration_ms: 0.027417
+  type: 'test'
+  ...
+# Subtest: passes case 13 - adds numbers and checks result
+ok 13 - passes case 13 - adds numbers and checks result
+  ---
+  duration_ms: 0.020584
+  type: 'test'
+  ...
+# Subtest: passes case 14 - adds numbers and checks result
+ok 14 - passes case 14 - adds numbers and checks result
+  ---
+  duration_ms: 0.018459
+  type: 'test'
+  ...
+# Subtest: passes case 15 - adds numbers and checks result
+ok 15 - passes case 15 - adds numbers and checks result
+  ---
+  duration_ms: 0.017417
+  type: 'test'
+  ...
+# Subtest: passes case 16 - adds numbers and checks result
+ok 16 - passes case 16 - adds numbers and checks result
+  ---
+  duration_ms: 0.01725
+  type: 'test'
+  ...
+# Subtest: passes case 17 - adds numbers and checks result
+ok 17 - passes case 17 - adds numbers and checks result
+  ---
+  duration_ms: 0.018792
+  type: 'test'
+  ...
+# Subtest: passes case 18 - adds numbers and checks result
+ok 18 - passes case 18 - adds numbers and checks result
+  ---
+  duration_ms: 0.016292
+  type: 'test'
+  ...
+# Subtest: passes case 19 - adds numbers and checks result
+ok 19 - passes case 19 - adds numbers and checks result
+  ---
+  duration_ms: 0.01575
+  type: 'test'
+  ...
+# Subtest: passes case 20 - adds numbers and checks result
+ok 20 - passes case 20 - adds numbers and checks result
+  ---
+  duration_ms: 0.0175
+  type: 'test'
+  ...
+# Subtest: passes case 21 - adds numbers and checks result
+ok 21 - passes case 21 - adds numbers and checks result
+  ---
+  duration_ms: 0.015584
+  type: 'test'
+  ...
+# Subtest: passes case 22 - adds numbers and checks result
+ok 22 - passes case 22 - adds numbers and checks result
+  ---
+  duration_ms: 0.03275
+  type: 'test'
+  ...
+# Subtest: passes case 23 - adds numbers and checks result
+ok 23 - passes case 23 - adds numbers and checks result
+  ---
+  duration_ms: 0.026958
+  type: 'test'
+  ...
+# Subtest: passes case 24 - adds numbers and checks result
+ok 24 - passes case 24 - adds numbers and checks result
+  ---
+  duration_ms: 0.021333
+  type: 'test'
+  ...
+# Subtest: passes case 25 - adds numbers and checks result
+ok 25 - passes case 25 - adds numbers and checks result
+  ---
+  duration_ms: 0.023875
+  type: 'test'
+  ...
+# Subtest: passes case 26 - adds numbers and checks result
+ok 26 - passes case 26 - adds numbers and checks result
+  ---
+  duration_ms: 0.018667
+  type: 'test'
+  ...
+# Subtest: passes case 27 - adds numbers and checks result
+ok 27 - passes case 27 - adds numbers and checks result
+  ---
+  duration_ms: 0.015708
+  type: 'test'
+  ...
+# Subtest: passes case 28 - adds numbers and checks result
+ok 28 - passes case 28 - adds numbers and checks result
+  ---
+  duration_ms: 0.015541
+  type: 'test'
+  ...
+# Subtest: passes case 29 - adds numbers and checks result
+ok 29 - passes case 29 - adds numbers and checks result
+  ---
+  duration_ms: 0.015041
+  type: 'test'
+  ...
+# Subtest: passes case 30 - adds numbers and checks result
+ok 30 - passes case 30 - adds numbers and checks result
+  ---
+  duration_ms: 0.014833
+  type: 'test'
+  ...
+# Subtest: passes case 31 - adds numbers and checks result
+ok 31 - passes case 31 - adds numbers and checks result
+  ---
+  duration_ms: 0.021625
+  type: 'test'
+  ...
+# Subtest: passes case 32 - adds numbers and checks result
+ok 32 - passes case 32 - adds numbers and checks result
+  ---
+  duration_ms: 0.0155
+  type: 'test'
+  ...
+# Subtest: passes case 33 - adds numbers and checks result
+ok 33 - passes case 33 - adds numbers and checks result
+  ---
+  duration_ms: 0.018
+  type: 'test'
+  ...
+# Subtest: passes case 34 - adds numbers and checks result
+ok 34 - passes case 34 - adds numbers and checks result
+  ---
+  duration_ms: 0.020834
+  type: 'test'
+  ...
+# Subtest: passes case 35 - adds numbers and checks result
+ok 35 - passes case 35 - adds numbers and checks result
+  ---
+  duration_ms: 0.019333
+  type: 'test'
+  ...
+# Subtest: passes case 36 - adds numbers and checks result
+ok 36 - passes case 36 - adds numbers and checks result
+  ---
+  duration_ms: 0.015584
+  type: 'test'
+  ...
+# Subtest: passes case 37 - adds numbers and checks result
+ok 37 - passes case 37 - adds numbers and checks result
+  ---
+  duration_ms: 0.016625
+  type: 'test'
+  ...
+# Subtest: passes case 38 - adds numbers and checks result
+ok 38 - passes case 38 - adds numbers and checks result
+  ---
+  duration_ms: 0.019708
+  type: 'test'
+  ...
+# Subtest: passes case 39 - adds numbers and checks result
+ok 39 - passes case 39 - adds numbers and checks result
+  ---
+  duration_ms: 0.017
+  type: 'test'
+  ...
+# Subtest: passes case 40 - adds numbers and checks result
+ok 40 - passes case 40 - adds numbers and checks result
+  ---
+  duration_ms: 0.01425
+  type: 'test'
+  ...
+# Subtest: passes case 41 - adds numbers and checks result
+ok 41 - passes case 41 - adds numbers and checks result
+  ---
+  duration_ms: 0.0145
+  type: 'test'
+  ...
+# Subtest: passes case 42 - adds numbers and checks result
+ok 42 - passes case 42 - adds numbers and checks result
+  ---
+  duration_ms: 0.022333
+  type: 'test'
+  ...
+# Subtest: passes case 43 - adds numbers and checks result
+ok 43 - passes case 43 - adds numbers and checks result
+  ---
+  duration_ms: 0.016125
+  type: 'test'
+  ...
+# Subtest: passes case 44 - adds numbers and checks result
+ok 44 - passes case 44 - adds numbers and checks result
+  ---
+  duration_ms: 0.015125
+  type: 'test'
+  ...
+# Subtest: passes case 45 - adds numbers and checks result
+ok 45 - passes case 45 - adds numbers and checks result
+  ---
+  duration_ms: 0.015541
+  type: 'test'
+  ...
+# Subtest: passes case 46 - adds numbers and checks result
+ok 46 - passes case 46 - adds numbers and checks result
+  ---
+  duration_ms: 0.021333
+  type: 'test'
+  ...
+# Subtest: passes case 47 - adds numbers and checks result
+ok 47 - passes case 47 - adds numbers and checks result
+  ---
+  duration_ms: 0.01425
+  type: 'test'
+  ...
+# Subtest: passes case 48 - adds numbers and checks result
+ok 48 - passes case 48 - adds numbers and checks result
+  ---
+  duration_ms: 0.01325
+  type: 'test'
+  ...
+# Subtest: passes case 49 - adds numbers and checks result
+ok 49 - passes case 49 - adds numbers and checks result
+  ---
+  duration_ms: 0.013042
+  type: 'test'
+  ...
+# Subtest: passes case 50 - adds numbers and checks result
+ok 50 - passes case 50 - adds numbers and checks result
+  ---
+  duration_ms: 0.014167
+  type: 'test'
+  ...
+# Subtest: passes case 51 - adds numbers and checks result
+ok 51 - passes case 51 - adds numbers and checks result
+  ---
+  duration_ms: 0.018541
+  type: 'test'
+  ...
+# Subtest: passes case 52 - adds numbers and checks result
+ok 52 - passes case 52 - adds numbers and checks result
+  ---
+  duration_ms: 0.013625
+  type: 'test'
+  ...
+# Subtest: passes case 53 - adds numbers and checks result
+ok 53 - passes case 53 - adds numbers and checks result
+  ---
+  duration_ms: 0.015792
+  type: 'test'
+  ...
+# Subtest: passes case 54 - adds numbers and checks result
+ok 54 - passes case 54 - adds numbers and checks result
+  ---
+  duration_ms: 0.016292
+  type: 'test'
+  ...
+# Subtest: passes case 55 - adds numbers and checks result
+ok 55 - passes case 55 - adds numbers and checks result
+  ---
+  duration_ms: 0.019875
+  type: 'test'
+  ...
+# Subtest: passes case 56 - adds numbers and checks result
+ok 56 - passes case 56 - adds numbers and checks result
+  ---
+  duration_ms: 0.016208
+  type: 'test'
+  ...
+# Subtest: passes case 57 - adds numbers and checks result
+ok 57 - passes case 57 - adds numbers and checks result
+  ---
+  duration_ms: 0.015
+  type: 'test'
+  ...
+# Subtest: passes case 58 - adds numbers and checks result
+ok 58 - passes case 58 - adds numbers and checks result
+  ---
+  duration_ms: 0.01725
+  type: 'test'
+  ...
+# Subtest: passes case 59 - adds numbers and checks result
+ok 59 - passes case 59 - adds numbers and checks result
+  ---
+  duration_ms: 0.018875
+  type: 'test'
+  ...
+# Subtest: passes case 60 - adds numbers and checks result
+ok 60 - passes case 60 - adds numbers and checks result
+  ---
+  duration_ms: 0.013792
+  type: 'test'
+  ...
+# Subtest: suite A
+    # Subtest: inner 0
+    ok 1 - inner 0
+      ---
+      duration_ms: 0.088541
+      type: 'test'
+      ...
+    # Subtest: inner 1
+    ok 2 - inner 1
+      ---
+      duration_ms: 0.0205
+      type: 'test'
+      ...
+    # Subtest: inner 2
+    ok 3 - inner 2
+      ---
+      duration_ms: 0.020667
+      type: 'test'
+      ...
+    # Subtest: inner 3
+    ok 4 - inner 3
+      ---
+      duration_ms: 0.016125
+      type: 'test'
+      ...
+    # Subtest: inner 4
+    ok 5 - inner 4
+      ---
+      duration_ms: 0.151334
+      type: 'test'
+      ...
+    # Subtest: inner 5
+    ok 6 - inner 5
+      ---
+      duration_ms: 0.036167
+      type: 'test'
+      ...
+    # Subtest: inner 6
+    ok 7 - inner 6
+      ---
+      duration_ms: 0.025375
+      type: 'test'
+      ...
+    # Subtest: inner 7
+    ok 8 - inner 7
+      ---
+      duration_ms: 0.016375
+      type: 'test'
+      ...
+    # Subtest: inner 8
+    ok 9 - inner 8
+      ---
+      duration_ms: 0.016666
+      type: 'test'
+      ...
+    # Subtest: inner 9
+    ok 10 - inner 9
+      ---
+      duration_ms: 0.014958
+      type: 'test'
+      ...
+    # Subtest: inner 10
+    ok 11 - inner 10
+      ---
+      duration_ms: 0.015625
+      type: 'test'
+      ...
+    # Subtest: inner 11
+    ok 12 - inner 11
+      ---
+      duration_ms: 0.024375
+      type: 'test'
+      ...
+    # Subtest: inner 12
+    ok 13 - inner 12
+      ---
+      duration_ms: 0.012667
+      type: 'test'
+      ...
+    # Subtest: inner 13
+    ok 14 - inner 13
+      ---
+      duration_ms: 0.011584
+      type: 'test'
+      ...
+    # Subtest: inner 14
+    ok 15 - inner 14
+      ---
+      duration_ms: 0.012292
+      type: 'test'
+      ...
+    # Subtest: inner failing
+    not ok 16 - inner failing
+      ---
+      duration_ms: 0.995167
+      type: 'test'
+      location: '/tmp/fx/proj/src/a.test.js:62:93'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly deep-equal:
+        + actual - expected
+        
+          {
+            a: 1,
+            b: [
+              1,
+              2,
+        +     3
+        -     4
+            ]
+          }
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+        a: 1
+        b:
+          0: 1
+          1: 2
+          2: 4
+      actual:
+        a: 1
+        b:
+          0: 1
+          1: 2
+          2: 3
+      operator: 'deepStrictEqual'
+      stack: |-
+        TestContext.<anonymous> (/tmp/fx/proj/src/a.test.js:62:126)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1106:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:788:18)
+        Test.postRun (node:internal/test_runner/test:1235:19)
+        Test.run (node:internal/test_runner/test:1163:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:788:7)
+      ...
+    1..16
+not ok 61 - suite A
+  ---
+  duration_ms: 1.741042
+  type: 'suite'
+  location: '/tmp/fx/proj/src/a.test.js:62:6'
+  failureType: 'subtestsFailed'
+  error: '1 subtest failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: top-level failing: wrong total
+not ok 62 - top-level failing: wrong total
+  ---
+  duration_ms: 0.081458
+  type: 'test'
+  location: '/tmp/fx/proj/src/a.test.js:63:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    4 !== 5
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 5
+  actual: 4
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/tmp/fx/proj/src/a.test.js:63:51)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1106:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+    Suite.postRun (node:internal/test_runner/test:1235:19)
+    Suite.run (node:internal/test_runner/test:1533:10)
+    async Test.processPendingSubtests (node:internal/test_runner/test:788:7)
+  ...
+# Subtest: throws TypeError
+not ok 63 - throws TypeError
+  ---
+  duration_ms: 0.033291
+  type: 'test'
+  location: '/tmp/fx/proj/src/a.test.js:64:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of null (reading 'foo')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (/tmp/fx/proj/src/a.test.js:64:35)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1106:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+    Test.postRun (node:internal/test_runner/test:1235:19)
+    Test.run (node:internal/test_runner/test:1163:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:788:7)
+  ...
+# Subtest: b passes 1
+ok 64 - b passes 1
+  ---
+  duration_ms: 0.790166
+  type: 'test'
+  ...
+# Subtest: b passes 2
+ok 65 - b passes 2
+  ---
+  duration_ms: 0.045
+  type: 'test'
+  ...
+# Subtest: b passes 3
+ok 66 - b passes 3
+  ---
+  duration_ms: 0.035875
+  type: 'test'
+  ...
+# Subtest: b passes 4
+ok 67 - b passes 4
+  ---
+  duration_ms: 0.032916
+  type: 'test'
+  ...
+# Subtest: b passes 5
+ok 68 - b passes 5
+  ---
+  duration_ms: 0.040875
+  type: 'test'
+  ...
+# Subtest: b passes 6
+ok 69 - b passes 6
+  ---
+  duration_ms: 0.029958
+  type: 'test'
+  ...
+# Subtest: b passes 7
+ok 70 - b passes 7
+  ---
+  duration_ms: 0.047333
+  type: 'test'
+  ...
+# Subtest: b passes 8
+ok 71 - b passes 8
+  ---
+  duration_ms: 0.037375
+  type: 'test'
+  ...
+# Subtest: b passes 9
+ok 72 - b passes 9
+  ---
+  duration_ms: 0.043584
+  type: 'test'
+  ...
+# Subtest: b passes 10
+ok 73 - b passes 10
+  ---
+  duration_ms: 0.062
+  type: 'test'
+  ...
+# Subtest: b passes 11
+ok 74 - b passes 11
+  ---
+  duration_ms: 0.045083
+  type: 'test'
+  ...
+# Subtest: b passes 12
+ok 75 - b passes 12
+  ---
+  duration_ms: 0.031583
+  type: 'test'
+  ...
+# Subtest: b passes 13
+ok 76 - b passes 13
+  ---
+  duration_ms: 0.027084
+  type: 'test'
+  ...
+# Subtest: b passes 14
+ok 77 - b passes 14
+  ---
+  duration_ms: 0.020709
+  type: 'test'
+  ...
+# Subtest: b passes 15
+ok 78 - b passes 15
+  ---
+  duration_ms: 0.019208
+  type: 'test'
+  ...
+# Subtest: b passes 16
+ok 79 - b passes 16
+  ---
+  duration_ms: 0.029125
+  type: 'test'
+  ...
+# Subtest: b passes 17
+ok 80 - b passes 17
+  ---
+  duration_ms: 0.023417
+  type: 'test'
+  ...
+# Subtest: b passes 18
+ok 81 - b passes 18
+  ---
+  duration_ms: 0.0255
+  type: 'test'
+  ...
+# Subtest: b passes 19
+ok 82 - b passes 19
+  ---
+  duration_ms: 0.018416
+  type: 'test'
+  ...
+# Subtest: b passes 20
+ok 83 - b passes 20
+  ---
+  duration_ms: 0.021584
+  type: 'test'
+  ...
+# Subtest: b passes 21
+ok 84 - b passes 21
+  ---
+  duration_ms: 0.346292
+  type: 'test'
+  ...
+# Subtest: b passes 22
+ok 85 - b passes 22
+  ---
+  duration_ms: 0.045292
+  type: 'test'
+  ...
+# Subtest: b passes 23
+ok 86 - b passes 23
+  ---
+  duration_ms: 0.024791
+  type: 'test'
+  ...
+# Subtest: b passes 24
+ok 87 - b passes 24
+  ---
+  duration_ms: 0.018958
+  type: 'test'
+  ...
+# Subtest: b passes 25
+ok 88 - b passes 25
+  ---
+  duration_ms: 0.016791
+  type: 'test'
+  ...
+# Subtest: b passes 26
+ok 89 - b passes 26
+  ---
+  duration_ms: 0.015958
+  type: 'test'
+  ...
+# Subtest: b passes 27
+ok 90 - b passes 27
+  ---
+  duration_ms: 0.015208
+  type: 'test'
+  ...
+# Subtest: b passes 28
+ok 91 - b passes 28
+  ---
+  duration_ms: 0.015333
+  type: 'test'
+  ...
+# Subtest: b passes 29
+ok 92 - b passes 29
+  ---
+  duration_ms: 0.014833
+  type: 'test'
+  ...
+# Subtest: b passes 30
+ok 93 - b passes 30
+  ---
+  duration_ms: 0.015375
+  type: 'test'
+  ...
+# Subtest: b passes 31
+ok 94 - b passes 31
+  ---
+  duration_ms: 0.015125
+  type: 'test'
+  ...
+# Subtest: b passes 32
+ok 95 - b passes 32
+  ---
+  duration_ms: 0.020459
+  type: 'test'
+  ...
+# Subtest: b passes 33
+ok 96 - b passes 33
+  ---
+  duration_ms: 0.020125
+  type: 'test'
+  ...
+# Subtest: b passes 34
+ok 97 - b passes 34
+  ---
+  duration_ms: 0.015917
+  type: 'test'
+  ...
+# Subtest: b passes 35
+ok 98 - b passes 35
+  ---
+  duration_ms: 0.014958
+  type: 'test'
+  ...
+# Subtest: b passes 36
+ok 99 - b passes 36
+  ---
+  duration_ms: 0.019
+  type: 'test'
+  ...
+# Subtest: b passes 37
+ok 100 - b passes 37
+  ---
+  duration_ms: 0.016667
+  type: 'test'
+  ...
+# Subtest: b passes 38
+ok 101 - b passes 38
+  ---
+  duration_ms: 0.017458
+  type: 'test'
+  ...
+# Subtest: b passes 39
+ok 102 - b passes 39
+  ---
+  duration_ms: 0.014709
+  type: 'test'
+  ...
+# Subtest: b passes 40
+ok 103 - b passes 40
+  ---
+  duration_ms: 0.01675
+  type: 'test'
+  ...
+1..103
+# tests 118
+# suites 1
+# pass 115
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 55.28875

@@ -1,0 +1,67 @@
+// Shared compiler settings for every TypeScript package except packages/runtime (CommonJS, its own tsconfig).
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    // Output: none. Bundlers (Vite, the ui-server bundle) and Node's type stripping consume the sources directly.
+    "noEmit": true,
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    // Only syntax Node can strip: no enums, namespaces or parameter properties.
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "useDefineForClassFields": true,
+
+    // Strictness
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    "plugins": [
+      {
+        "name": "@effect/language-service",
+        "namespaceImportPackages": ["effect", "@effect/platform-node"],
+        // Effect programs take time, randomness, I/O and logging from services, never from globals.
+        "diagnosticSeverity": {
+          "anyUnknownInErrorContext": "error",
+          "cryptoRandomUUID": "error",
+          "cryptoRandomUUIDInEffect": "error",
+          "deterministicKeys": "error",
+          "globalConsole": "error",
+          "globalConsoleInEffect": "error",
+          "globalDate": "error",
+          "globalDateInEffect": "error",
+          "globalErrorInEffectCatch": "error",
+          "globalErrorInEffectFailure": "error",
+          "globalFetch": "error",
+          "globalFetchInEffect": "error",
+          "globalRandom": "error",
+          "globalRandomInEffect": "error",
+          "globalTimers": "error",
+          "globalTimersInEffect": "error",
+          "importFromBarrel": "error",
+          "instanceOfSchema": "error",
+          "lazyEffect": "off",
+          "leakingRequirements": "error",
+          "missingEffectServiceDependency": "error",
+          "nodeBuiltinImport": "error",
+          "preferSchemaOverJson": "error",
+          "schemaSyncInEffect": "error",
+          "strictBooleanExpressions": "off",
+          "strictEffectProvide": "off",
+          "unknownInEffectCatch": "error",
+          "unsafeEffectTypeAssertion": "error"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,395 @@
+/* Swarm blob dock (Chat surface): each worker is a Kora pixel sprite. State is shown ONLY by the sprite's
+   frame and whole-pixel motion — no colour, no text on the sprite itself.
+   Scoped under .swarm-blob-dock / .swarm-worker-window so nothing here leaks into the app's
+   Tailwind tree; monochrome washes of white/black only (no hue), matching the Ink palette. */
+
+.swarm-blob-dock {
+  position: absolute;
+  top: 72px;
+  right: 14px;
+  bottom: 12px;
+  z-index: 20;
+  display: flex;
+  pointer-events: none;
+  /* The dock never shifts when a worker window opens or closes — see WorkerFloatingWindow.tsx's
+     module doc for why that used to shake the canvas. Only the composer-clearance bottom offset
+     still animates. */
+  transition: bottom 200ms ease;
+}
+
+.swarm-blob-dock__stack {
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+  gap: 10px;
+  overflow-y: auto;
+  overflow-x: visible;
+  padding: 2px 6px;
+  scrollbar-width: none;
+  pointer-events: auto;
+}
+.swarm-blob-dock__stack::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* The grid button under the sprites (Code surface): every worker's pane at once. Icon only. */
+.swarm-blob-dock__grid {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin-top: 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(237, 237, 240, 0.5);
+  cursor: pointer;
+}
+.swarm-blob-dock__grid:hover,
+.swarm-blob-dock__grid:focus-visible {
+  color: rgba(237, 237, 240, 0.95);
+}
+.swarm-blob-dock__grid svg {
+  width: 15px;
+  height: 15px;
+}
+
+.swarm-blob-dock__overflow {
+  margin-top: 2px;
+  font:
+    10px/1 Helvetica,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  color: rgba(237, 237, 240, 0.55);
+  letter-spacing: 0.02em;
+}
+
+/* ── the worker sprite: still, its agent's accessory on, no frame around it ── */
+
+.swarm-blob {
+  position: relative;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.swarm-blob[data-state="done"] .swarm-blob__body,
+.swarm-blob[data-state="failed"] .swarm-blob__body,
+.swarm-blob[data-state="asleep"] .swarm-blob__body {
+  opacity: 0.55;
+}
+.swarm-blob[data-selected="true"] .swarm-blob__body {
+  opacity: 1;
+}
+/* the open one: a short line under its feet, nothing around it */
+.swarm-blob[data-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 16px;
+  height: 2px;
+  margin-left: -8px;
+  border-radius: 1px;
+  background: rgba(237, 237, 240, 0.8);
+}
+.swarm-blob:focus-visible {
+  outline: 2px solid rgba(237, 237, 240, 0.85);
+  outline-offset: 2px;
+}
+/* the only colour on a sprite: amber = needs you, red = failed (semantic hues only) */
+.swarm-blob__dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.swarm-blob__dot[data-dot="attn"] {
+  background: #fcd34d;
+}
+.swarm-blob__dot[data-dot="fail"] {
+  background: #f87171;
+}
+
+/* ── the pile: done / failed / asleep workers folded under the live ones ── */
+.swarm-blob-dock__pile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  padding: 4px 2px 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.6;
+}
+.swarm-blob-dock__pile:hover,
+.swarm-blob-dock__pile:focus-visible {
+  opacity: 1;
+}
+.swarm-blob-dock__pile-faces {
+  display: flex;
+}
+.swarm-blob-dock__pile-faces > * + * {
+  margin-left: -8px;
+}
+.swarm-blob-dock__pile-count,
+.swarm-blob-dock__less {
+  font:
+    10px/1 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  color: rgba(237, 237, 240, 0.55);
+}
+.swarm-blob-dock__pile .swarm-blob__dot {
+  top: 0;
+  right: -2px;
+  width: 6px;
+  height: 6px;
+}
+.swarm-blob-dock__rested {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding-top: 8px;
+  border-top: 1px solid rgba(237, 237, 240, 0.07);
+}
+.swarm-blob-dock__less {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.swarm-blob-dock__less:hover {
+  color: rgba(237, 237, 240, 0.95);
+}
+
+.swarm-blob-dock__tooltip {
+  max-width: 240px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swarm-blob-dock {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── worker floating window ──
+   Rendered through a portal to document.body (position: fixed) — see WorkerFloatingWindow.tsx's
+   module doc for why: opening/closing it must never touch the chat canvas's own layout. */
+
+.swarm-worker-window {
+  /* Portaled to document.body — outside .swarm-blob-dock's subtree — so the mini face in the
+     title bar needs its own copies of the blob colour vars (CSS custom properties inherit
+     through the DOM tree, not the React tree). */
+  --window-bg: #18191c; /* Ink card */
+  --window-titlebar-bg: #1f2024; /* Ink popover */
+  position: fixed;
+  z-index: 60;
+  /* The app's title bar is an Electron drag region; a drag rectangle swallows clicks on anything
+     that overlaps it, so the window must opt out explicitly or its traffic lights go dead
+     whenever it is moved or maximized up under that strip. */
+  -webkit-app-region: no-drag;
+  display: flex;
+  flex-direction: column;
+  background: var(--window-bg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    0 4px 16px rgba(0, 0, 0, 0.3);
+  animation: worker-window-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transition:
+    left 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    top 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+/* Dragging or live-resizing should track the pointer with no transition lag. */
+.swarm-worker-window:active {
+  transition: none;
+}
+
+@keyframes worker-window-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.swarm-worker-window[data-exiting="close"] {
+  animation: worker-window-out 180ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+@keyframes worker-window-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+/* Minimize: shrink back toward the dock (top-right, where the blob stack lives) instead of a
+   plain fade — reads as "collapsing into its blob". */
+.swarm-worker-window[data-exiting="minimize"] {
+  animation: worker-window-minimize 180ms cubic-bezier(0.4, 0, 1, 1) both;
+  transform-origin: 100% 0%;
+}
+@keyframes worker-window-minimize {
+  from {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.05) translate(40%, -40%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swarm-worker-window {
+    animation: none;
+    transition: none;
+  }
+  .swarm-worker-window[data-exiting] {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+.swarm-worker-window__titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  flex-shrink: 0;
+  padding: 0 10px 0 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--window-titlebar-bg);
+  color: #ededf0;
+  cursor: grab;
+  touch-action: none;
+}
+.swarm-worker-window__titlebar:active {
+  cursor: grabbing;
+}
+.swarm-worker-window[data-maximized="true"] .swarm-worker-window__titlebar {
+  cursor: default;
+}
+
+/* Traffic lights: the one place outside semantic red/amber/green this UI allows colour — these
+   are the literal macOS system colours, not a new hue introduced for this feature (see
+   CLAUDE.md's "semantic red/amber/green ... are the only hues"). Glyphs stay hidden until the
+   group is hovered, exactly like macOS. */
+.swarm-worker-window__traffic-lights {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.swarm-traffic-light {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.swarm-traffic-light span {
+  font-size: 9px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 100ms ease;
+}
+.swarm-worker-window__traffic-lights:hover span,
+.swarm-worker-window__traffic-lights:focus-within span {
+  opacity: 1;
+}
+.swarm-traffic-light--close {
+  background: #ff5f57;
+}
+.swarm-traffic-light--minimize {
+  background: #febc2e;
+}
+.swarm-traffic-light--maximize {
+  background: #28c840;
+}
+.swarm-traffic-light:focus-visible {
+  outline: 1.5px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+}
+
+.swarm-worker-window__title {
+  min-width: 0;
+  flex: 1 1 auto;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 6px;
+}
+.swarm-worker-window__title strong {
+  font-size: 12px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.swarm-worker-window__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  flex-shrink: 0;
+  min-width: 0;
+  font-size: 10.5px;
+  color: rgba(237, 237, 240, 0.55);
+  white-space: nowrap;
+}
+
+.swarm-worker-window__actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.swarm-worker-window__body {
+  position: relative;
+  flex: 1 1 0%;
+  min-height: 0;
+}
+
+/* ── drag ghost: the sprite is HTML5-draggable (SwarmBlob.tsx onDragStart); the browser supplies
+   the ghost image itself (setDragImage), this just keeps the source legible mid-drag. ── */
+.swarm-blob[data-dragging="true"] {
+  opacity: 0.45;
+}

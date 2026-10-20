@@ -1,0 +1,526 @@
+2026-10-14T10:00:00Z INFO poll worker 3 queue depth 0 (attempt 0)
+2026-10-14T10:00:00Z ERROR connection refused to 127.0.0.1:5432 (attempt 0)
+2026-10-14T10:01:07Z INFO poll worker 3 queue depth 0 (attempt 1)
+2026-10-14T10:02:14Z INFO poll worker 3 queue depth 0 (attempt 2)
+2026-10-14T10:03:21Z INFO poll worker 3 queue depth 0 (attempt 3)
+2026-10-14T10:04:28Z INFO poll worker 3 queue depth 0 (attempt 4)
+2026-10-14T10:05:35Z INFO poll worker 3 queue depth 0 (attempt 5)
+2026-10-14T10:06:42Z INFO poll worker 3 queue depth 0 (attempt 6)
+2026-10-14T10:07:49Z INFO poll worker 3 queue depth 0 (attempt 7)
+2026-10-14T10:08:56Z INFO poll worker 3 queue depth 0 (attempt 8)
+2026-10-14T10:09:03Z INFO poll worker 3 queue depth 0 (attempt 9)
+2026-10-14T10:10:10Z INFO poll worker 3 queue depth 0 (attempt 10)
+2026-10-14T10:11:17Z INFO poll worker 3 queue depth 0 (attempt 11)
+2026-10-14T10:12:24Z INFO poll worker 3 queue depth 0 (attempt 12)
+2026-10-14T10:13:31Z INFO poll worker 3 queue depth 0 (attempt 13)
+2026-10-14T10:14:38Z INFO poll worker 3 queue depth 0 (attempt 14)
+2026-10-14T10:15:45Z INFO poll worker 3 queue depth 0 (attempt 15)
+2026-10-14T10:16:52Z INFO poll worker 3 queue depth 0 (attempt 16)
+2026-10-14T10:17:59Z INFO poll worker 3 queue depth 0 (attempt 17)
+2026-10-14T10:18:06Z INFO poll worker 3 queue depth 0 (attempt 18)
+2026-10-14T10:19:13Z INFO poll worker 3 queue depth 0 (attempt 19)
+2026-10-14T10:20:20Z INFO poll worker 3 queue depth 0 (attempt 20)
+2026-10-14T10:21:27Z INFO poll worker 3 queue depth 0 (attempt 21)
+2026-10-14T10:22:34Z INFO poll worker 3 queue depth 0 (attempt 22)
+2026-10-14T10:23:41Z INFO poll worker 3 queue depth 0 (attempt 23)
+2026-10-14T10:24:48Z INFO poll worker 3 queue depth 0 (attempt 24)
+2026-10-14T10:25:55Z INFO poll worker 3 queue depth 0 (attempt 25)
+2026-10-14T10:26:02Z INFO poll worker 3 queue depth 0 (attempt 26)
+2026-10-14T10:27:09Z INFO poll worker 3 queue depth 0 (attempt 27)
+2026-10-14T10:28:16Z INFO poll worker 3 queue depth 0 (attempt 28)
+2026-10-14T10:29:23Z INFO poll worker 3 queue depth 0 (attempt 29)
+2026-10-14T10:30:30Z INFO poll worker 3 queue depth 0 (attempt 30)
+2026-10-14T10:31:37Z INFO poll worker 3 queue depth 0 (attempt 31)
+2026-10-14T10:32:44Z INFO poll worker 3 queue depth 0 (attempt 32)
+2026-10-14T10:33:51Z INFO poll worker 3 queue depth 0 (attempt 33)
+2026-10-14T10:34:58Z INFO poll worker 3 queue depth 0 (attempt 34)
+2026-10-14T10:35:05Z INFO poll worker 3 queue depth 0 (attempt 35)
+2026-10-14T10:36:12Z INFO poll worker 3 queue depth 0 (attempt 36)
+2026-10-14T10:37:19Z INFO poll worker 3 queue depth 0 (attempt 37)
+2026-10-14T10:38:26Z INFO poll worker 3 queue depth 0 (attempt 38)
+2026-10-14T10:39:33Z INFO poll worker 3 queue depth 0 (attempt 39)
+2026-10-14T10:40:40Z INFO poll worker 3 queue depth 0 (attempt 40)
+2026-10-14T10:41:47Z INFO poll worker 3 queue depth 0 (attempt 41)
+2026-10-14T10:42:54Z INFO poll worker 3 queue depth 0 (attempt 42)
+2026-10-14T10:43:01Z INFO poll worker 3 queue depth 0 (attempt 43)
+2026-10-14T10:44:08Z INFO poll worker 3 queue depth 0 (attempt 44)
+2026-10-14T10:45:15Z INFO poll worker 3 queue depth 0 (attempt 45)
+2026-10-14T10:46:22Z INFO poll worker 3 queue depth 0 (attempt 46)
+2026-10-14T10:47:29Z INFO poll worker 3 queue depth 0 (attempt 47)
+2026-10-14T10:48:36Z INFO poll worker 3 queue depth 0 (attempt 48)
+2026-10-14T10:49:43Z INFO poll worker 3 queue depth 0 (attempt 49)
+2026-10-14T10:50:50Z INFO poll worker 3 queue depth 0 (attempt 50)
+2026-10-14T10:51:57Z INFO poll worker 3 queue depth 0 (attempt 51)
+2026-10-14T10:52:04Z INFO poll worker 3 queue depth 0 (attempt 52)
+2026-10-14T10:53:11Z INFO poll worker 3 queue depth 0 (attempt 53)
+2026-10-14T10:54:18Z INFO poll worker 3 queue depth 0 (attempt 54)
+2026-10-14T10:55:25Z INFO poll worker 3 queue depth 0 (attempt 55)
+2026-10-14T10:56:32Z INFO poll worker 3 queue depth 0 (attempt 56)
+2026-10-14T10:57:39Z INFO poll worker 3 queue depth 0 (attempt 57)
+2026-10-14T10:58:46Z INFO poll worker 3 queue depth 0 (attempt 58)
+2026-10-14T10:59:53Z INFO poll worker 3 queue depth 0 (attempt 59)
+2026-10-14T10:00:00Z INFO poll worker 3 queue depth 0 (attempt 60)
+2026-10-14T10:01:07Z INFO poll worker 3 queue depth 0 (attempt 61)
+2026-10-14T10:02:14Z INFO poll worker 3 queue depth 0 (attempt 62)
+2026-10-14T10:03:21Z INFO poll worker 3 queue depth 0 (attempt 63)
+2026-10-14T10:04:28Z INFO poll worker 3 queue depth 0 (attempt 64)
+2026-10-14T10:05:35Z INFO poll worker 3 queue depth 0 (attempt 65)
+2026-10-14T10:06:42Z INFO poll worker 3 queue depth 0 (attempt 66)
+2026-10-14T10:07:49Z INFO poll worker 3 queue depth 0 (attempt 67)
+2026-10-14T10:08:56Z INFO poll worker 3 queue depth 0 (attempt 68)
+2026-10-14T10:09:03Z INFO poll worker 3 queue depth 0 (attempt 69)
+2026-10-14T10:10:10Z INFO poll worker 3 queue depth 0 (attempt 70)
+2026-10-14T10:11:17Z INFO poll worker 3 queue depth 0 (attempt 71)
+2026-10-14T10:12:24Z INFO poll worker 3 queue depth 0 (attempt 72)
+2026-10-14T10:13:31Z INFO poll worker 3 queue depth 0 (attempt 73)
+2026-10-14T10:14:38Z INFO poll worker 3 queue depth 0 (attempt 74)
+2026-10-14T10:15:45Z INFO poll worker 3 queue depth 0 (attempt 75)
+2026-10-14T10:16:52Z INFO poll worker 3 queue depth 0 (attempt 76)
+2026-10-14T10:17:59Z INFO poll worker 3 queue depth 0 (attempt 77)
+2026-10-14T10:18:06Z INFO poll worker 3 queue depth 0 (attempt 78)
+2026-10-14T10:19:13Z INFO poll worker 3 queue depth 0 (attempt 79)
+2026-10-14T10:20:20Z INFO poll worker 3 queue depth 0 (attempt 80)
+2026-10-14T10:21:27Z INFO poll worker 3 queue depth 0 (attempt 81)
+2026-10-14T10:22:34Z INFO poll worker 3 queue depth 0 (attempt 82)
+2026-10-14T10:23:41Z INFO poll worker 3 queue depth 0 (attempt 83)
+2026-10-14T10:24:48Z INFO poll worker 3 queue depth 0 (attempt 84)
+2026-10-14T10:25:55Z INFO poll worker 3 queue depth 0 (attempt 85)
+2026-10-14T10:26:02Z INFO poll worker 3 queue depth 0 (attempt 86)
+2026-10-14T10:27:09Z INFO poll worker 3 queue depth 0 (attempt 87)
+2026-10-14T10:28:16Z INFO poll worker 3 queue depth 0 (attempt 88)
+2026-10-14T10:29:23Z INFO poll worker 3 queue depth 0 (attempt 89)
+2026-10-14T10:30:30Z INFO poll worker 3 queue depth 0 (attempt 90)
+2026-10-14T10:31:37Z INFO poll worker 3 queue depth 0 (attempt 91)
+2026-10-14T10:32:44Z INFO poll worker 3 queue depth 0 (attempt 92)
+2026-10-14T10:33:51Z INFO poll worker 3 queue depth 0 (attempt 93)
+2026-10-14T10:34:58Z INFO poll worker 3 queue depth 0 (attempt 94)
+2026-10-14T10:35:05Z INFO poll worker 3 queue depth 0 (attempt 95)
+2026-10-14T10:36:12Z INFO poll worker 3 queue depth 0 (attempt 96)
+2026-10-14T10:37:19Z INFO poll worker 3 queue depth 0 (attempt 97)
+2026-10-14T10:00:00Z ERROR connection refused to 127.0.0.1:5432 (attempt 97)
+2026-10-14T10:38:26Z INFO poll worker 3 queue depth 0 (attempt 98)
+2026-10-14T10:39:33Z INFO poll worker 3 queue depth 0 (attempt 99)
+2026-10-14T10:40:40Z INFO poll worker 3 queue depth 0 (attempt 100)
+2026-10-14T10:41:47Z INFO poll worker 3 queue depth 0 (attempt 101)
+2026-10-14T10:42:54Z INFO poll worker 3 queue depth 0 (attempt 102)
+2026-10-14T10:43:01Z INFO poll worker 3 queue depth 0 (attempt 103)
+2026-10-14T10:44:08Z INFO poll worker 3 queue depth 0 (attempt 104)
+2026-10-14T10:45:15Z INFO poll worker 3 queue depth 0 (attempt 105)
+2026-10-14T10:46:22Z INFO poll worker 3 queue depth 0 (attempt 106)
+2026-10-14T10:47:29Z INFO poll worker 3 queue depth 0 (attempt 107)
+2026-10-14T10:48:36Z INFO poll worker 3 queue depth 0 (attempt 108)
+2026-10-14T10:49:43Z INFO poll worker 3 queue depth 0 (attempt 109)
+2026-10-14T10:50:50Z INFO poll worker 3 queue depth 0 (attempt 110)
+2026-10-14T10:51:57Z INFO poll worker 3 queue depth 0 (attempt 111)
+2026-10-14T10:52:04Z INFO poll worker 3 queue depth 0 (attempt 112)
+2026-10-14T10:53:11Z INFO poll worker 3 queue depth 0 (attempt 113)
+2026-10-14T10:54:18Z INFO poll worker 3 queue depth 0 (attempt 114)
+2026-10-14T10:55:25Z INFO poll worker 3 queue depth 0 (attempt 115)
+2026-10-14T10:56:32Z INFO poll worker 3 queue depth 0 (attempt 116)
+2026-10-14T10:57:39Z INFO poll worker 3 queue depth 0 (attempt 117)
+2026-10-14T10:58:46Z INFO poll worker 3 queue depth 0 (attempt 118)
+2026-10-14T10:59:53Z INFO poll worker 3 queue depth 0 (attempt 119)
+2026-10-14T10:00:00Z INFO poll worker 3 queue depth 0 (attempt 120)
+2026-10-14T10:01:07Z INFO poll worker 3 queue depth 0 (attempt 121)
+2026-10-14T10:02:14Z INFO poll worker 3 queue depth 0 (attempt 122)
+2026-10-14T10:03:21Z INFO poll worker 3 queue depth 0 (attempt 123)
+2026-10-14T10:04:28Z INFO poll worker 3 queue depth 0 (attempt 124)
+2026-10-14T10:05:35Z INFO poll worker 3 queue depth 0 (attempt 125)
+2026-10-14T10:06:42Z INFO poll worker 3 queue depth 0 (attempt 126)
+2026-10-14T10:07:49Z INFO poll worker 3 queue depth 0 (attempt 127)
+2026-10-14T10:08:56Z INFO poll worker 3 queue depth 0 (attempt 128)
+2026-10-14T10:09:03Z INFO poll worker 3 queue depth 0 (attempt 129)
+2026-10-14T10:10:10Z INFO poll worker 3 queue depth 0 (attempt 130)
+2026-10-14T10:11:17Z INFO poll worker 3 queue depth 0 (attempt 131)
+2026-10-14T10:12:24Z INFO poll worker 3 queue depth 0 (attempt 132)
+2026-10-14T10:13:31Z INFO poll worker 3 queue depth 0 (attempt 133)
+2026-10-14T10:14:38Z INFO poll worker 3 queue depth 0 (attempt 134)
+2026-10-14T10:15:45Z INFO poll worker 3 queue depth 0 (attempt 135)
+2026-10-14T10:16:52Z INFO poll worker 3 queue depth 0 (attempt 136)
+2026-10-14T10:17:59Z INFO poll worker 3 queue depth 0 (attempt 137)
+2026-10-14T10:18:06Z INFO poll worker 3 queue depth 0 (attempt 138)
+2026-10-14T10:19:13Z INFO poll worker 3 queue depth 0 (attempt 139)
+2026-10-14T10:20:20Z INFO poll worker 3 queue depth 0 (attempt 140)
+2026-10-14T10:21:27Z INFO poll worker 3 queue depth 0 (attempt 141)
+2026-10-14T10:22:34Z INFO poll worker 3 queue depth 0 (attempt 142)
+2026-10-14T10:23:41Z INFO poll worker 3 queue depth 0 (attempt 143)
+2026-10-14T10:24:48Z INFO poll worker 3 queue depth 0 (attempt 144)
+2026-10-14T10:25:55Z INFO poll worker 3 queue depth 0 (attempt 145)
+2026-10-14T10:26:02Z INFO poll worker 3 queue depth 0 (attempt 146)
+2026-10-14T10:27:09Z INFO poll worker 3 queue depth 0 (attempt 147)
+2026-10-14T10:28:16Z INFO poll worker 3 queue depth 0 (attempt 148)
+2026-10-14T10:29:23Z INFO poll worker 3 queue depth 0 (attempt 149)
+2026-10-14T10:30:30Z INFO poll worker 3 queue depth 0 (attempt 150)
+2026-10-14T10:31:37Z INFO poll worker 3 queue depth 0 (attempt 151)
+2026-10-14T10:32:44Z INFO poll worker 3 queue depth 0 (attempt 152)
+2026-10-14T10:33:51Z INFO poll worker 3 queue depth 0 (attempt 153)
+2026-10-14T10:34:58Z INFO poll worker 3 queue depth 0 (attempt 154)
+2026-10-14T10:35:05Z INFO poll worker 3 queue depth 0 (attempt 155)
+2026-10-14T10:36:12Z INFO poll worker 3 queue depth 0 (attempt 156)
+2026-10-14T10:37:19Z INFO poll worker 3 queue depth 0 (attempt 157)
+2026-10-14T10:38:26Z INFO poll worker 3 queue depth 0 (attempt 158)
+2026-10-14T10:39:33Z INFO poll worker 3 queue depth 0 (attempt 159)
+2026-10-14T10:40:40Z INFO poll worker 3 queue depth 0 (attempt 160)
+2026-10-14T10:41:47Z INFO poll worker 3 queue depth 0 (attempt 161)
+2026-10-14T10:42:54Z INFO poll worker 3 queue depth 0 (attempt 162)
+2026-10-14T10:43:01Z INFO poll worker 3 queue depth 0 (attempt 163)
+2026-10-14T10:44:08Z INFO poll worker 3 queue depth 0 (attempt 164)
+2026-10-14T10:45:15Z INFO poll worker 3 queue depth 0 (attempt 165)
+2026-10-14T10:46:22Z INFO poll worker 3 queue depth 0 (attempt 166)
+2026-10-14T10:47:29Z INFO poll worker 3 queue depth 0 (attempt 167)
+2026-10-14T10:48:36Z INFO poll worker 3 queue depth 0 (attempt 168)
+2026-10-14T10:49:43Z INFO poll worker 3 queue depth 0 (attempt 169)
+2026-10-14T10:50:50Z INFO poll worker 3 queue depth 0 (attempt 170)
+2026-10-14T10:51:57Z INFO poll worker 3 queue depth 0 (attempt 171)
+2026-10-14T10:52:04Z INFO poll worker 3 queue depth 0 (attempt 172)
+2026-10-14T10:53:11Z INFO poll worker 3 queue depth 0 (attempt 173)
+2026-10-14T10:54:18Z INFO poll worker 3 queue depth 0 (attempt 174)
+2026-10-14T10:55:25Z INFO poll worker 3 queue depth 0 (attempt 175)
+2026-10-14T10:56:32Z INFO poll worker 3 queue depth 0 (attempt 176)
+2026-10-14T10:57:39Z INFO poll worker 3 queue depth 0 (attempt 177)
+2026-10-14T10:58:46Z INFO poll worker 3 queue depth 0 (attempt 178)
+2026-10-14T10:59:53Z INFO poll worker 3 queue depth 0 (attempt 179)
+2026-10-14T10:00:00Z INFO poll worker 3 queue depth 0 (attempt 180)
+2026-10-14T10:01:07Z INFO poll worker 3 queue depth 0 (attempt 181)
+2026-10-14T10:02:14Z INFO poll worker 3 queue depth 0 (attempt 182)
+2026-10-14T10:03:21Z INFO poll worker 3 queue depth 0 (attempt 183)
+2026-10-14T10:04:28Z INFO poll worker 3 queue depth 0 (attempt 184)
+2026-10-14T10:05:35Z INFO poll worker 3 queue depth 0 (attempt 185)
+2026-10-14T10:06:42Z INFO poll worker 3 queue depth 0 (attempt 186)
+2026-10-14T10:07:49Z INFO poll worker 3 queue depth 0 (attempt 187)
+2026-10-14T10:08:56Z INFO poll worker 3 queue depth 0 (attempt 188)
+2026-10-14T10:09:03Z INFO poll worker 3 queue depth 0 (attempt 189)
+2026-10-14T10:10:10Z INFO poll worker 3 queue depth 0 (attempt 190)
+2026-10-14T10:11:17Z INFO poll worker 3 queue depth 0 (attempt 191)
+2026-10-14T10:12:24Z INFO poll worker 3 queue depth 0 (attempt 192)
+2026-10-14T10:13:31Z INFO poll worker 3 queue depth 0 (attempt 193)
+2026-10-14T10:14:38Z INFO poll worker 3 queue depth 0 (attempt 194)
+2026-10-14T10:00:00Z ERROR connection refused to 127.0.0.1:5432 (attempt 194)
+2026-10-14T10:15:45Z INFO poll worker 3 queue depth 0 (attempt 195)
+2026-10-14T10:16:52Z INFO poll worker 3 queue depth 0 (attempt 196)
+2026-10-14T10:17:59Z INFO poll worker 3 queue depth 0 (attempt 197)
+2026-10-14T10:18:06Z INFO poll worker 3 queue depth 0 (attempt 198)
+2026-10-14T10:19:13Z INFO poll worker 3 queue depth 0 (attempt 199)
+2026-10-14T10:20:20Z INFO poll worker 3 queue depth 0 (attempt 200)
+2026-10-14T10:21:27Z INFO poll worker 3 queue depth 0 (attempt 201)
+2026-10-14T10:22:34Z INFO poll worker 3 queue depth 0 (attempt 202)
+2026-10-14T10:23:41Z INFO poll worker 3 queue depth 0 (attempt 203)
+2026-10-14T10:24:48Z INFO poll worker 3 queue depth 0 (attempt 204)
+2026-10-14T10:25:55Z INFO poll worker 3 queue depth 0 (attempt 205)
+2026-10-14T10:26:02Z INFO poll worker 3 queue depth 0 (attempt 206)
+2026-10-14T10:27:09Z INFO poll worker 3 queue depth 0 (attempt 207)
+2026-10-14T10:28:16Z INFO poll worker 3 queue depth 0 (attempt 208)
+2026-10-14T10:29:23Z INFO poll worker 3 queue depth 0 (attempt 209)
+2026-10-14T10:30:30Z INFO poll worker 3 queue depth 0 (attempt 210)
+2026-10-14T10:31:37Z INFO poll worker 3 queue depth 0 (attempt 211)
+2026-10-14T10:32:44Z INFO poll worker 3 queue depth 0 (attempt 212)
+2026-10-14T10:33:51Z INFO poll worker 3 queue depth 0 (attempt 213)
+2026-10-14T10:34:58Z INFO poll worker 3 queue depth 0 (attempt 214)
+2026-10-14T10:35:05Z INFO poll worker 3 queue depth 0 (attempt 215)
+2026-10-14T10:36:12Z INFO poll worker 3 queue depth 0 (attempt 216)
+2026-10-14T10:37:19Z INFO poll worker 3 queue depth 0 (attempt 217)
+2026-10-14T10:38:26Z INFO poll worker 3 queue depth 0 (attempt 218)
+2026-10-14T10:39:33Z INFO poll worker 3 queue depth 0 (attempt 219)
+2026-10-14T10:40:40Z INFO poll worker 3 queue depth 0 (attempt 220)
+2026-10-14T10:41:47Z INFO poll worker 3 queue depth 0 (attempt 221)
+2026-10-14T10:42:54Z INFO poll worker 3 queue depth 0 (attempt 222)
+2026-10-14T10:43:01Z INFO poll worker 3 queue depth 0 (attempt 223)
+2026-10-14T10:44:08Z INFO poll worker 3 queue depth 0 (attempt 224)
+2026-10-14T10:45:15Z INFO poll worker 3 queue depth 0 (attempt 225)
+2026-10-14T10:46:22Z INFO poll worker 3 queue depth 0 (attempt 226)
+2026-10-14T10:47:29Z INFO poll worker 3 queue depth 0 (attempt 227)
+2026-10-14T10:48:36Z INFO poll worker 3 queue depth 0 (attempt 228)
+2026-10-14T10:49:43Z INFO poll worker 3 queue depth 0 (attempt 229)
+2026-10-14T10:50:50Z INFO poll worker 3 queue depth 0 (attempt 230)
+2026-10-14T10:51:57Z INFO poll worker 3 queue depth 0 (attempt 231)
+2026-10-14T10:52:04Z INFO poll worker 3 queue depth 0 (attempt 232)
+2026-10-14T10:53:11Z INFO poll worker 3 queue depth 0 (attempt 233)
+2026-10-14T10:54:18Z INFO poll worker 3 queue depth 0 (attempt 234)
+2026-10-14T10:55:25Z INFO poll worker 3 queue depth 0 (attempt 235)
+2026-10-14T10:56:32Z INFO poll worker 3 queue depth 0 (attempt 236)
+2026-10-14T10:57:39Z INFO poll worker 3 queue depth 0 (attempt 237)
+2026-10-14T10:58:46Z INFO poll worker 3 queue depth 0 (attempt 238)
+2026-10-14T10:59:53Z INFO poll worker 3 queue depth 0 (attempt 239)
+2026-10-14T10:00:00Z INFO poll worker 3 queue depth 0 (attempt 240)
+2026-10-14T10:01:07Z INFO poll worker 3 queue depth 0 (attempt 241)
+2026-10-14T10:02:14Z INFO poll worker 3 queue depth 0 (attempt 242)
+2026-10-14T10:03:21Z INFO poll worker 3 queue depth 0 (attempt 243)
+2026-10-14T10:04:28Z INFO poll worker 3 queue depth 0 (attempt 244)
+2026-10-14T10:05:35Z INFO poll worker 3 queue depth 0 (attempt 245)
+2026-10-14T10:06:42Z INFO poll worker 3 queue depth 0 (attempt 246)
+2026-10-14T10:07:49Z INFO poll worker 3 queue depth 0 (attempt 247)
+2026-10-14T10:08:56Z INFO poll worker 3 queue depth 0 (attempt 248)
+2026-10-14T10:09:03Z INFO poll worker 3 queue depth 0 (attempt 249)
+2026-10-14T10:10:10Z INFO poll worker 3 queue depth 0 (attempt 250)
+2026-10-14T10:11:17Z INFO poll worker 3 queue depth 0 (attempt 251)
+2026-10-14T10:12:24Z INFO poll worker 3 queue depth 0 (attempt 252)
+2026-10-14T10:13:31Z INFO poll worker 3 queue depth 0 (attempt 253)
+2026-10-14T10:14:38Z INFO poll worker 3 queue depth 0 (attempt 254)
+2026-10-14T10:15:45Z INFO poll worker 3 queue depth 0 (attempt 255)
+2026-10-14T10:16:52Z INFO poll worker 3 queue depth 0 (attempt 256)
+2026-10-14T10:17:59Z INFO poll worker 3 queue depth 0 (attempt 257)
+2026-10-14T10:18:06Z INFO poll worker 3 queue depth 0 (attempt 258)
+2026-10-14T10:19:13Z INFO poll worker 3 queue depth 0 (attempt 259)
+2026-10-14T10:20:20Z INFO poll worker 3 queue depth 0 (attempt 260)
+2026-10-14T10:21:27Z INFO poll worker 3 queue depth 0 (attempt 261)
+2026-10-14T10:22:34Z INFO poll worker 3 queue depth 0 (attempt 262)
+2026-10-14T10:23:41Z INFO poll worker 3 queue depth 0 (attempt 263)
+2026-10-14T10:24:48Z INFO poll worker 3 queue depth 0 (attempt 264)
+2026-10-14T10:25:55Z INFO poll worker 3 queue depth 0 (attempt 265)
+2026-10-14T10:26:02Z INFO poll worker 3 queue depth 0 (attempt 266)
+2026-10-14T10:27:09Z INFO poll worker 3 queue depth 0 (attempt 267)
+2026-10-14T10:28:16Z INFO poll worker 3 queue depth 0 (attempt 268)
+2026-10-14T10:29:23Z INFO poll worker 3 queue depth 0 (attempt 269)
+2026-10-14T10:30:30Z INFO poll worker 3 queue depth 0 (attempt 270)
+2026-10-14T10:31:37Z INFO poll worker 3 queue depth 0 (attempt 271)
+2026-10-14T10:32:44Z INFO poll worker 3 queue depth 0 (attempt 272)
+2026-10-14T10:33:51Z INFO poll worker 3 queue depth 0 (attempt 273)
+2026-10-14T10:34:58Z INFO poll worker 3 queue depth 0 (attempt 274)
+2026-10-14T10:35:05Z INFO poll worker 3 queue depth 0 (attempt 275)
+2026-10-14T10:36:12Z INFO poll worker 3 queue depth 0 (attempt 276)
+2026-10-14T10:37:19Z INFO poll worker 3 queue depth 0 (attempt 277)
+2026-10-14T10:38:26Z INFO poll worker 3 queue depth 0 (attempt 278)
+2026-10-14T10:39:33Z INFO poll worker 3 queue depth 0 (attempt 279)
+2026-10-14T10:40:40Z INFO poll worker 3 queue depth 0 (attempt 280)
+2026-10-14T10:41:47Z INFO poll worker 3 queue depth 0 (attempt 281)
+2026-10-14T10:42:54Z INFO poll worker 3 queue depth 0 (attempt 282)
+2026-10-14T10:43:01Z INFO poll worker 3 queue depth 0 (attempt 283)
+2026-10-14T10:44:08Z INFO poll worker 3 queue depth 0 (attempt 284)
+2026-10-14T10:45:15Z INFO poll worker 3 queue depth 0 (attempt 285)
+2026-10-14T10:46:22Z INFO poll worker 3 queue depth 0 (attempt 286)
+2026-10-14T10:47:29Z INFO poll worker 3 queue depth 0 (attempt 287)
+2026-10-14T10:48:36Z INFO poll worker 3 queue depth 0 (attempt 288)
+2026-10-14T10:49:43Z INFO poll worker 3 queue depth 0 (attempt 289)
+2026-10-14T10:50:50Z INFO poll worker 3 queue depth 0 (attempt 290)
+2026-10-14T10:51:57Z INFO poll worker 3 queue depth 0 (attempt 291)
+2026-10-14T10:00:00Z ERROR connection refused to 127.0.0.1:5432 (attempt 291)
+2026-10-14T10:52:04Z INFO poll worker 3 queue depth 0 (attempt 292)
+2026-10-14T10:53:11Z INFO poll worker 3 queue depth 0 (attempt 293)
+2026-10-14T10:54:18Z INFO poll worker 3 queue depth 0 (attempt 294)
+2026-10-14T10:55:25Z INFO poll worker 3 queue depth 0 (attempt 295)
+2026-10-14T10:56:32Z INFO poll worker 3 queue depth 0 (attempt 296)
+2026-10-14T10:57:39Z INFO poll worker 3 queue depth 0 (attempt 297)
+2026-10-14T10:58:46Z INFO poll worker 3 queue depth 0 (attempt 298)
+2026-10-14T10:59:53Z INFO poll worker 3 queue depth 0 (attempt 299)
+2026-10-14T10:00:00Z INFO poll worker 3 queue depth 0 (attempt 300)
+2026-10-14T10:01:07Z INFO poll worker 3 queue depth 0 (attempt 301)
+2026-10-14T10:02:14Z INFO poll worker 3 queue depth 0 (attempt 302)
+2026-10-14T10:03:21Z INFO poll worker 3 queue depth 0 (attempt 303)
+2026-10-14T10:04:28Z INFO poll worker 3 queue depth 0 (attempt 304)
+2026-10-14T10:05:35Z INFO poll worker 3 queue depth 0 (attempt 305)
+2026-10-14T10:06:42Z INFO poll worker 3 queue depth 0 (attempt 306)
+2026-10-14T10:07:49Z INFO poll worker 3 queue depth 0 (attempt 307)
+2026-10-14T10:08:56Z INFO poll worker 3 queue depth 0 (attempt 308)
+2026-10-14T10:09:03Z INFO poll worker 3 queue depth 0 (attempt 309)
+2026-10-14T10:10:10Z INFO poll worker 3 queue depth 0 (attempt 310)
+2026-10-14T10:11:17Z INFO poll worker 3 queue depth 0 (attempt 311)
+2026-10-14T10:12:24Z INFO poll worker 3 queue depth 0 (attempt 312)
+2026-10-14T10:13:31Z INFO poll worker 3 queue depth 0 (attempt 313)
+2026-10-14T10:14:38Z INFO poll worker 3 queue depth 0 (attempt 314)
+2026-10-14T10:15:45Z INFO poll worker 3 queue depth 0 (attempt 315)
+2026-10-14T10:16:52Z INFO poll worker 3 queue depth 0 (attempt 316)
+2026-10-14T10:17:59Z INFO poll worker 3 queue depth 0 (attempt 317)
+2026-10-14T10:18:06Z INFO poll worker 3 queue depth 0 (attempt 318)
+2026-10-14T10:19:13Z INFO poll worker 3 queue depth 0 (attempt 319)
+2026-10-14T10:20:20Z INFO poll worker 3 queue depth 0 (attempt 320)
+2026-10-14T10:21:27Z INFO poll worker 3 queue depth 0 (attempt 321)
+2026-10-14T10:22:34Z INFO poll worker 3 queue depth 0 (attempt 322)
+2026-10-14T10:23:41Z INFO poll worker 3 queue depth 0 (attempt 323)
+2026-10-14T10:24:48Z INFO poll worker 3 queue depth 0 (attempt 324)
+2026-10-14T10:25:55Z INFO poll worker 3 queue depth 0 (attempt 325)
+2026-10-14T10:26:02Z INFO poll worker 3 queue depth 0 (attempt 326)
+2026-10-14T10:27:09Z INFO poll worker 3 queue depth 0 (attempt 327)
+2026-10-14T10:28:16Z INFO poll worker 3 queue depth 0 (attempt 328)
+2026-10-14T10:29:23Z INFO poll worker 3 queue depth 0 (attempt 329)
+2026-10-14T10:30:30Z INFO poll worker 3 queue depth 0 (attempt 330)
+2026-10-14T10:31:37Z INFO poll worker 3 queue depth 0 (attempt 331)
+2026-10-14T10:32:44Z INFO poll worker 3 queue depth 0 (attempt 332)
+2026-10-14T10:33:51Z INFO poll worker 3 queue depth 0 (attempt 333)
+2026-10-14T10:34:58Z INFO poll worker 3 queue depth 0 (attempt 334)
+2026-10-14T10:35:05Z INFO poll worker 3 queue depth 0 (attempt 335)
+2026-10-14T10:36:12Z INFO poll worker 3 queue depth 0 (attempt 336)
+2026-10-14T10:37:19Z INFO poll worker 3 queue depth 0 (attempt 337)
+2026-10-14T10:38:26Z INFO poll worker 3 queue depth 0 (attempt 338)
+2026-10-14T10:39:33Z INFO poll worker 3 queue depth 0 (attempt 339)
+2026-10-14T10:40:40Z INFO poll worker 3 queue depth 0 (attempt 340)
+2026-10-14T10:41:47Z INFO poll worker 3 queue depth 0 (attempt 341)
+2026-10-14T10:42:54Z INFO poll worker 3 queue depth 0 (attempt 342)
+2026-10-14T10:43:01Z INFO poll worker 3 queue depth 0 (attempt 343)
+2026-10-14T10:44:08Z INFO poll worker 3 queue depth 0 (attempt 344)
+2026-10-14T10:45:15Z INFO poll worker 3 queue depth 0 (attempt 345)
+2026-10-14T10:46:22Z INFO poll worker 3 queue depth 0 (attempt 346)
+2026-10-14T10:47:29Z INFO poll worker 3 queue depth 0 (attempt 347)
+2026-10-14T10:48:36Z INFO poll worker 3 queue depth 0 (attempt 348)
+2026-10-14T10:49:43Z INFO poll worker 3 queue depth 0 (attempt 349)
+2026-10-14T10:50:50Z INFO poll worker 3 queue depth 0 (attempt 350)
+2026-10-14T10:51:57Z INFO poll worker 3 queue depth 0 (attempt 351)
+2026-10-14T10:52:04Z INFO poll worker 3 queue depth 0 (attempt 352)
+2026-10-14T10:53:11Z INFO poll worker 3 queue depth 0 (attempt 353)
+2026-10-14T10:54:18Z INFO poll worker 3 queue depth 0 (attempt 354)
+2026-10-14T10:55:25Z INFO poll worker 3 queue depth 0 (attempt 355)
+2026-10-14T10:56:32Z INFO poll worker 3 queue depth 0 (attempt 356)
+2026-10-14T10:57:39Z INFO poll worker 3 queue depth 0 (attempt 357)
+2026-10-14T10:58:46Z INFO poll worker 3 queue depth 0 (attempt 358)
+2026-10-14T10:59:53Z INFO poll worker 3 queue depth 0 (attempt 359)
+2026-10-14T10:00:00Z INFO poll worker 3 queue depth 0 (attempt 360)
+2026-10-14T10:01:07Z INFO poll worker 3 queue depth 0 (attempt 361)
+2026-10-14T10:02:14Z INFO poll worker 3 queue depth 0 (attempt 362)
+2026-10-14T10:03:21Z INFO poll worker 3 queue depth 0 (attempt 363)
+2026-10-14T10:04:28Z INFO poll worker 3 queue depth 0 (attempt 364)
+2026-10-14T10:05:35Z INFO poll worker 3 queue depth 0 (attempt 365)
+2026-10-14T10:06:42Z INFO poll worker 3 queue depth 0 (attempt 366)
+2026-10-14T10:07:49Z INFO poll worker 3 queue depth 0 (attempt 367)
+2026-10-14T10:08:56Z INFO poll worker 3 queue depth 0 (attempt 368)
+2026-10-14T10:09:03Z INFO poll worker 3 queue depth 0 (attempt 369)
+2026-10-14T10:10:10Z INFO poll worker 3 queue depth 0 (attempt 370)
+2026-10-14T10:11:17Z INFO poll worker 3 queue depth 0 (attempt 371)
+2026-10-14T10:12:24Z INFO poll worker 3 queue depth 0 (attempt 372)
+2026-10-14T10:13:31Z INFO poll worker 3 queue depth 0 (attempt 373)
+2026-10-14T10:14:38Z INFO poll worker 3 queue depth 0 (attempt 374)
+2026-10-14T10:15:45Z INFO poll worker 3 queue depth 0 (attempt 375)
+2026-10-14T10:16:52Z INFO poll worker 3 queue depth 0 (attempt 376)
+2026-10-14T10:17:59Z INFO poll worker 3 queue depth 0 (attempt 377)
+2026-10-14T10:18:06Z INFO poll worker 3 queue depth 0 (attempt 378)
+2026-10-14T10:19:13Z INFO poll worker 3 queue depth 0 (attempt 379)
+2026-10-14T10:20:20Z INFO poll worker 3 queue depth 0 (attempt 380)
+2026-10-14T10:21:27Z INFO poll worker 3 queue depth 0 (attempt 381)
+2026-10-14T10:22:34Z INFO poll worker 3 queue depth 0 (attempt 382)
+2026-10-14T10:23:41Z INFO poll worker 3 queue depth 0 (attempt 383)
+2026-10-14T10:24:48Z INFO poll worker 3 queue depth 0 (attempt 384)
+2026-10-14T10:25:55Z INFO poll worker 3 queue depth 0 (attempt 385)
+2026-10-14T10:26:02Z INFO poll worker 3 queue depth 0 (attempt 386)
+2026-10-14T10:27:09Z INFO poll worker 3 queue depth 0 (attempt 387)
+2026-10-14T10:28:16Z INFO poll worker 3 queue depth 0 (attempt 388)
+2026-10-14T10:00:00Z ERROR connection refused to 127.0.0.1:5432 (attempt 388)
+2026-10-14T10:29:23Z INFO poll worker 3 queue depth 0 (attempt 389)
+2026-10-14T10:30:30Z INFO poll worker 3 queue depth 0 (attempt 390)
+2026-10-14T10:31:37Z INFO poll worker 3 queue depth 0 (attempt 391)
+2026-10-14T10:32:44Z INFO poll worker 3 queue depth 0 (attempt 392)
+2026-10-14T10:33:51Z INFO poll worker 3 queue depth 0 (attempt 393)
+2026-10-14T10:34:58Z INFO poll worker 3 queue depth 0 (attempt 394)
+2026-10-14T10:35:05Z INFO poll worker 3 queue depth 0 (attempt 395)
+2026-10-14T10:36:12Z INFO poll worker 3 queue depth 0 (attempt 396)
+2026-10-14T10:37:19Z INFO poll worker 3 queue depth 0 (attempt 397)
+2026-10-14T10:38:26Z INFO poll worker 3 queue depth 0 (attempt 398)
+2026-10-14T10:39:33Z INFO poll worker 3 queue depth 0 (attempt 399)
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+retrying...
+WARN done with 4 retries

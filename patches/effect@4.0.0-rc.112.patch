@@ -1,0 +1,43 @@
+diff --git a/dist/unstable/http/HttpClientResponse.js b/dist/unstable/http/HttpClientResponse.js
+index 4734768068b28f35c086a3068a67085427f656ca..8b878530f7946b9d5aa43562297a214cda5209b1 100644
+--- a/dist/unstable/http/HttpClientResponse.js
++++ b/dist/unstable/http/HttpClientResponse.js
+@@ -176,7 +176,7 @@ class WebHttpClientResponse extends Inspectable.Class {
+     if (this.cachedCookies) {
+       return this.cachedCookies;
+     }
+-    return this.cachedCookies = Cookies.fromSetCookie(this.source.headers.getSetCookie());
++    return this.cachedCookies = Cookies.fromSetCookie((typeof this.source.headers.getSetCookie === "function" ? this.source.headers.getSetCookie() : []));
+   }
+   get remoteAddress() {
+     return Option.none();
+diff --git a/dist/unstable/rpc/RpcClient.js b/dist/unstable/rpc/RpcClient.js
+index ec789174eb12e4597c10fe70f17e3ee687506dee..b10e9573d9c5af95b7317bc73c24018c62dc2a62 100644
+--- a/dist/unstable/rpc/RpcClient.js
++++ b/dist/unstable/rpc/RpcClient.js
+@@ -720,8 +720,11 @@ const makePinger = /*#__PURE__*/Effect.fnUntraced(function* (writePing) {
+   const onPong = () => {
+     recievedPong = true;
+   };
++  // kora: a busy event loop can delay one pong past the 5 s tick; only three silent ticks in a row count as dead.
++  let silentTicks = 0;
+   yield* Effect.suspend(() => {
+-    if (!recievedPong) return latch.open;
++    silentTicks = recievedPong ? 0 : silentTicks + 1;
++    if (silentTicks >= 3) return latch.open;
+     recievedPong = false;
+     return writePing;
+   }).pipe(Effect.delay("5 seconds"), Effect.ignore, Effect.forever, Effect.interruptible, Effect.forkScoped);
+diff --git a/src/unstable/http/HttpClientResponse.ts b/src/unstable/http/HttpClientResponse.ts
+index 3e8b9482a456696d6149a612db6fd89a0d8f6fbc..ab8681175d1efecc51a13731c2cad20484e70717 100644
+--- a/src/unstable/http/HttpClientResponse.ts
++++ b/src/unstable/http/HttpClientResponse.ts
+@@ -308,7 +308,7 @@ class WebHttpClientResponse extends Inspectable.Class implements HttpClientRespo
+     if (this.cachedCookies) {
+       return this.cachedCookies
+     }
+-    return this.cachedCookies = Cookies.fromSetCookie(this.source.headers.getSetCookie())
++    return this.cachedCookies = Cookies.fromSetCookie((typeof this.source.headers.getSetCookie === "function" ? this.source.headers.getSetCookie() : []))
+   }
+ 
+   get remoteAddress(): Option.Option<string> {

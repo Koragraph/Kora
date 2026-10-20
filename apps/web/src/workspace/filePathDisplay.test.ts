@@ -1,0 +1,45 @@
+import { formatWorkspaceRelativePath } from "./filePathDisplay";
+import { describe, expect, it } from "vite-plus/test";
+
+describe("formatWorkspaceRelativePath", () => {
+  it("keeps double-slash POSIX paths case-sensitive", () => {
+    expect(formatWorkspaceRelativePath("//tmp/project/probe.txt", "//tmp/Project")).toBe(
+      "//tmp/project/probe.txt",
+    );
+  });
+
+  it("preserves columns when present", () => {
+    expect(
+      formatWorkspaceRelativePath(
+        "/C:/Users/mike/dev-stuff/kora/apps/web/src/session-logic.ts:501:9",
+        "C:/Users/mike/dev-stuff/kora",
+      ),
+    ).toBe("kora/apps/web/src/session-logic.ts:501:9");
+  });
+
+  it("keeps paths already rooted at the workspace label stable", () => {
+    expect(
+      formatWorkspaceRelativePath(
+        "kora/apps/web/src/session-logic.ts:501",
+        "C:/Users/mike/dev-stuff/kora",
+      ),
+    ).toBe("kora/apps/web/src/session-logic.ts:501");
+  });
+
+  it("prefixes relative paths with the workspace root label", () => {
+    expect(
+      formatWorkspaceRelativePath(
+        "apps/web/src/session-logic.ts:501",
+        "C:/Users/mike/dev-stuff/kora",
+      ),
+    ).toBe("kora/apps/web/src/session-logic.ts:501");
+  });
+  it("formats absolute workspace paths from the workspace root", () => {
+    expect(
+      formatWorkspaceRelativePath(
+        "C:/Users/mike/dev-stuff/kora/apps/web/src/session-logic.ts:501",
+        "C:/Users/mike/dev-stuff/kora",
+      ),
+    ).toBe("kora/apps/web/src/session-logic.ts:501");
+  });
+});

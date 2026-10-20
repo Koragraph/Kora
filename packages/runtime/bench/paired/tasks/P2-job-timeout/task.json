@@ -1,0 +1,15 @@
+{
+  "id": "P2-job-timeout",
+  "title": "Per-job timeouts",
+  "kind": "feature",
+  "repo": "taskflow",
+  "prompts": [
+    "Add per-job timeouts to taskflow.\n\nA job takes an optional `timeoutMs`, default `null`. When it is set it must be a positive integer; anything else makes constructing the job throw an `Error` whose message mentions `timeoutMs`. The value must survive serialization: `toJSON`/`fromJSON` and the stores (memory and file) must carry it.\n\nThe `submit` CLI command accepts `--timeout MS`. When a job has a timeout, the line `submit` prints ends with ` timeout <MS>ms`, for example `scheduled job_00001 (email) timeout 500ms`; without a timeout the line stays as it is today. An invalid `--timeout` value must be rejected the same way as an invalid `timeoutMs`.\n\nWhen a worker runs a job that has a timeout and the handler does not finish in time, the run counts as a failure with the error message `job <id> timed out after <ms>ms` and goes through the normal retry or dead flow. Handlers that finish in time, and jobs without a timeout, behave exactly as before.\n\nAdd tests and run the whole suite when you're done."
+  ],
+  "timeLimitSec": 900,
+  "maxTurns": 50,
+  "startState": { "visibleTests": "pass" },
+  "grade": { "hidden": "hidden", "hiddenMode": "add", "commands": [["--test"]] },
+  "reference": { "overlay": "reference" },
+  "notes": "P2 field end to end. A new Job field flows through validation (constructor), serialization (toJSON), the CLI (option parsing in the argument parser, which has a numeric-options set, and the submit command's output line) and the worker, which must enforce it by reusing the timeout middleware. The prompt names no file. The reference touches src/job.js, src/worker.js, src/cli/index.js and src/cli/commands/submit.js."
+}

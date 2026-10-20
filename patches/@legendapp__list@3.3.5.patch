@@ -1,0 +1,122 @@
+diff --git a/react.js b/react.js
+index 914d2dafaafa001c9ab6791a0a0581659295e333..7e84cc9843dc1401f24c922c3bd16381be494464 100644
+--- a/react.js
++++ b/react.js
+@@ -4702,7 +4702,9 @@ function maybeUpdateAnchoredEndSpace(ctx) {
+       contentBelowAnchor = Math.max(0, contentBelowAnchor - ctx.scrollAxisGap);
+       contentBelowAnchor += (ctx.values.get("footerSize") || 0) + getStylePaddingEnd(state.props);
+       isReady = !hasUnknownTailSize;
+-      nextSize = hasUnknownTailSize ? previousSize || 0 : Math.max(0, state.scrollLength - contentBelowAnchor - anchorOffset);
++      const roomAfterAnchor = Math.max(0, state.scrollLength - contentBelowAnchor - anchorOffset);
++      // kora: with part of the tail unmeasured, keep the old space but never more than the measured part leaves room for.
++      nextSize = hasUnknownTailSize ? Math.min(roomAfterAnchor, previousSize || 0) : roomAfterAnchor;
+     } else if (anchorIndex >= 0) {
+       isReady = false;
+     }
+@@ -4723,6 +4725,13 @@ function maybeUpdateAnchoredEndSpace(ctx) {
+     }
+     (_b = anchoredEndSpace == null ? void 0 : anchoredEndSpace.onReady) == null ? void 0 : _b.call(anchoredEndSpace, { anchorIndex: nextAnchorIndex, anchorKey: nextAnchorKey, size: nextSize });
+   }
++  const shrankWhileMeasuring = !isReady && didSizeChange && nextSize < (previousSize || 0);
++  if (shrankWhileMeasuring) {
++    // kora: a shrink is safe to show before the tail is measured; waiting leaves a blank gap under the last message.
++    set$(ctx, "anchoredEndSpaceSize", nextSize);
++    anchoredEndSpace?.onSizeChanged?.(nextSize);
++    if (anchoredEndSpace?.includeInEndInset) updateScroll(ctx, state.scroll, true, { markHasScrolled: false });
++  }
+   return nextSize;
+ }
+ 
+@@ -5651,6 +5660,8 @@ var ContainerSlot = typedMemo(function ContainerSlot2(props) {
+ });
+ 
+ // src/utils/reordering.ts
++// kora: prefer Element.moveBefore, which moves a node without re-inserting it (no restarted transitions or iframes).
++var relocate = (parent, node, before) => typeof parent.moveBefore === "function" ? parent.moveBefore(node, before) : parent.insertBefore(node, before);
+ function sortDOMElements(container, indexByElement) {
+   const elements = Array.from(container.children);
+   if (elements.length <= 1) return elements;
+@@ -5690,9 +5701,9 @@ function sortDOMElements(container, indexByElement) {
+         }
+       }
+       if (nextStableElement) {
+-        container.insertBefore(element, nextStableElement);
++        relocate(container, element, nextStableElement);
+       } else {
+-        container.appendChild(element);
++        relocate(container, element, null);
+       }
+     }
+   }
+@@ -6446,8 +6457,9 @@ function ScrollAdjust() {
+               window.getComputedStyle(contentNode)[axis.paddingEndProp]
+             );
+             const temporaryPaddingEnd = `${(currentPaddingEnd || 0) + pad}px`;
+-            temporaryPaddingRef.current = { baseline: baselinePaddingEnd, value: temporaryPaddingEnd };
+             contentNode.style[axis.paddingEndProp] = temporaryPaddingEnd;
++            // kora: store what the style reports back (the browser may normalise the string) for the later reset check.
++            temporaryPaddingRef.current = { value: contentNode.style[axis.paddingEndProp], baseline: baselinePaddingEnd };
+             void contentNode.offsetHeight;
+             scrollBy();
+             if (resetPaddingRafRef.current !== void 0) {
+diff --git a/react.mjs b/react.mjs
+index 95465f2ab89ce41a10553f58af83618f7310e83c..0402de46c9b3f25b01577806f3fd7cfe8b7a05ee 100644
+--- a/react.mjs
++++ b/react.mjs
+@@ -4681,7 +4681,9 @@ function maybeUpdateAnchoredEndSpace(ctx) {
+       contentBelowAnchor = Math.max(0, contentBelowAnchor - ctx.scrollAxisGap);
+       contentBelowAnchor += (ctx.values.get("footerSize") || 0) + getStylePaddingEnd(state.props);
+       isReady = !hasUnknownTailSize;
+-      nextSize = hasUnknownTailSize ? previousSize || 0 : Math.max(0, state.scrollLength - contentBelowAnchor - anchorOffset);
++      const roomAfterAnchor = Math.max(0, state.scrollLength - contentBelowAnchor - anchorOffset);
++      // kora: with part of the tail unmeasured, keep the old space but never more than the measured part leaves room for.
++      nextSize = hasUnknownTailSize ? Math.min(roomAfterAnchor, previousSize || 0) : roomAfterAnchor;
+     } else if (anchorIndex >= 0) {
+       isReady = false;
+     }
+@@ -4702,6 +4704,13 @@ function maybeUpdateAnchoredEndSpace(ctx) {
+     }
+     (_b = anchoredEndSpace == null ? void 0 : anchoredEndSpace.onReady) == null ? void 0 : _b.call(anchoredEndSpace, { anchorIndex: nextAnchorIndex, anchorKey: nextAnchorKey, size: nextSize });
+   }
++  const shrankWhileMeasuring = !isReady && didSizeChange && nextSize < (previousSize || 0);
++  if (shrankWhileMeasuring) {
++    // kora: a shrink is safe to show before the tail is measured; waiting leaves a blank gap under the last message.
++    set$(ctx, "anchoredEndSpaceSize", nextSize);
++    anchoredEndSpace?.onSizeChanged?.(nextSize);
++    if (anchoredEndSpace?.includeInEndInset) updateScroll(ctx, state.scroll, true, { markHasScrolled: false });
++  }
+   return nextSize;
+ }
+ 
+@@ -5630,6 +5639,8 @@ var ContainerSlot = typedMemo(function ContainerSlot2(props) {
+ });
+ 
+ // src/utils/reordering.ts
++// kora: prefer Element.moveBefore, which moves a node without re-inserting it (no restarted transitions or iframes).
++var relocate = (parent, node, before) => typeof parent.moveBefore === "function" ? parent.moveBefore(node, before) : parent.insertBefore(node, before);
+ function sortDOMElements(container, indexByElement) {
+   const elements = Array.from(container.children);
+   if (elements.length <= 1) return elements;
+@@ -5669,9 +5680,9 @@ function sortDOMElements(container, indexByElement) {
+         }
+       }
+       if (nextStableElement) {
+-        container.insertBefore(element, nextStableElement);
++        relocate(container, element, nextStableElement);
+       } else {
+-        container.appendChild(element);
++        relocate(container, element, null);
+       }
+     }
+   }
+@@ -6425,8 +6436,9 @@ function ScrollAdjust() {
+               window.getComputedStyle(contentNode)[axis.paddingEndProp]
+             );
+             const temporaryPaddingEnd = `${(currentPaddingEnd || 0) + pad}px`;
+-            temporaryPaddingRef.current = { baseline: baselinePaddingEnd, value: temporaryPaddingEnd };
+             contentNode.style[axis.paddingEndProp] = temporaryPaddingEnd;
++            // kora: store what the style reports back (the browser may normalise the string) for the later reset check.
++            temporaryPaddingRef.current = { value: contentNode.style[axis.paddingEndProp], baseline: baselinePaddingEnd };
+             void contentNode.offsetHeight;
+             scrollBy();
+             if (resetPaddingRafRef.current !== void 0) {

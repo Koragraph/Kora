@@ -1,0 +1,17 @@
+# synthesized from source packages/tui/src/routes/session/permission.tsx:199-206,385-405,632-710 @v1.18.32; confirm live at CP2
+# expect: blocked (permission_required); opencode autoAnswer under allowEdits → Enter ("Allow once" is selected first)
+---8<---
+  ┃  Add a trailing-comma test to src/config/parse.test.ts
+  ┃
+
+     → Read src/config/parse.ts
+
+  ┃
+  ┃  △ Permission required
+  ┃    → Edit src/config/parse.test.ts
+  ┃
+  ┃    12 │  test("parses", () => {
+  ┃    13 │+   expect(parse("[1,2,]")).toEqual([1, 2])
+  ┃    14 │  })
+  ┃
+  ┃   Allow once   Allow always   Reject                ctrl+f fullscreen  ⇆ select  enter confirm

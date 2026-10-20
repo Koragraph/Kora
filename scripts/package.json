@@ -1,0 +1,19 @@
+{
+  "name": "@kora/scripts",
+  "private": true,
+  "description": "Build, packaging and release scripts.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vp test run"
+  },
+  "dependencies": {
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "typescript-legacy": "npm:typescript@~6.0.3",
+    "vite-plus": "catalog:"
+  }
+}

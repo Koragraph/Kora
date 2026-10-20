@@ -1,0 +1,40 @@
+id = "droid"
+version = "0.1.0-kora"
+min_engine_version = 2
+
+# Original ruleset. No tool-specific knowledge of this agent's terminal UI went into this file --
+# generic spinner/prompt/confirm heuristics only, using conventions common across many CLI tools
+# (braille spinner glyphs, bare-prompt idle, numbered-choice / y-n confirm gates). Treat as regressed
+# vs. a tool-specific ruleset until captured live.
+
+[[rules]]
+id = "spinner_working"
+state = "working"
+priority = 100
+region = "bottom_non_empty_lines(4)"
+regex = ['[⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏]']
+visible_working = true
+
+[[rules]]
+id = "numbered_choice_prompt"
+state = "blocked"
+priority = 200
+region = "bottom_non_empty_lines(8)"
+line_regex = ['^\s*[❯>]?\s*[1-9][.)]\s+\S']
+visible_blocker = true
+
+[[rules]]
+id = "yes_no_prompt"
+state = "blocked"
+priority = 190
+region = "bottom_non_empty_lines(6)"
+line_regex = ['\(?[Yy]/[Nn]\)?\s*[:?]?\s*$']
+visible_blocker = true
+
+[[rules]]
+id = "idle_bare_prompt"
+state = "idle"
+priority = 10
+region = "bottom_non_empty_lines(2)"
+line_regex = ['^[>$#❯]\s*$']
+visible_idle = true

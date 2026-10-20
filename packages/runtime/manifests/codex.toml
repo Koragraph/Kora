@@ -1,0 +1,69 @@
+id = "codex"
+version = "0.1.0-kora"
+min_engine_version = 2
+
+# Original ruleset, tuned against this repo's own test fixtures (src/detect/detect.test.ts). The "›"
+# prompt marker is a load-bearing fact already used by src/detect/manifest.ts's region helpers -- a
+# real, observable fact about Codex CLI's UI. Everything else (exact wording,
+# priorities) is best-effort. Moderate confidence; needs live verification.
+
+[[rules]]
+id = "osc_action_required"
+state = "blocked"
+priority = 700
+region = "osc_title"
+contains = ["action required"]
+visible_blocker = true
+
+[[rules]]
+id = "live_strong_blocker"
+state = "blocked"
+priority = 650
+region = "bottom_non_empty_lines(8)"
+contains = ["allow command"]
+visible_blocker = true
+
+# Codex ≥0.15x asks "Do you trust the contents of this directory?" with a ›-marked numbered list on EVERY
+# path it has not seen (each kora worktree is one). Unrecognised, it read as idle: the worker prompt was typed
+# onto the dialog and a digit in the text picked "2. No, quit" — three codex workers in a row exited 0 in 100ms.
+[[rules]]
+id = "trust_dialog"
+state = "blocked"
+priority = 680
+region = "bottom_non_empty_lines(10)"
+contains = ["do you trust", "press enter to continue"]
+visible_blocker = true
+
+[[rules]]
+id = "cursor_marked_numbered_option"
+state = "blocked"
+priority = 660
+region = "bottom_non_empty_lines(8)"
+line_regex = ['^\s*›\s*[1-9][.)]\s+\S']
+visible_blocker = true
+
+[[rules]]
+id = "osc_title_working"
+state = "working"
+priority = 600
+region = "osc_title"
+regex = ['[⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏]']
+visible_working = true
+
+# Codex shows "Working (12s • esc to interrupt)" above its input line while a turn runs; the input line itself
+# stays visible, so without this the idle rule below matched through a whole turn.
+[[rules]]
+id = "live_turn_working"
+state = "working"
+priority = 500
+region = "bottom_non_empty_lines(6)"
+contains = ["esc to interrupt"]
+visible_working = true
+
+[[rules]]
+id = "idle_prompt_marker"
+state = "idle"
+priority = 10
+region = "bottom_non_empty_lines(1)"
+line_regex = ['^›\s*$']
+visible_idle = true

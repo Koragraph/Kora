@@ -1,0 +1,17 @@
+# synthesized from source packages/tui/src/component/prompt/index.tsx:1515-1592 @v1.18.32; confirm live at CP2
+# expect: working (esc_interrupt). The empty prompt still shows the "Ask anything" placeholder while busy.
+---8<---
+  ┃  Add a trailing-comma test to src/config/parse.test.ts
+  ┃
+
+     I'll read the parser first.
+
+     → Read src/config/parse.ts
+     ✱ Grep "trailing" (2 matches)
+
+  ┃
+  ┃  Ask anything… "Fix a TODO in the codebase"
+  ┃
+  ┃  Build  Big Pickle OpenCode Zen
+  ╹▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+   ⬝⬝■■■■⬝⬝  esc interrupt                           12.4K (1%) · $0.00  ctrl+p commands

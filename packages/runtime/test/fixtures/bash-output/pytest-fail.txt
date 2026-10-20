@@ -1,0 +1,82 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.2, pytest-9.1.1, pluggy-1.6.0 -- /tmp/fx/v/bin/python
+cachedir: .pytest_cache
+rootdir: /tmp/fx/py
+collecting ... collected 52 items
+
+test_x.py::test_ok_1 PASSED                                              [  1%]
+test_x.py::test_ok_2 PASSED                                              [  3%]
+test_x.py::test_ok_3 PASSED                                              [  5%]
+test_x.py::test_ok_4 PASSED                                              [  7%]
+test_x.py::test_ok_5 PASSED                                              [  9%]
+test_x.py::test_ok_6 PASSED                                              [ 11%]
+test_x.py::test_ok_7 PASSED                                              [ 13%]
+test_x.py::test_ok_8 PASSED                                              [ 15%]
+test_x.py::test_ok_9 PASSED                                              [ 17%]
+test_x.py::test_ok_10 PASSED                                             [ 19%]
+test_x.py::test_ok_11 PASSED                                             [ 21%]
+test_x.py::test_ok_12 PASSED                                             [ 23%]
+test_x.py::test_ok_13 PASSED                                             [ 25%]
+test_x.py::test_ok_14 PASSED                                             [ 26%]
+test_x.py::test_ok_15 PASSED                                             [ 28%]
+test_x.py::test_ok_16 PASSED                                             [ 30%]
+test_x.py::test_ok_17 PASSED                                             [ 32%]
+test_x.py::test_ok_18 PASSED                                             [ 34%]
+test_x.py::test_ok_19 PASSED                                             [ 36%]
+test_x.py::test_ok_20 PASSED                                             [ 38%]
+test_x.py::test_ok_21 PASSED                                             [ 40%]
+test_x.py::test_ok_22 PASSED                                             [ 42%]
+test_x.py::test_ok_23 PASSED                                             [ 44%]
+test_x.py::test_ok_24 PASSED                                             [ 46%]
+test_x.py::test_ok_25 PASSED                                             [ 48%]
+test_x.py::test_ok_26 PASSED                                             [ 50%]
+test_x.py::test_ok_27 PASSED                                             [ 51%]
+test_x.py::test_ok_28 PASSED                                             [ 53%]
+test_x.py::test_ok_29 PASSED                                             [ 55%]
+test_x.py::test_ok_30 PASSED                                             [ 57%]
+test_x.py::test_ok_31 PASSED                                             [ 59%]
+test_x.py::test_ok_32 PASSED                                             [ 61%]
+test_x.py::test_ok_33 PASSED                                             [ 63%]
+test_x.py::test_ok_34 PASSED                                             [ 65%]
+test_x.py::test_ok_35 PASSED                                             [ 67%]
+test_x.py::test_ok_36 PASSED                                             [ 69%]
+test_x.py::test_ok_37 PASSED                                             [ 71%]
+test_x.py::test_ok_38 PASSED                                             [ 73%]
+test_x.py::test_ok_39 PASSED                                             [ 75%]
+test_x.py::test_ok_40 PASSED                                             [ 76%]
+test_x.py::test_ok_41 PASSED                                             [ 78%]
+test_x.py::test_ok_42 PASSED                                             [ 80%]
+test_x.py::test_ok_43 PASSED                                             [ 82%]
+test_x.py::test_ok_44 PASSED                                             [ 84%]
+test_x.py::test_ok_45 PASSED                                             [ 86%]
+test_x.py::test_ok_46 PASSED                                             [ 88%]
+test_x.py::test_ok_47 PASSED                                             [ 90%]
+test_x.py::test_ok_48 PASSED                                             [ 92%]
+test_x.py::test_ok_49 PASSED                                             [ 94%]
+test_x.py::test_ok_50 PASSED                                             [ 96%]
+test_x.py::test_bad_sum FAILED                                           [ 98%]
+test_x.py::test_raises FAILED                                            [100%]
+
+=================================== FAILURES ===================================
+_________________________________ test_bad_sum _________________________________
+
+    def test_bad_sum():
+        total = sum([1,2,3])
+>       assert total == 7, 'sum is wrong'
+E       AssertionError: sum is wrong
+E       assert 6 == 7
+
+test_x.py:104: AssertionError
+_________________________________ test_raises __________________________________
+
+    def test_raises():
+        d = {}
+>       return d['missing']
+               ^^^^^^^^^^^^
+E       KeyError: 'missing'
+
+test_x.py:107: KeyError
+=========================== short test summary info ============================
+FAILED test_x.py::test_bad_sum - AssertionError: sum is wrong
+FAILED test_x.py::test_raises - KeyError: 'missing'
+========================= 2 failed, 50 passed in 0.05s =========================

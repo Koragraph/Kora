@@ -1,0 +1,20 @@
+{
+  "name": "@kora/oxlint-plugin-kora",
+  "private": true,
+  "description": "Repository lint rules.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vp test run"
+  },
+  "dependencies": {
+    "@effect/platform-node": "catalog:",
+    "@oxlint/plugins": "^1.63.0",
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@effect/vitest": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

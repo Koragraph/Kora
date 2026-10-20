@@ -1,0 +1,15 @@
+{
+  "id": "M3-mailto-links",
+  "title": "Allow mailto: and tel: links",
+  "kind": "long-file-change",
+  "repo": "mdlite",
+  "prompts": [
+    "Links like `[mail me](mailto:a@b.co)` and `[call](tel:+15551234)` get their URL replaced by `#` when rendered to HTML. Allow `mailto:` and `tel:` URLs in links (any letter case). Everything else stays as strict as it is now: `javascript:`, `data:`, `vbscript:` and other schemes remain blocked however they are spelled, and images keep today's rule (only http, https and relative URLs). Update the README's security section to say which schemes are allowed, and run the tests."
+  ],
+  "timeLimitSec": 600,
+  "maxTurns": 40,
+  "startState": { "visibleTests": "pass" },
+  "grade": { "hidden": "hidden", "hiddenMode": "add", "commands": [["--test"]] },
+  "reference": { "overlay": "reference" },
+  "notes": "A one-function change inside a 500-line file (sanitizeUrl in src/renderer/html.js) whose callers (link, autolink, image, embed) must keep different rules. The temptation is to read the whole file."
+}

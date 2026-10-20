@@ -1,0 +1,10 @@
+{
+  "name": "ledgerkit",
+  "version": "0.4.2",
+  "description": "Small invoicing and double-entry ledger library (integer-cent money, tax, discounts, payments, aging).",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": { "ledgerkit": "src/cli.js" },
+  "scripts": { "test": "node --test" },
+  "license": "MIT"
+}

@@ -1,0 +1,821 @@
+<title>Kora Typing Sprite</title>
+<style>
+  /* Layout: a specimen board, one card per typing variation; each shows the big frame and a real-size composer mock. */
+  :root {
+    --ground: #000000;
+    --lift-top: #131315;
+    --lift-bot: #0b0b0c;
+    --ink: #f2f2f4;
+    --muted: #8b8d95;
+    --font-display: "Silkscreen", ui-monospace, monospace;
+    --font-body: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    color-scheme: dark;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    margin: 0;
+  }
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 40px 140px;
+  }
+  header {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(26px, 4vw, 38px);
+    margin: 0;
+  }
+  .lede {
+    color: var(--muted);
+    max-width: 64ch;
+    line-height: 1.55;
+    margin: 0;
+    font-size: 14px;
+  }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    align-items: center;
+    margin: 4px 0 24px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .controls label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .controls input[type="range"] {
+    accent-color: var(--ink);
+    width: 140px;
+  }
+  button:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 14px;
+  }
+  .card {
+    position: relative;
+    display: grid;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 16px;
+    cursor: pointer;
+    text-align: left;
+    color: inherit;
+    font: inherit;
+    border: 0;
+    background: linear-gradient(var(--lift-top), var(--lift-bot));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  .card[aria-pressed="true"] {
+    box-shadow:
+      inset 0 0 0 1.5px var(--ink),
+      0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  .tag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .card[aria-pressed="true"] .tag {
+    color: var(--ink);
+  }
+  .stage {
+    height: 150px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: #050506;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  }
+  canvas {
+    image-rendering: pixelated;
+    display: block;
+  }
+  .big {
+    width: 200px;
+    height: 140px;
+  }
+  h2.sect {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 20px;
+    margin: 40px 0 8px;
+  }
+  .grid + .lede {
+    margin-bottom: 18px;
+  }
+  .meta {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+  }
+  .name {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .desc {
+    color: var(--muted);
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+  .fr {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  /* composer mock: the sprite's bottom row sits on the box's top edge */
+  .composer {
+    position: relative;
+    padding-top: 30px;
+  }
+  .composer canvas.mini {
+    position: absolute;
+    top: 2px;
+    left: 26px;
+    width: 40px;
+    height: 28px;
+  }
+  .box {
+    height: 64px;
+    border-radius: 18px;
+    background: linear-gradient(#111113, #0a0a0b);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.07),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #c9cad0;
+    position: relative;
+  }
+  .box .caret {
+    display: inline-block;
+    width: 1px;
+    height: 14px;
+    background: var(--ink);
+    vertical-align: -2px;
+    animation: caret 1s steps(1) infinite;
+  }
+  @keyframes caret {
+    50% {
+      opacity: 0;
+    }
+  }
+  .rm-note {
+    display: none;
+    color: var(--muted);
+    font-size: 12px;
+    margin: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rm-note {
+      display: block;
+    }
+    .box .caret {
+      animation: none;
+    }
+  }
+
+  .tray {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(transparent, #000 30%);
+  }
+  .tray-in {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: linear-gradient(var(--lift-top), var(--lift-bot));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 10px 30px rgba(0, 0, 0, 0.6);
+  }
+  .picks {
+    font-size: 13px;
+    color: var(--muted);
+    min-width: 0;
+  }
+  .picks b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .tray button {
+    font: inherit;
+    font-size: 13px;
+    border: 0;
+    border-radius: 999px;
+    padding: 7px 14px;
+    cursor: pointer;
+    background: var(--ink);
+    color: #000;
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Silkscreen&family=Geist:wght@400;600&family=Geist+Mono&display=swap"
+/>
+
+<div class="wrap">
+  <header>
+    <h1>Typing sprite</h1>
+    <p class="lede">
+      More detailed takes on the sprite that peeks over the message box while you type. Each one
+      gets a 20×14 pixel canvas, so there is room for keys, paws and props, and plays frame by
+      frame. Under each, a real-size mock of the message box shows how it sits on the edge. Tap the
+      ones you like.
+    </p>
+    <p class="rm-note">Reduced motion is on, so each card shows its first frame.</p>
+  </header>
+  <div class="controls">
+    <label for="speed"
+      >Speed <input id="speed" type="range" min="0.5" max="2" step="0.25" value="1" />
+      <span id="speedv">1×</span></label
+    >
+  </div>
+  <div class="grid" id="grid"></div>
+  <h2 class="sect">Picked: #4 Code screen, one card per state</h2>
+  <p class="lede">
+    What the composer plays. Typing while keys come; thinking after 0.5 s without a key; one look
+    around after 5 s, then idle. It only sinks when the box is empty.
+  </p>
+  <div class="grid" id="states"></div>
+</div>
+<div class="tray">
+  <div class="tray-in">
+    <div class="picks" id="picks">No picks yet. Tap a card to pick it.</div>
+    <button type="button" id="copy">Copy picks</button>
+  </div>
+</div>
+
+<script>
+  const PAL = {
+    W: "#ededf0",
+    S: "#a9abb3",
+    K: "#0a0a0b",
+    G: "#74767e",
+    L: "#c9cad0",
+    Q: "#ffffff",
+    D: "#3a3b40",
+    M: "#55575e",
+  };
+  const GW = 20,
+    GH = 14;
+
+  // ── tiny pixel painter ──
+  function blank() {
+    return Array.from({ length: GH }, () => Array(GW).fill("."));
+  }
+  function put(g, x, y, c) {
+    if (x >= 0 && x < GW && y >= 0 && y < GH) g[y][x] = c;
+  }
+  function rect(g, x, y, w, h, c) {
+    for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) put(g, x + i, y + j, c);
+  }
+  function stamp(g, x, y, rows) {
+    rows.forEach((r, j) =>
+      [...r].forEach((ch, i) => {
+        if (ch !== ".") put(g, x + i, y + j, ch);
+      }),
+    );
+  }
+
+  // Kora's body (8x7). eyes: open | down | up | closed | left | right | focus
+  function body(g, x, y, eyes = "open") {
+    stamp(g, x, y, [
+      "..WWWW..",
+      ".WWWWWS.",
+      "WWWWWWWS",
+      "WWWWWWWS",
+      "WWWWWWWS",
+      "WWWWWWWS",
+      ".WWWWWS.",
+    ]);
+    const E = {
+      open: [
+        [1, 3],
+        [1, 4],
+        [5, 3],
+        [5, 4],
+      ],
+      down: [
+        [1, 4],
+        [5, 4],
+        [1, 5],
+        [5, 5],
+      ],
+      up: [
+        [1, 2],
+        [5, 2],
+        [1, 3],
+        [5, 3],
+      ],
+      closed: [
+        [1, 4],
+        [5, 4],
+      ],
+      left: [
+        [0, 3],
+        [0, 4],
+        [4, 3],
+        [4, 4],
+      ],
+      right: [
+        [2, 3],
+        [2, 4],
+        [6, 3],
+        [6, 4],
+      ],
+      focus: [
+        [1, 4],
+        [2, 4],
+        [4, 4],
+        [5, 4],
+      ],
+    }[eyes];
+    E.forEach(([i, j]) => put(g, x + i, y + j, "K"));
+  }
+  // a keyboard: two rows of keys on a base. lit = list of key indexes pressed (they glow and sink a pixel)
+  function keyboard(g, x, y, w, lit = [], style = "keys") {
+    rect(g, x, y + 2, w, 1, "D"); // base shadow
+    rect(g, x, y + 1, w, 1, "M"); // base
+    for (let i = 0; i < Math.floor(w / 2); i++) {
+      const kx = x + i * 2,
+        pressed = lit.includes(i);
+      if (style === "keys")
+        put(g, kx, pressed ? y + 1 : y, pressed ? "Q" : i % 3 === 0 ? "L" : "G");
+      else put(g, kx, y, pressed ? "Q" : "G");
+    }
+  }
+  const paw = (g, x, y, down) => {
+    put(g, x, down ? y + 1 : y, "W");
+    if (!down) put(g, x, y + 1, "S");
+  };
+
+  // ── variations: each returns frames [{g, ms}] ──
+  const V = [];
+
+  // 1. Paws on keys: little paws alternate, the key under each lights and sinks.
+  V.push([
+    "paws",
+    "Paws on keys",
+    "Two little paws tap a pixel keyboard; each key lights and sinks under the paw.",
+    (() => {
+      const seq = [
+        [0, 2],
+        [1, 6],
+        [0, 3],
+        [1, 5],
+        [0, 1],
+        [1, 7],
+        [0, 2],
+        [1, 6],
+      ];
+      return seq.map(([hand, key], n) => {
+        const g = blank();
+        body(g, 6, 2, n % 4 === 3 ? "down" : "focus");
+        keyboard(g, 2, 10, 16, [key]);
+        paw(g, 6, 8, hand === 0);
+        paw(g, 13, 8, hand === 1);
+        return { g, ms: 110 };
+      });
+    })(),
+  ]);
+
+  // 2. Laptop: peeks over a laptop lid, screen light flickering on its face.
+  V.push([
+    "laptop",
+    "Laptop",
+    "Peeks over a laptop lid; the screen's light flickers on its face as it types.",
+    (() => {
+      const frames = [];
+      for (let n = 0; n < 8; n++) {
+        const g = blank();
+        body(g, 6, 2, n === 6 ? "up" : "focus");
+        if (n % 2 === 0) {
+          put(g, 7, 7, "L");
+          put(g, 12, 7, "L");
+        } // screen glow on the chin
+        stamp(g, 3, 8, ["MMMMMMMMMMMMMM", "MMMMMMDMMMMMMM", "MMMMMMMMMMMMMM"]); // lid back, tiny logo
+        rect(g, 2, 11, 16, 1, "G");
+        rect(g, 2, 12, 16, 1, "D"); // base
+        if (n % 2 === 1) {
+          put(g, 2, 7, "D");
+          put(g, 17, 7, "D");
+        } // clack dust
+        frames.push({ g, ms: n === 6 ? 360 : 120 });
+      }
+      return frames;
+    })(),
+  ]);
+
+  // 3. Typewriter: letters land on the paper, the carriage slides, ding and return.
+  V.push([
+    "typewriter",
+    "Typewriter",
+    "Types onto a sheet; the carriage slides with each letter, then a ding and a return.",
+    (() => {
+      const frames = [];
+      for (let n = 0; n <= 7; n++) {
+        const g = blank();
+        const shift = n === 7 ? 0 : -Math.min(n, 5);
+        // paper behind, shifted with the carriage
+        rect(g, 12 + shift, 1, 6, 8, "L");
+        for (let k = 0; k < Math.min(n, 5); k++) put(g, 13 + shift + k, 3, "K");
+        if (n >= 7) rect(g, 13, 5, 1, 1, "K");
+        body(g, 3, 3, "focus");
+        stamp(g, 2, 10, ["GGGGGGGGGGGGGGGG", "MGMGMGMGMGMGMGMG", "DDDDDDDDDDDDDDDD"]);
+        paw(g, 3, 9, n % 2 === 0);
+        paw(g, 10, 9, n % 2 === 1);
+        if (n === 6) {
+          put(g, 19, 0, "Q");
+          put(g, 18, 1, "Q");
+          put(g, 19, 2, "Q");
+        } // ding
+        frames.push({ g, ms: n === 6 ? 260 : n === 7 ? 300 : 140 });
+      }
+      return frames;
+    })(),
+  ]);
+
+  // 4. Code screen: a little monitor beside it fills with code lines that scroll.
+  V.push([
+    "code",
+    "Code screen",
+    "Types on a keyboard while a little screen beside it fills with lines of code.",
+    (() => {
+      const lens = [
+        [3, 5, 2, 4],
+        [5, 2, 4, 6],
+        [2, 4, 6, 3],
+        [4, 6, 3, 5],
+      ];
+      return lens.flatMap((ls, n) =>
+        [0, 1].map((half) => {
+          const g = blank();
+          body(g, 1, 3, "right");
+          rect(g, 11, 1, 8, 8, "M");
+          rect(g, 12, 2, 6, 6, "K");
+          ls.forEach((len, row) =>
+            rect(
+              g,
+              12 + (row % 2),
+              3 + row,
+              Math.min(len - (row === 3 && half === 0 ? 2 : 0), 5),
+              1,
+              row % 3 === 0 ? "L" : "G",
+            ),
+          );
+          rect(g, 14, 9, 2, 1, "M");
+          rect(g, 12, 10, 6, 1, "D");
+          keyboard(g, 0, 11, 10, [half ? 1 : 3]);
+          paw(g, 1, 9, half === 0);
+          paw(g, 8, 9, half === 1);
+          return { g, ms: 130 };
+        }),
+      );
+    })(),
+  ]);
+
+  // 5. Speed typer: fast paws, motion lines, a sweat drop sliding down.
+  V.push([
+    "speed",
+    "Speed typer",
+    "Furious typing: blurred paws with motion lines and a sweat drop sliding down.",
+    (() => {
+      const frames = [];
+      for (let n = 0; n < 6; n++) {
+        const g = blank();
+        body(g, 6, 2, "focus");
+        keyboard(g, 2, 10, 16, [(n * 3) % 8, (n * 5 + 2) % 8]);
+        paw(g, 6, 8, n % 2 === 0);
+        paw(g, 13, 8, n % 2 === 1);
+        put(g, 4, 8 + (n % 2), "D");
+        put(g, 3, 9 - (n % 2), "D");
+        put(g, 15, 8 + ((n + 1) % 2), "D");
+        put(g, 16, 9 - ((n + 1) % 2), "D");
+        put(g, 13, 2 + Math.min(n, 4), "L");
+        frames.push({ g, ms: 70 });
+      }
+      return frames;
+    })(),
+  ]);
+
+  // 6. Pause and think: types a burst, stops, looks up with a "..." bubble, types again.
+  V.push([
+    "think",
+    "Type, think, type",
+    "Types a burst, stops to think with a little bubble, then gets back to it.",
+    (() => {
+      const f = [];
+      for (let n = 0; n < 6; n++) {
+        const g = blank();
+        body(g, 6, 3, "focus");
+        keyboard(g, 2, 11, 16, [(n * 3 + 1) % 8]);
+        paw(g, 6, 9, n % 2 === 0);
+        paw(g, 13, 9, n % 2 === 1);
+        f.push({ g, ms: 110 });
+      }
+      for (let d = 0; d < 4; d++) {
+        const g = blank();
+        body(g, 6, 3, "up");
+        keyboard(g, 2, 11, 16, []);
+        paw(g, 6, 9, false);
+        paw(g, 13, 9, false);
+        rect(g, 14, 0, 6, 3, "D");
+        put(g, 14, 3, "D");
+        for (let k = 0; k < d && k < 3; k++) put(g, 15 + k * 2, 1, "Q");
+        f.push({ g, ms: 260 });
+      }
+      return f;
+    })(),
+  ]);
+
+  // 7. Letters fly: each key press pops a tiny glyph up out of the keyboard.
+  V.push([
+    "letters",
+    "Letters fly",
+    "Each key press pops a tiny pixel letter up into the air, where it fades.",
+    (() => {
+      const glyphs = [
+        ["Q.Q", ".Q.", "Q.Q"],
+        [".Q.", "QQQ", ".Q."],
+        ["QQ.", "Q.Q", "QQ."],
+        [".QQ", "Q..", ".QQ"],
+      ];
+      const f = [];
+      for (let n = 0; n < 8; n++) {
+        const g = blank();
+        body(g, 6, 4, "up");
+        keyboard(g, 2, 11, 16, [n % 2 ? 6 : 2]);
+        paw(g, 6, 10, n % 2 === 0);
+        paw(g, 13, 10, n % 2 === 1);
+        // two glyphs in flight at different heights
+        const a = glyphs[n % 4],
+          b = glyphs[(n + 2) % 4];
+        const ay = 3 - (n % 4),
+          by = 3 - ((n + 2) % 4);
+        if (ay >= 0)
+          stamp(
+            g,
+            2,
+            ay,
+            a.map((r) => r.replace(/Q/g, ay < 1 ? "M" : ay < 2 ? "L" : "Q")),
+          );
+        if (by >= 0)
+          stamp(
+            g,
+            15,
+            by,
+            b.map((r) => r.replace(/Q/g, by < 1 ? "M" : by < 2 ? "L" : "Q")),
+          );
+        f.push({ g, ms: 130 });
+      }
+      return f;
+    })(),
+  ]);
+
+  // 8. Headphones in the zone: bobbing to music while typing, notes drifting.
+  V.push([
+    "zone",
+    "In the zone",
+    "Headphones on, bobbing to the beat while it types, a note drifting up.",
+    (() => {
+      const f = [];
+      for (let n = 0; n < 8; n++) {
+        const g = blank();
+        const bob = n % 4 < 2 ? 0 : 1;
+        body(g, 6, 2 + bob, "focus");
+        stamp(g, 6, 1 + bob, [".MMMMMM.", "M......M"]);
+        put(g, 5, 4 + bob, "M");
+        put(g, 14, 4 + bob, "M");
+        put(g, 5, 5 + bob, "M");
+        put(g, 14, 5 + bob, "M");
+        keyboard(g, 2, 11, 16, [n % 2 ? 5 : 2]);
+        paw(g, 6, 9 + 0, n % 2 === 0);
+        paw(g, 13, 9, n % 2 === 1);
+        const ny = 4 - (n % 5);
+        if (ny >= 0) {
+          put(g, 17, ny, "L");
+          put(g, 17, ny + 1, "L");
+          put(g, 16, ny + 2, "L");
+          put(g, 18, ny, "L");
+        }
+        f.push({ g, ms: 120 });
+      }
+      return f;
+    })(),
+  ]);
+
+  // ── the picked one (#4 Code screen) as the composer plays it: one card per state ──
+  // Ported pixel for pixel to apps/web/src/components/sprite/codeScreenFrames.ts (codeScreenFrames.test.ts checks parity).
+  const CODE_LENS = [3, 5, 2, 4]; // the static code: #4's first line lengths, drawn whole
+  function codeRest(eyes, { cursor = false, dots = -1 } = {}) {
+    const g = blank();
+    body(g, 1, dots >= 0 ? 4 : 3, eyes); // thinking sits back a pixel, under the bubble
+    rect(g, 11, 1, 8, 8, "M");
+    rect(g, 12, 2, 6, 6, "K");
+    CODE_LENS.forEach((len, row) =>
+      rect(g, 12 + (row % 2), 3 + row, Math.min(len, 5), 1, row % 3 === 0 ? "L" : "G"),
+    );
+    if (cursor) put(g, 13 + Math.min(CODE_LENS[3], 5), 6, "Q"); // 1-px cursor after the last line
+    rect(g, 14, 9, 2, 1, "M");
+    rect(g, 12, 10, 6, 1, "D");
+    keyboard(g, 0, 11, 10, []);
+    paw(g, 1, 9, false);
+    paw(g, 8, 9, false); // paws resting on the keys
+    if (dots >= 0) {
+      // #6's thought bubble, up and right of the head, clear of the screen
+      rect(g, 4, 0, 6, 3, "D");
+      put(g, 7, 3, "D");
+      for (let k = 0; k < dots && k < 3; k++) put(g, 5 + k * 2, 1, "Q");
+    }
+    return g;
+  }
+  const STATES = [
+    [
+      "typing",
+      "Typing",
+      "While keys keep coming: #4 as is, code lines changing, keys lighting under the paws.",
+      V.find((v) => v[0] === "code")[3],
+    ],
+    [
+      "thinking",
+      "Thinking",
+      "0.5 s without a key: paws rest, eyes up, a bubble fills dot by dot; the cursor blinks on the static code.",
+      [0, 0, 1, 1, 2, 2, 3, 3].map((dots, n) => ({
+        g: codeRest("up", { cursor: n % 2 === 0, dots }),
+        ms: n === 7 ? 600 : 300,
+      })),
+    ],
+    [
+      "lookaround",
+      "Look around",
+      "5 s without a key: one look left, then right, a blink, then it settles to idle (looped here).",
+      [
+        ["open", 250],
+        ["left", 700],
+        ["open", 200],
+        ["right", 700],
+        ["open", 250],
+        ["closed", 120],
+        ["open", 300],
+      ].map(([eyes, ms]) => ({ g: codeRest(eyes, { cursor: true }), ms })),
+    ],
+    [
+      "idle",
+      "Idle",
+      "After the look: sits at the screen, paws resting, the odd blink, the cursor blinking. Stays up while there is text.",
+      Array.from({ length: 8 }, (_, n) => ({
+        g: codeRest(n === 5 ? "closed" : "open", { cursor: n % 2 === 0 }),
+        ms: n === 5 ? 140 : 500,
+      })),
+    ],
+  ];
+
+  // ── render ──
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  let speed = 1;
+  function draw(ctx, g, s) {
+    ctx.clearRect(0, 0, GW * s, GH * s);
+    for (let y = 0; y < GH; y++)
+      for (let x = 0; x < GW; x++) {
+        const c = g[y][x];
+        if (c === ".") continue;
+        ctx.fillStyle = PAL[c];
+        ctx.fillRect(x * s, y * s, s, s);
+      }
+  }
+  function mk(cls, s) {
+    const c = document.createElement("canvas");
+    c.width = GW * s;
+    c.height = GH * s;
+    c.className = cls;
+    const x = c.getContext("2d");
+    x.imageSmoothingEnabled = false;
+    return [c, x];
+  }
+  const store = {
+    get() {
+      try {
+        return JSON.parse(localStorage.getItem("kora-typing-picks") || "[]");
+      } catch {
+        return [];
+      }
+    },
+    set(v) {
+      try {
+        localStorage.setItem("kora-typing-picks", JSON.stringify(v));
+      } catch {}
+    },
+  };
+  let picks = new Set(store.get());
+  const players = [];
+  function card(grid, tag, id, name, desc, frames) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "card";
+    b.setAttribute("aria-label", `${name}: ${desc}`);
+    const [big, bx] = mk("big", 10),
+      [mini, mx] = mk("mini", 2);
+    b.innerHTML = `<span class="tag">${tag}</span><div class="stage"></div>
+    <div class="meta"><span class="name">${name}</span><span class="desc">${desc}</span><span class="fr">${frames.length} frames</span></div>
+    <div class="composer"><div class="box">Add a retry to the fetch helper<span class="caret"></span></div></div>`;
+    b.querySelector(".stage").appendChild(big);
+    b.querySelector(".composer").appendChild(mini);
+    document.getElementById(grid).appendChild(b);
+    players.push({ id, name, frames, bx, mx, idx: 0, next: 0 });
+    draw(bx, frames[0].g, 10);
+    draw(mx, frames[0].g, 2);
+    return b;
+  }
+  V.forEach(([id, name, desc, frames], i) => {
+    const b = card("grid", `#${i + 1}`, id, name, desc, frames);
+    players[players.length - 1].n = i + 1;
+    b.setAttribute("aria-pressed", picks.has(id));
+    b.onclick = () => {
+      picks.has(id) ? picks.delete(id) : picks.add(id);
+      b.setAttribute("aria-pressed", picks.has(id));
+      render();
+    };
+  });
+  STATES.forEach(([id, name, desc, frames]) => {
+    const b = card("states", id, `state-${id}`, name, desc, frames);
+    b.tabIndex = -1;
+    b.style.cursor = "default";
+  });
+  (function tick(now) {
+    if (!reduce.matches)
+      for (const p of players)
+        if (now >= p.next) {
+          p.idx = (p.idx + 1) % p.frames.length;
+          const f = p.frames[p.idx];
+          draw(p.bx, f.g, 10);
+          draw(p.mx, f.g, 2);
+          p.next = now + f.ms / speed;
+        }
+    requestAnimationFrame(tick);
+  })(0);
+  const pickEl = document.getElementById("picks");
+  function render() {
+    store.set([...picks]);
+    const c = players.filter((p) => picks.has(p.id));
+    pickEl.innerHTML = c.length
+      ? `Picked <b>${c.length}</b>: ${c.map((p) => `#${p.n} ${p.name}`).join(", ")}`
+      : "No picks yet. Tap a card to pick it.";
+  }
+  document.getElementById("copy").onclick = async (e) => {
+    try {
+      await navigator.clipboard.writeText(pickEl.textContent);
+      e.target.textContent = "Copied";
+    } catch {
+      const r = document.createRange();
+      r.selectNodeContents(pickEl);
+      getSelection().removeAllRanges();
+      getSelection().addRange(r);
+      e.target.textContent = "Selected, press ⌘C";
+    }
+    setTimeout(() => (e.target.textContent = "Copy picks"), 1600);
+  };
+  const sp = document.getElementById("speed"),
+    spv = document.getElementById("speedv");
+  sp.oninput = () => {
+    speed = Number(sp.value);
+    spv.textContent = sp.value + "×";
+  };
+  render();
+</script>

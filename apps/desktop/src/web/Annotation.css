@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--kora-font-sans);
+  --font-mono: var(--kora-font-mono);
+  --color-background: var(--kora-background);
+  --color-foreground: var(--kora-foreground);
+  --color-popover: var(--kora-popover);
+  --color-popover-foreground: var(--kora-popover-foreground);
+  --color-primary: var(--kora-primary);
+  --color-primary-foreground: var(--kora-primary-foreground);
+  --color-muted: var(--kora-muted);
+  --color-muted-foreground: var(--kora-muted-foreground);
+  --color-accent: var(--kora-accent);
+  --color-accent-foreground: var(--kora-accent-foreground);
+  --color-border: var(--kora-border);
+  --color-input: var(--kora-input);
+  --color-ring: var(--kora-ring);
+  --radius-sm: calc(var(--kora-radius) - 4px);
+  --radius-md: calc(var(--kora-radius) - 2px);
+  --radius-lg: var(--kora-radius);
+  --radius-xl: calc(var(--kora-radius) + 4px);
+  --radius-2xl: calc(var(--kora-radius) + 8px);
+}
+
+:host {
+  --kora-font-sans:
+    "DM Sans Variable", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+    sans-serif;
+  --kora-font-mono:
+    "SF Mono", "SFMono-Regular", "JetBrains Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  --kora-radius: 0.625rem;
+  --kora-background: white;
+  --kora-foreground: oklch(0.269 0 0);
+  --kora-popover: white;
+  --kora-popover-foreground: oklch(0.269 0 0);
+  --kora-primary: oklch(0.488 0.217 264);
+  --kora-primary-foreground: white;
+  --kora-muted: rgb(0 0 0 / 4%);
+  --kora-muted-foreground: oklch(0.556 0 0);
+  --kora-accent: rgb(0 0 0 / 4%);
+  --kora-accent-foreground: oklch(0.269 0 0);
+  --kora-border: rgb(0 0 0 / 8%);
+  --kora-input: rgb(0 0 0 / 10%);
+  --kora-ring: oklch(0.488 0.217 264);
+  color: var(--kora-foreground);
+  font-family: var(--kora-font-sans);
+}
+
+* {
+  box-sizing: border-box;
+  border-color: var(--kora-border);
+}
+
+textarea,
+select,
+input,
+button {
+  font: inherit;
+}
+
+textarea:focus-visible,
+select:focus-visible,
+input:focus-visible,
+button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--kora-ring) 72%, transparent);
+  outline-offset: 1px;
+}

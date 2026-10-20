@@ -1,0 +1,69 @@
+id = "claude"
+version = "0.1.0-kora"
+min_engine_version = 2
+aliases = ["claude-code"]
+
+# Original ruleset, written from firsthand knowledge of the Claude Code CLI's terminal chrome and
+# tuned against this repo's own test fixtures (src/detect/detect.test.ts, src/server/integration.test.ts) --
+# real captures of Claude Code's UI. Reasonable confidence on the shapes covered by those fixtures; still worth
+# a pass against a live pane for anything not exercised there.
+
+[[rules]]
+id = "live_blocked_form"
+state = "blocked"
+priority = 950
+region = "bottom_non_empty_lines(10)"
+contains = ["trust", "?"]
+visible_blocker = true
+
+[[rules]]
+id = "bash_permission_prompt"
+state = "blocked"
+priority = 900
+region = "bottom_non_empty_lines(12)"
+contains = ["do you want"]
+visible_blocker = true
+
+# A real Claude Code option dialog (MCP trust, AskUserQuestion, "Yes / Yes and don't ask again / No") always
+# carries the ❯ cursor on one numbered row. The cursor is REQUIRED here: with it optional, any numbered list
+# the agent printed in its own answer ("1. app/greeting.py …") sitting above the idle prompt box read as
+# `blocked` — every fleet run spammed false "worker needs attention" rows and stale notes to the orchestrator.
+[[rules]]
+id = "mcp_or_tool_numbered_prompt"
+state = "blocked"
+priority = 800
+region = "bottom_non_empty_lines(12)"
+line_regex = ['^\s*❯\s*[1-9][.)]\s+\S']
+visible_blocker = true
+
+[[rules]]
+id = "osc_title_working"
+state = "working"
+priority = 600
+region = "osc_title"
+regex = ['[⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏]']
+visible_working = true
+
+[[rules]]
+id = "live_turn_working"
+state = "working"
+priority = 500
+region = "bottom_non_empty_lines(4)"
+contains = ["esc to interrupt"]
+visible_working = true
+
+[[rules]]
+id = "live_prompt_box"
+state = "idle"
+priority = 50
+region = "bottom_non_empty_lines(2)"
+contains = ["for shortcuts"]
+visible_idle = true
+
+[[rules]]
+id = "osc_title_idle"
+state = "idle"
+priority = 40
+region = "osc_title"
+regex = ['^✳']
+visible_idle = true

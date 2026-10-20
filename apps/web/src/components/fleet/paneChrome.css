@@ -1,0 +1,317 @@
+/* Worker pane chrome for the orchestrator's fleet panel: titlebar (traffic lights, title, badges,
+   state word, agent mark) around a terminal viewport. Every selector is scoped under .pane-scope so
+   it never collides with the app's Tailwind/global styles; the dark cockpit tokens live on the scope.
+   The scope is also a [data-dark-surface], so shared controls and the terminal inside stay on the dark Ink
+   tokens in either appearance. (It must not redefine --accent: that is the app's hover wash.) */
+
+.pane-scope {
+  --bg: #000000;
+  --pane: #000000; /* Pitch: true-black: the terminal ground */
+  --pane-head: #0b0b0c;
+  --edge: rgba(255, 255, 255, 0.07);
+  --edge-focus: #3a3b40;
+  --txt: #f2f2f4;
+  --mid: #8b8d95;
+  --dim: #5a5c63;
+  --run: #ededf0; /* Ink: running reads by the glow + pulse, not a teal hue */
+  --wake: #febc2e;
+  --gold: #f5c451; /* orchestrator identity — ring + badge */
+  --red: #ff5f57;
+  --yellow: #febc2e;
+  --green: #28c840;
+  --mono: Helvetica, "Helvetica Neue", Arial, sans-serif;
+  --sans: Helvetica, "Helvetica Neue", Arial, sans-serif;
+
+  flex-direction: column;
+  display: flex;
+  position: relative;
+  flex: 1 1 0%;
+  min-width: 0;
+  min-height: 0;
+  color: var(--txt);
+  font-family: var(--sans);
+  font-size: 13px;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+.pane-scope * {
+  box-sizing: border-box;
+}
+/* Every pane in the fleet panel is a worker: the gold worker edge would be noise, status rings stay. */
+.pane-scope .pane.worker:not(.focus) {
+  border-left-color: var(--edge);
+}
+/* The terminal viewport reports its own natural height; without min-height: 0 the term refuses to
+   shrink, grows past the pane, and pushes the steer row out under overflow: hidden. */
+.pane-scope .term {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* pane */
+.pane-scope .pane {
+  background: var(--pane);
+  border: 1px solid var(--edge);
+  border-radius: 12px;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.03) inset,
+    0 12px 34px -16px rgba(0, 0, 0, 0.95);
+  transition:
+    border-color 0.14s ease,
+    box-shadow 0.14s ease;
+}
+.pane-scope .pane.focus {
+  border-color: #fff;
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 40px -12px rgba(255, 255, 255, 0.4),
+    0 12px 34px -16px rgba(0, 0, 0, 0.95);
+}
+.pane-scope .pane.wake {
+  border-color: var(--wake);
+  box-shadow:
+    0 0 0 1px rgba(254, 188, 46, 0.3),
+    0 0 28px -8px rgba(254, 188, 46, 0.4);
+}
+.pane-scope .pane.focus.wake {
+  border-color: #fff;
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 40px -12px rgba(255, 255, 255, 0.4);
+}
+/* orchestrator = the promoted pane. Persistent gold ring so it's always identifiable as the fleet's coordinator,
+   even unfocused. Focus layers a white inner ring inside the gold so keyboard focus is still unambiguous. */
+.pane-scope .pane.orch {
+  border-color: var(--gold);
+  box-shadow:
+    0 0 0 1.5px var(--gold),
+    0 0 34px -10px rgba(245, 196, 81, 0.5),
+    0 12px 34px -16px rgba(0, 0, 0, 0.95);
+}
+.pane-scope .pane.orch.focus {
+  border-color: #fff;
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 0 3px var(--gold),
+    0 0 42px -10px rgba(245, 196, 81, 0.6),
+    0 12px 34px -16px rgba(0, 0, 0, 0.95);
+}
+.pane-scope .pane.orch .titlebar {
+  background: linear-gradient(#1c1810, #100d07);
+  border-bottom-color: rgba(245, 196, 81, 0.22);
+}
+/* worker = spawned by the orchestrator. A thin gold left-edge ties it to the fleet without shouting. */
+.pane-scope .pane.worker {
+  border-left-color: rgba(245, 196, 81, 0.32);
+}
+.pane-scope .titlebar {
+  height: 36px;
+  flex: 0 0 36px;
+  background: linear-gradient(#131315, #0b0b0c);
+  border-bottom: 1px solid var(--edge);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  user-select: none;
+}
+.pane-scope .lights {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.pane-scope .light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  background: #3a3a3f;
+  transition: background 0.14s ease;
+}
+.pane-scope .pane.focus .light.r {
+  background: var(--red);
+}
+.pane-scope .pane.focus .light.y {
+  background: var(--yellow);
+}
+.pane-scope .pane.focus .light.g {
+  background: var(--green);
+}
+@container (max-width: 210px) {
+  .pane-scope .titlebar .lights {
+    display: none;
+  }
+}
+@container (max-width: 150px) {
+  .pane-scope .titlebar .t-title {
+    display: none;
+  }
+}
+.pane-scope .t-title {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--mid);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.pane-scope .t-right {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+  gap: 10px;
+}
+/* state = dot + word, no container box; dot and text vertically centred */
+.pane-scope .state {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--mid);
+  line-height: 1;
+}
+.pane-scope .state .s-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dim);
+  flex: 0 0 auto;
+}
+.pane-scope .state.running {
+  color: var(--run);
+}
+.pane-scope .state.running .s-dot {
+  background: var(--run);
+  box-shadow: 0 0 7px var(--run);
+  animation: pane-pulse 1.4s ease-in-out infinite;
+}
+.pane-scope .state.wake {
+  color: var(--wake);
+}
+.pane-scope .state.wake .s-dot {
+  background: var(--wake);
+  box-shadow: 0 0 7px var(--wake);
+}
+@keyframes pane-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+/* fleet badges in the titlebar — orchestrator marker, worker account, steered pulse */
+.pane-scope .fleet-badge {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  padding: 3px 6px;
+  border-radius: 5px;
+  border: 1px solid var(--edge);
+  color: var(--dim);
+  flex: 0 0 auto;
+}
+.pane-scope .fleet-badge.orch {
+  color: var(--gold);
+  border-color: rgba(245, 196, 81, 0.45);
+  background: rgba(245, 196, 81, 0.1);
+}
+.pane-scope .fleet-badge.acct {
+  color: var(--mid);
+}
+.pane-scope .fleet-badge.steered {
+  color: var(--wake);
+  border-color: rgba(254, 188, 46, 0.5);
+  background: rgba(254, 188, 46, 0.1);
+  animation: pane-steerflash 1s ease-in-out 3;
+}
+@keyframes pane-steerflash {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+@container (max-width: 260px) {
+  .pane-scope .fleet-badge.acct {
+    display: none;
+  }
+}
+/* agent logo in the titlebar — no container box, just the mark */
+.pane-scope .agent-mark {
+  display: grid;
+  place-items: center;
+}
+/* extra bottom padding keeps the terminal's last row clear of the pane's rounded corner */
+.pane-scope .term {
+  flex: 1;
+  overflow: hidden;
+  padding: 6px 10px 12px 10px;
+}
+/* bigger agent logos read better without a box */
+.pane-scope .agent-mark > img {
+  border-radius: 4px;
+}
+
+/* ── swarm workers (OpenCode on free models) ─────────────────────────────────────────────────────────────
+   Neutral, no new accent: the swarm badge is a quiet raised pill; "waiting" (rate-limited / switching model)
+   borrows --wake for the word only, never the pane ring (that stays for needs-you). */
+.pane-scope {
+  --swarm-edge: #2a2a30;
+}
+.pane-scope .state.waiting {
+  color: var(--wake);
+}
+.pane-scope .state.waiting .s-dot {
+  background: var(--wake);
+  animation: pane-pulse 1.8s ease-in-out infinite;
+}
+.pane-scope .fleet-badge.swarm {
+  color: var(--mid);
+  border-color: var(--swarm-edge);
+  background: linear-gradient(#151517, #0f0f11);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  max-width: 14rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  letter-spacing: 0.02em;
+}
+.pane-scope .fleet-badge.respawned {
+  color: var(--wake);
+  border-color: rgba(254, 188, 46, 0.5);
+  background: rgba(254, 188, 46, 0.1);
+  animation: pane-steerflash 1s ease-in-out 3;
+}
+@container (max-width: 300px) {
+  .pane-scope .fleet-badge.respawned {
+    display: none;
+  }
+}
+
+/* Reduced motion: no pulsing or flashing dots/badges, no border/shadow fades. */
+@media (prefers-reduced-motion: reduce) {
+  .pane-scope .state.running .s-dot,
+  .pane-scope .state.waiting .s-dot,
+  .pane-scope .fleet-badge.steered,
+  .pane-scope .fleet-badge.respawned {
+    animation: none !important;
+  }
+  .pane-scope .pane,
+  .pane-scope .light {
+    transition: none !important;
+  }
+}

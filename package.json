@@ -1,0 +1,46 @@
+{
+  "name": "@kora/monorepo",
+  "private": true,
+  "description": "Kora: a desktop app that runs coding agents as an orchestrated fleet, with a local code graph that cuts their token use.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "prepare": "effect-tsgo patch && vp config --no-agent",
+    "build": "bash scripts/build.sh",
+    "start": "bash scripts/start.sh",
+    "dev": "bash scripts/dev.sh",
+    "app:package": "bash scripts/package-app.sh",
+    "app:package:dev": "bash scripts/package-app.sh --flavor dev",
+    "app:release": "bash scripts/release-app.sh",
+    "app:test-update": "bash scripts/test-update-flow.sh",
+    "release": "bash scripts/release.sh",
+    "release:setup": "bash scripts/release-setup.sh",
+    "app:install:dev": "bash scripts/install-app.sh --flavor dev",
+    "ship": "bash scripts/ship.sh",
+    "typecheck": "vp run -r --concurrency-limit 2 typecheck",
+    "test": "vp run -r --concurrency-limit 2 test",
+    "canary": "pnpm --filter @kora/runtime canary",
+    "lint": "vp lint --report-unused-disable-directives",
+    "lint:win": "node scripts/lint-win.mjs",
+    "ci:win": "node scripts/ci-win.mjs",
+    "fmt": "vp fmt",
+    "fmt:check": "vp fmt --check",
+    "knip": "knip --preprocessor ./scripts/knip-keep-schemas.ts",
+    "knip:check": "knip --include files,dependencies --no-config-hints && knip --workspace apps/desktop --workspace apps/web --workspace packages/ui-server --workspace packages/client-runtime --workspace packages/contracts --workspace packages/shared --exports --preprocessor ./scripts/knip-keep-schemas.ts --no-config-hints",
+    "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules apps/*/dist apps/*/dist-electron packages/runtime/dist packages/runtime/ui packages/*/dist .vite-plus apps/*/.vite-plus packages/*/.vite-plus",
+    "qa": "node qa/run-all.mjs",
+    "qa:findings": "node qa/scripts/findings.mjs"
+  },
+  "devDependencies": {
+    "@effect/tsgo": "catalog:",
+    "@types/node": "catalog:",
+    "knip": "6.34.0",
+    "playwright-core": "1.60.0",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "node": "^24.11.1"
+  },
+  "packageManager": "pnpm@11.10.0"
+}

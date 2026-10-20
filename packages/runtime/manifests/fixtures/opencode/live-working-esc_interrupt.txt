@@ -1,0 +1,42 @@
+# captured live v1.18.32 (swarm-live.test.ts)
+# expect: working-esc_interrupt
+---8<---
+  ┃  2. Run the check the task gives you (or, if it gives none, the narrowest real check for                                                
+  ┃  what you touched: the                                                                          New session - 2026-09-24T12:37:01.      
+  ┃     relevant tests or typecheck). Never say a check passed unless you ran it and saw it         969Z                                    
+  ┃  pass.                                                                                                                                  
+  ┃  3. Write your report to the report file with your file-write tool, then stop. Write it         Context                                 
+  ┃  even if you failed or got                                                                      0 tokens                                
+  ┃     stuck — a report that says "blocked: <exact error>" is useful; no report is not.            0% used                                 
+  ┃                                                                                                 $0.00 spent                             
+  ┃  The report is FACTS for someone who will decide what to do next. Markdown, these sections:                                             
+  ┃  ## Status                                                                                      LSP                                     
+  ┃  done | partial | blocked — one line.                                                           LSPs are disabled                       
+  ┃  ## Changes                                                                                                                             
+  ┃  Each file you changed as path:line and one line on what changed. "none" if you changed                                                 
+  ┃  nothing.                                                                                                                               
+  ┃  ## Check                                                                                                                               
+  ┃  The exact command(s) you ran and their output copied verbatim (trim to the relevant lines,                                             
+  ┃  keep errors whole).                                                                                                                    
+  ┃  ## Findings                                                                                                                            
+  ┃  What you found, each item with file:line. Only what you saw — no guesses, no conclusions,                                              
+  ┃  no recommendations                                                                                                                     
+  ┃  beyond the task. If you are unsure of something, say "not verified" instead of guessing.                                               
+  ┃  ## Blockers                                                                                                                            
+  ┃  What stopped you, with the verbatim error. "none" if nothing did.                                ⬖ Getting started                ✕    
+  ┃                                                                                                                                         
+  ┃  When you are done: write the report to /var/folders/_w/3mcw5qdj4rdfyvfw_pv00xwh0000gn/T/           OpenCode includes free models       
+  ┃  kora-oc-live-1FRspv/.kora/swarm/s1.md                                                              so you can start immediately.       
+  ┃                                                                                                                                         
+  ┃  --- TASK ---                                                                                       Connect from 75+ providers to       
+  ┃  Create hello.txt containing exactly the word PONG. Check: `cat hello.txt` prints PONG.             use other models, including         
+  ┃                                                                                                     Claude, GPT, Gemini etc             
+                                                                                                                                            
+     ▣  Build · Big Pickle                                                                              Connect provider        /connect    
+                                                                                                                                            
+  ┃                                                                                                                                         
+  ┃                                                                                                 /private/var/folders/_w/                
+  ┃                                                                                                 3mcw5qdj4rdfyvfw_pv00xwh0000gn/T/kora-  
+  ┃  Build auto · Big Pickle OpenCode Zen                                                           oc-live-1FRspv:main                     
+  ╹▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀                                            
+   ■■■■■■⬝⬝  esc interrupt                                           tab agents  ctrl+p commands    • OpenCode 1.18.32                      

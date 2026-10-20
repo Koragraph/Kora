@@ -1,0 +1,192 @@
+✔ passes case 1 - adds numbers and checks result (0.482625ms)
+✔ passes case 2 - adds numbers and checks result (0.064333ms)
+✔ passes case 3 - adds numbers and checks result (0.05ms)
+✔ passes case 4 - adds numbers and checks result (0.060541ms)
+✔ passes case 5 - adds numbers and checks result (0.696125ms)
+✔ passes case 6 - adds numbers and checks result (0.062416ms)
+✔ passes case 7 - adds numbers and checks result (0.043875ms)
+✔ passes case 8 - adds numbers and checks result (0.039292ms)
+✔ passes case 9 - adds numbers and checks result (0.038084ms)
+✔ passes case 10 - adds numbers and checks result (0.080125ms)
+✔ passes case 11 - adds numbers and checks result (0.038666ms)
+✔ passes case 12 - adds numbers and checks result (0.027792ms)
+✔ passes case 13 - adds numbers and checks result (0.019875ms)
+✔ passes case 14 - adds numbers and checks result (0.018125ms)
+✔ passes case 15 - adds numbers and checks result (0.017667ms)
+✔ passes case 16 - adds numbers and checks result (0.0175ms)
+✔ passes case 17 - adds numbers and checks result (0.016ms)
+✔ passes case 18 - adds numbers and checks result (0.016792ms)
+✔ passes case 19 - adds numbers and checks result (0.01825ms)
+✔ passes case 20 - adds numbers and checks result (0.016208ms)
+✔ passes case 21 - adds numbers and checks result (0.026958ms)
+✔ passes case 22 - adds numbers and checks result (0.034417ms)
+✔ passes case 23 - adds numbers and checks result (0.023333ms)
+✔ passes case 24 - adds numbers and checks result (0.017458ms)
+✔ passes case 25 - adds numbers and checks result (0.02525ms)
+✔ passes case 26 - adds numbers and checks result (0.019417ms)
+✔ passes case 27 - adds numbers and checks result (0.016917ms)
+✔ passes case 28 - adds numbers and checks result (0.016167ms)
+✔ passes case 29 - adds numbers and checks result (0.015458ms)
+✔ passes case 30 - adds numbers and checks result (0.015ms)
+✔ passes case 31 - adds numbers and checks result (0.019917ms)
+✔ passes case 32 - adds numbers and checks result (0.015625ms)
+✔ passes case 33 - adds numbers and checks result (0.033417ms)
+✔ passes case 34 - adds numbers and checks result (0.014917ms)
+✔ passes case 35 - adds numbers and checks result (0.01725ms)
+✔ passes case 36 - adds numbers and checks result (0.016208ms)
+✔ passes case 37 - adds numbers and checks result (0.01625ms)
+✔ passes case 38 - adds numbers and checks result (0.018625ms)
+✔ passes case 39 - adds numbers and checks result (0.019709ms)
+✔ passes case 40 - adds numbers and checks result (0.014458ms)
+✔ passes case 41 - adds numbers and checks result (0.015833ms)
+✔ passes case 42 - adds numbers and checks result (0.024792ms)
+✔ passes case 43 - adds numbers and checks result (0.018084ms)
+✔ passes case 44 - adds numbers and checks result (0.016125ms)
+✔ passes case 45 - adds numbers and checks result (0.01475ms)
+✔ passes case 46 - adds numbers and checks result (0.018584ms)
+✔ passes case 47 - adds numbers and checks result (0.015083ms)
+✔ passes case 48 - adds numbers and checks result (0.015084ms)
+✔ passes case 49 - adds numbers and checks result (0.017667ms)
+✔ passes case 50 - adds numbers and checks result (0.018875ms)
+✔ passes case 51 - adds numbers and checks result (0.015416ms)
+✔ passes case 52 - adds numbers and checks result (0.015375ms)
+✔ passes case 53 - adds numbers and checks result (0.016834ms)
+✔ passes case 54 - adds numbers and checks result (0.02075ms)
+✔ passes case 55 - adds numbers and checks result (0.0165ms)
+✔ passes case 56 - adds numbers and checks result (0.016917ms)
+✔ passes case 57 - adds numbers and checks result (0.016ms)
+✔ passes case 58 - adds numbers and checks result (0.015958ms)
+✔ passes case 59 - adds numbers and checks result (0.016417ms)
+✔ passes case 60 - adds numbers and checks result (0.015666ms)
+▶ suite A
+  ✔ inner 0 (0.078458ms)
+  ✔ inner 1 (0.017458ms)
+  ✔ inner 2 (0.018958ms)
+  ✔ inner 3 (0.013916ms)
+  ✔ inner 4 (0.01325ms)
+  ✔ inner 5 (0.01225ms)
+  ✔ inner 6 (0.01325ms)
+  ✔ inner 7 (0.011042ms)
+  ✔ inner 8 (0.021292ms)
+  ✔ inner 9 (0.01475ms)
+  ✔ inner 10 (0.026792ms)
+  ✔ inner 11 (0.018291ms)
+  ✔ inner 12 (0.011583ms)
+  ✔ inner 13 (0.010625ms)
+  ✔ inner 14 (0.01225ms)
+  ✖ inner failing (1.475875ms)
+✖ suite A (1.963625ms)
+✖ top-level failing: wrong total (0.091583ms)
+✖ throws TypeError (0.195958ms)
+✔ b passes 1 (0.927291ms)
+✔ b passes 2 (0.051875ms)
+✔ b passes 3 (0.037708ms)
+✔ b passes 4 (0.033833ms)
+✔ b passes 5 (0.046ms)
+✔ b passes 6 (0.03625ms)
+✔ b passes 7 (0.036416ms)
+✔ b passes 8 (0.039542ms)
+✔ b passes 9 (0.045ms)
+✔ b passes 10 (0.070709ms)
+✔ b passes 11 (0.052833ms)
+✔ b passes 12 (0.035666ms)
+✔ b passes 13 (0.038166ms)
+✔ b passes 14 (0.02225ms)
+✔ b passes 15 (0.023875ms)
+✔ b passes 16 (0.028041ms)
+✔ b passes 17 (0.021708ms)
+✔ b passes 18 (0.018333ms)
+✔ b passes 19 (0.028666ms)
+✔ b passes 20 (0.552291ms)
+✔ b passes 21 (0.0415ms)
+✔ b passes 22 (0.027ms)
+✔ b passes 23 (0.020334ms)
+✔ b passes 24 (0.017958ms)
+✔ b passes 25 (0.016792ms)
+✔ b passes 26 (0.016208ms)
+✔ b passes 27 (0.016625ms)
+✔ b passes 28 (0.016417ms)
+✔ b passes 29 (0.016333ms)
+✔ b passes 30 (0.015542ms)
+✔ b passes 31 (0.0305ms)
+✔ b passes 32 (0.0325ms)
+✔ b passes 33 (0.025084ms)
+✔ b passes 34 (0.0175ms)
+✔ b passes 35 (0.023ms)
+✔ b passes 36 (0.0235ms)
+✔ b passes 37 (0.020083ms)
+✔ b passes 38 (0.018708ms)
+✔ b passes 39 (0.015083ms)
+✔ b passes 40 (0.014084ms)
+ℹ tests 118
+ℹ suites 1
+ℹ pass 115
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 63.721875
+
+✖ failing tests:
+
+test at src/a.test.js:62:93
+✖ inner failing (1.475875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      a: 1,
+      b: [
+        1,
+        2,
+  +     3
+  -     4
+      ]
+    }
+  
+      at TestContext.<anonymous> (/tmp/fx/proj/src/a.test.js:62:126)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Suite.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { a: 1, b: [ 1, 2, 3 ] },
+    expected: { a: 1, b: [ 1, 2, 4 ] },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at src/a.test.js:63:1
+✖ top-level failing: wrong total (0.091583ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  4 !== 5
+  
+      at TestContext.<anonymous> (/tmp/fx/proj/src/a.test.js:63:51)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Suite.postRun (node:internal/test_runner/test:1235:19)
+      at Suite.run (node:internal/test_runner/test:1533:10)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 4,
+    expected: 5,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at src/a.test.js:64:1
+✖ throws TypeError (0.195958ms)
+  TypeError: Cannot read properties of null (reading 'foo')
+      at TestContext.<anonymous> (/tmp/fx/proj/src/a.test.js:64:35)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7)

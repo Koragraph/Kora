@@ -1,0 +1,15 @@
+{
+  "id": "P4-extract-terms",
+  "title": "Move payment terms to their own module",
+  "kind": "rename-refactor",
+  "repo": "ledgerkit",
+  "prompts": [
+    "Refactor ledgerkit: the payment-terms logic lives among the general date helpers. Move `termsDays` (with its terms table) and `dueDateFor` into a new module `src/terms.js`.\n\nThe date module keeps only date helpers and must not export or re-export the two functions any more. Every module that used them, and any test that imports them, must import them from `src/terms.js`. The package's public exports (the index) stay exactly as they are, `dueDateFor` included, and behaviour does not change.\n\nRun the whole suite when you're done."
+  ],
+  "timeLimitSec": 900,
+  "maxTurns": 50,
+  "startState": { "visibleTests": "pass" },
+  "grade": { "hidden": "hidden", "hiddenMode": "add", "commands": [["--test"]] },
+  "reference": { "overlay": "reference" },
+  "notes": "P4 move. Importers of the moved functions are spread over customer.js, invoice.js, index.js and test/dates.test.js; the dates module itself loses them. The prompt names only the new module. The hidden suite scans every src file's imports so a lingering re-export or import from the dates module fails, and pins the index's export list. hidden/test/dates.test.js is the visible one with its imports updated. The reference touches src/dates.js, src/terms.js (new), src/customer.js, src/invoice.js, src/index.js and test/dates.test.js."
+}

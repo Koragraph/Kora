@@ -1,0 +1,24 @@
+{
+  "name": "@kora/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Wire schemas shared by the daemon and the client (RPC group, desktop IPC).",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./clientPrefs": "./src/clientPrefs.ts",
+    "./fixtures/*": "./src/fixtures/*"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vp test run"
+  },
+  "dependencies": {
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@effect/vitest": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

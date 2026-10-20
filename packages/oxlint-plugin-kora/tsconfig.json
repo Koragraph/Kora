@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "lib": ["ESNext", "esnext.disposable"],
+    "types": ["node"]
+  },
+  "include": ["**/*.ts"]
+}

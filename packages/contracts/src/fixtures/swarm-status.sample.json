@@ -1,0 +1,138 @@
+{
+  "ready": false,
+  "blockers": [
+    {
+      "code": "consent-missing",
+      "message": "Accept the Swarm privacy notice (free-model providers may log prompts and code)."
+    }
+  ],
+  "opencode": {
+    "installed": true,
+    "path": "/Users/example/.kora/tools/opencode/current/opencode",
+    "source": "kora",
+    "version": "1.18.32",
+    "minVersion": "1.18.0",
+    "versionOk": true,
+    "onDaemonPath": false
+  },
+  "install": {
+    "operationId": null,
+    "phase": "idle",
+    "downloadedBytes": 0,
+    "totalBytes": null,
+    "version": null,
+    "installedVersion": "1.18.32",
+    "message": null
+  },
+  "consent": {
+    "requiredVersion": 1,
+    "acceptedVersion": null,
+    "acceptedAt": null
+  },
+  "providers": [
+    {
+      "provider": "zen",
+      "enabled": true,
+      "keyRequired": false,
+      "hasKey": false,
+      "keySource": null,
+      "keyHint": null,
+      "lastTest": {
+        "ok": true,
+        "outcome": "ok",
+        "message": null,
+        "freeModels": ["opencode/big-pickle"],
+        "latencyMs": 740,
+        "testedAt": 1790000100000,
+        "limits": null
+      },
+      "limits": null
+    },
+    {
+      "provider": "openrouter",
+      "enabled": true,
+      "keyRequired": true,
+      "hasKey": true,
+      "keySource": "kora",
+      "keyHint": "sk-or-…a1b2",
+      "lastTest": {
+        "ok": true,
+        "outcome": "ok",
+        "message": null,
+        "freeModels": ["openrouter/qwen/qwen3-coder:free"],
+        "latencyMs": 512,
+        "testedAt": 1790000100000,
+        "limits": {
+          "requestsPerMinute": 20,
+          "requestsPerDay": 50,
+          "remainingToday": 41,
+          "resetsAt": 1790035200000,
+          "isFreeTier": true
+        }
+      },
+      "limits": {
+        "requestsPerMinute": 20,
+        "requestsPerDay": 50,
+        "remainingToday": 41,
+        "resetsAt": 1790035200000,
+        "isFreeTier": true
+      }
+    },
+    {
+      "provider": "cerebras",
+      "enabled": false,
+      "keyRequired": true,
+      "hasKey": false,
+      "keySource": null,
+      "keyHint": null,
+      "lastTest": null,
+      "limits": null
+    }
+  ],
+  "models": {
+    "available": [
+      {
+        "id": "opencode/big-pickle",
+        "provider": "zen",
+        "label": "big-pickle",
+        "rank": 0,
+        "maxConcurrent": null
+      }
+    ],
+    "cooling": [
+      {
+        "model": "openrouter/qwen/qwen3-coder:free",
+        "provider": "openrouter",
+        "until": 1790001900000,
+        "reason": "rate-limited (429)"
+      }
+    ]
+  },
+  "preferences": {
+    "providerOrder": ["zen", "openrouter", "cerebras"],
+    "defaultModel": null,
+    "maxWorkers": 4
+  },
+  "keyStorage": "file",
+  "checkedAt": 1790000100000,
+  "supplyState": {
+    "supply": "free-first",
+    "paid": {
+      "enabled": false,
+      "maxTaskUsd": 0.05,
+      "models": ["openrouter/qwen-3.7-flash"]
+    },
+    "local": {
+      "ollama": {
+        "enabled": false,
+        "baseUrl": "http://127.0.0.1:11434",
+        "models": ["qwen3-coder:30b"]
+      },
+      "lmstudio": {
+        "enabled": false,
+        "baseUrl": "http://127.0.0.1:1234",
+        "models": ["qwen3-coder"]
+      }
+    }
+  }
+}

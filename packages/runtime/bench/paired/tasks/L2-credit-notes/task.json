@@ -1,0 +1,15 @@
+{
+  "id": "L2-credit-notes",
+  "title": "Add credit notes",
+  "kind": "feature",
+  "repo": "ledgerkit",
+  "prompts": [
+    "Add credit notes to ledgerkit.\n\nNew module `src/credit-note.js` exporting `createCreditNote(invoice, { amount, reason, issuedAt })`, where `amount` is a Money. It must:\n- throw a `ValidationError` (src/errors.js) if the amount is zero or negative, in a different currency than the invoice, or greater than the invoice's current balance (payments and earlier credit notes already count);\n- return a credit note object `{ id, invoiceId, amount, reason, issuedAt }` and record it on the invoice in a new array `invoice.creditNotes` (starts empty);\n- make `invoice.balance()` smaller by the sum of its credit notes (so the aging report and payment checks use the reduced balance).\n\nAlso add `ledger.postCreditNote(note, invoice)`. It posts one balanced entry dated `note.issuedAt`: credit `receivable` for the full amount, debit `revenue` for the net share, debit `tax-payable` for the tax share (leave the tax line out when the share is zero). Split the amount with `note.amount.allocate([invoice.taxTotal().cents, invoice.netTotal().cents])`, so the two shares add up exactly.\n\nExport `createCreditNote` from `src/index.js`, and add tests under test/. Run the whole suite when you're done."
+  ],
+  "timeLimitSec": 900,
+  "maxTurns": 50,
+  "startState": { "visibleTests": "pass" },
+  "grade": { "hidden": "hidden", "hiddenMode": "add", "commands": [["--test"]] },
+  "reference": { "overlay": "reference" },
+  "notes": "Feature with a precise spec. Touches invoice.js (balance), ledger.js (a new method that follows postInvoice), a new module, index.js. The hidden suite checks every sentence of the spec, including the cent-rounding rule."
+}

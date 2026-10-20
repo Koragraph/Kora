@@ -1,0 +1,243 @@
+diff --git a/dist/components/VirtualizedFile.d.ts b/dist/components/VirtualizedFile.d.ts
+index 990c155809f78d62ff20f74516fee83e3079c4b0..6d5f2cbedb49a12c0a5e186dde8f62065f012eea 100644
+--- a/dist/components/VirtualizedFile.d.ts
++++ b/dist/components/VirtualizedFile.d.ts
+@@ -41,7 +41,7 @@ declare class VirtualizedFile<LAnnotation = undefined> extends File<LAnnotation>
+   private computeApproximateSize;
+   setVisibility(visible: boolean): void;
+   rerender(): void;
+-  applyDocumentChange(textDocument: DiffsTextDocument, newLineAnnotations?: LineAnnotation<LAnnotation>[], shouldUpdateBuffer?: boolean): void;
++  applyDocumentChange(textDocument: DiffsTextDocument, newLineAnnotations?: LineAnnotation<LAnnotation>[], shouldUpdateBuffer?: boolean, fromLine?: number): void;
+   protected renderPreparedFile({
+     fileContainer,
+     file,
+diff --git a/dist/components/VirtualizedFile.js b/dist/components/VirtualizedFile.js
+index 101e31d3909c8ca0885d73beb93547934943184a..a96299ede6e7b117f60ca7de31595c0dd05c98c8 100644
+--- a/dist/components/VirtualizedFile.js
++++ b/dist/components/VirtualizedFile.js
+@@ -20,7 +20,8 @@ var VirtualizedFile = class extends File {
+ 	cache = {
+ 		heights: /* @__PURE__ */ new Map(),
+ 		checkpoints: [],
+-		fileAnnotationHeight: 0
++		fileAnnotationHeight: 0,
++		measuredCodeWidth: void 0
+ 	};
+ 	isVisible = false;
+ 	isSetup = false;
+@@ -31,6 +32,9 @@ var VirtualizedFile = class extends File {
+ 		super(options, workerManager, isContainerManaged);
+ 		this.virtualizer = virtualizer;
+ 		this.metrics = metrics;
++		// kora: a code column resize can rewrap rows; ask the virtualizer to re-measure this file.
++		const reconciler = this.getSimpleVirtualizer();
++		if (reconciler != null) this.resizeManager.onResize = () => reconciler.requestHeightReconcile(this);
+ 	}
+ 	setMetrics(metrics, force = false) {
+ 		if (!force && areObjectsEqual(this.metrics, metrics)) return;
+@@ -70,10 +74,15 @@ var VirtualizedFile = class extends File {
+ 		if (this.isAdvancedMode()) throw new Error("VirtualizedFile.setThemeType cannot be used inside CodeView. Update CodeView options instead.");
+ 		super.setThemeType(themeType);
+ 	}
+-	resetLayoutCache(recompute = false, resetRenderRange = true) {
++	resetLayoutCache(recompute = false, resetRenderRange = true, fromLine = 0) {
+ 		this.layoutDirty = true;
+-		this.cache.fileAnnotationHeight = 0;
+-		if (this.cache.heights.size > 0) this.cache.heights.clear();
++		if (fromLine > 0) {
++			// kora: keep the measured rows above an edit, so the viewport does not jump while they would be re-measured.
++			for (const line of [...this.cache.heights.keys()]) if (line >= fromLine) this.cache.heights.delete(line);
++		} else {
++			this.cache.fileAnnotationHeight = 0;
++			this.cache.heights.clear();
++		}
+ 		if (this.cache.checkpoints.length > 0) this.cache.checkpoints.length = 0;
+ 		if (this.renderRange != null && resetRenderRange) this.renderRange = void 0;
+ 		if (recompute && this.isSimpleMode()) this.computeApproximateSize();
+@@ -91,6 +100,15 @@ var VirtualizedFile = class extends File {
+ 		if (this.code == null) return hasHeightChange;
+ 		const content = this.code.children[1];
+ 		if (!(content instanceof HTMLElement)) return hasHeightChange;
++		// kora: wrapped rows change height with the code width; a new width invalidates every measured row.
++		const width = this.code.getBoundingClientRect().width;
++		if (!(width > 0)) return hasHeightChange;
++		const widthChanged = this.cache.measuredCodeWidth !== void 0 && this.cache.measuredCodeWidth !== width;
++		this.cache.measuredCodeWidth = width;
++		if (widthChanged) {
++			this.resetLayoutCache(false, false);
++			hasHeightChange = true;
++		}
+ 		const hasFileAnnotations = includesFileAnnotations(this.lineAnnotations);
+ 		if (this.renderRange != null && hasFileAnnotations && shouldRenderFileAnnotations(this.renderRange)) {
+ 			const nextFileAnnotationHeight = measureFileAnnotationHeight(content) ?? 0;
+@@ -287,11 +305,11 @@ var VirtualizedFile = class extends File {
+ 		this.forceRenderOverride = true;
+ 		this.virtualizer.instanceChanged(this, false);
+ 	}
+-	applyDocumentChange(textDocument, newLineAnnotations, shouldUpdateBuffer = false) {
++	applyDocumentChange(textDocument, newLineAnnotations, shouldUpdateBuffer = false, fromLine = 0) {
+ 		const previousRenderRange = this.renderRange;
+ 		super.applyDocumentChange(textDocument, newLineAnnotations);
+ 		this.getSimpleVirtualizer()?.markDOMDirty();
+-		this.resetLayoutCache(this.isSimpleMode(), false);
++		this.resetLayoutCache(this.isSimpleMode(), false, fromLine);
+ 		if (shouldUpdateBuffer && previousRenderRange !== void 0 && this.file !== void 0) {
+ 			const windowSpecs = this.virtualizer.getWindowSpecs();
+ 			const renderRange = this.computeRenderRangeFromWindow(this.file, this.top ?? 0, windowSpecs);
+diff --git a/dist/editor/editor.js b/dist/editor/editor.js
+index ff78e2ae0e20aa83124f758d193e978170c98a87..8c3d01eefdf13152ceb0f79329b4ed4230792683 100644
+--- a/dist/editor/editor.js
++++ b/dist/editor/editor.js
+@@ -146,15 +146,9 @@ var Editor = class {
+ 			const file = fileInstance.__getCurrentFile?.();
+ 			if (file !== void 0) requirePersistedCacheKey(file);
+ 		}
+-		const { useTokenTransformer, enableGutterUtility, enableLineSelection, lineHoverHighlight = "disabled", ...rest } = fileInstance.options;
+-		if (useTokenTransformer !== true || enableGutterUtility === true || enableLineSelection === true || lineHoverHighlight !== "disabled") {
+-			fileInstance.setOptions({
+-				...rest,
+-				useTokenTransformer: true,
+-				enableGutterUtility: false,
+-				enableLineSelection: false,
+-				lineHoverHighlight: "disabled"
+-			});
++		// kora: the editor needs token transforms; gutter utilities and line selection stay as the host set them.
++		if (fileInstance.options.useTokenTransformer !== true) {
++			fileInstance.setOptions({ ...fileInstance.options, useTokenTransformer: true });
+ 			fileInstance.rerender();
+ 		}
+ 		this.#fileInstance = fileInstance;
+@@ -908,6 +902,8 @@ var Editor = class {
+ 				return lineNumber - 1;
+ 			};
+ 			this.#editorEventDisposes.push(addEventListener(gutterEl, "pointerdown", (e) => {
++				// kora: with line selection on, a gutter press selects lines instead of moving the caret.
++				if (this.#fileInstance?.options.enableLineSelection) return;
+ 				const gutterRow = resolveGutterTarget(e.composedPath()[0]);
+ 				if (gutterRow?.dataset.lineType === "change-deletion") {
+ 					const code = gutterRow.closest("[data-code]");
+@@ -1522,7 +1518,14 @@ var Editor = class {
+ 			if (gutterEl !== void 0) gutterEl.style.gridRow = "span " + gridRow;
+ 		}
+ 		fileInstance.updateRenderCache(dirtyLines, tokenizer.themeType, !didLineCountChange, didLineCountChange);
+-		if (didLineCountChange) fileInstance.applyDocumentChange(textDocument, newLineAnnotations, shouldUpdateBuffer);
++		if (fileInstance.file !== void 0) fileInstance.file.contents = textDocument.getText();
++		if (didLineCountChange) {
++			// kora: rows above the edit keep their measured heights unless the gutter changed width (line count gained or
++			// lost a digit), which can rewrap every row.
++			const before = change.lineCount - change.lineDelta;
++			const sameGutter = `${before}`.length === `${change.lineCount}`.length;
++			fileInstance.applyDocumentChange(textDocument, newLineAnnotations, shouldUpdateBuffer, sameGutter ? change.startLine : 0);
++		}
+ 		if (this.#isDiff && (this.#diffSyle === "unified" || didLineCountChange)) this.#resetCache();
+ 		if (newLineAnnotations !== void 0) {
+ 			this.#lineAnnotations = newLineAnnotations;
+@@ -1788,6 +1791,8 @@ var Editor = class {
+ 		}
+ 	}
+ 	#setSelectedLinesSafe(range, lineNumberOnly = false) {
++		// kora: a host that controls the selection owns it; the editor must not overwrite it.
++		if (this.#fileInstance?.options.controlledSelection) return;
+ 		try {
+ 			this.#fileInstance?.setSelectedLines(range, {
+ 				notify: false,
+diff --git a/dist/managers/ResizeManager.d.ts b/dist/managers/ResizeManager.d.ts
+index 202b6e558df52cfaee123c0131c7061c53cc4559..2dd3c00df3e0ba3e04d19903a62854af89bfb6d1 100644
+--- a/dist/managers/ResizeManager.d.ts
++++ b/dist/managers/ResizeManager.d.ts
+@@ -5,6 +5,8 @@ interface ResizeManagerSetupOptions {
+   columnVariables?: ResizeManagerColumnVariableMode;
+ }
+ declare class ResizeManager {
++  /** Called after a code or gutter column changed size. */
++  onResize?: () => void;
+   private static resizeObserver;
+   private static managersByElement;
+   private static getResizeObserver;
+diff --git a/dist/managers/ResizeManager.js b/dist/managers/ResizeManager.js
+index 9724cb1e344af1ac8763b592f671a9ceb63f1a76..6655f02fae31b25e9ab014fbd7157d90666e803d 100644
+--- a/dist/managers/ResizeManager.js
++++ b/dist/managers/ResizeManager.js
+@@ -19,6 +19,8 @@ var ResizeManager = class ResizeManager {
+ 		for (const [manager, managerEntries] of entriesByManager) manager.handleResizeEntries(managerEntries);
+ 	}
+ 	observedNodes = /* @__PURE__ */ new Map();
++	/** kora: called after a code/gutter column changed size. */
++	onResize = void 0;
+ 	setup(pre, { disableAnnotations, columnVariables = "apply" }) {
+ 		const annotationUpdates = /* @__PURE__ */ new Set();
+ 		const applyColumnVariables = columnVariables === "apply";
+@@ -212,7 +214,9 @@ var ResizeManager = class ResizeManager {
+ 		this.applyAnnotationUpdates(annotationUpdates);
+ 		annotationUpdates.clear();
+ 		this.applyColumnUpdates(codeUpdates);
++		const resized = codeUpdates.size > 0;
+ 		codeUpdates.clear();
++		if (resized) this.onResize?.();
+ 	}
+ 	applyAnnotationUpdates(annotationUpdates) {
+ 		for (const item of annotationUpdates) this.applyNewHeight(item, Math.max(item.column1.childHeight, item.column2.childHeight));
+diff --git a/dist/react/utils/useFileInstance.js b/dist/react/utils/useFileInstance.js
+index e9f62f56eed9b634b613d2955647224e5af2b8a2..622f87bcc2cd48e59180167e456f4246e120d963 100644
+--- a/dist/react/utils/useFileInstance.js
++++ b/dist/react/utils/useFileInstance.js
+@@ -89,13 +89,8 @@ function mergeFileOptions({ options, controlledSelection, contentEditable, hasCu
+ 		renderCustomHeader: hasCustomHeader ? noopRender : options?.renderCustomHeader,
+ 		renderGutterUtility: hasGutterRenderUtility ? noopRender : options?.renderGutterUtility
+ 	};
+-	if (needsEditorOptions) merged = {
+-		...merged,
+-		useTokenTransformer: true,
+-		enableGutterUtility: false,
+-		enableLineSelection: false,
+-		lineHoverHighlight: "disabled"
+-	};
++	// kora: an editable file keeps the caller's gutter and selection options.
++	if (needsEditorOptions) merged = { ...merged, useTokenTransformer: true };
+ 	return merged;
+ }
+ //#endregion
+diff --git a/dist/renderers/FileRenderer.js b/dist/renderers/FileRenderer.js
+index 00706ab9402a30f2512616a2a580bdd099577ab9..0263de85d6796c17c5537daac63aed7e363c6b4e 100644
+--- a/dist/renderers/FileRenderer.js
++++ b/dist/renderers/FileRenderer.js
+@@ -107,10 +107,10 @@ var FileRenderer = class {
+ 			result: massiveFile ? void 0 : cache?.result,
+ 			renderRange: void 0
+ 		};
++		this.computedLang = file.lang ?? getFiletypeFromFileName(file.name); // kora: worker path needs it too
+ 		if (this.workerManager?.isWorkingPool() === true) {
+ 			if (this.renderCache.result == null && !massiveFile) this.workerManager.highlightFileAST(this, file);
+ 		} else if (this.highlighter == null) {
+-			this.computedLang = file.lang ?? getFiletypeFromFileName(file.name);
+ 			this.initializeHighlighter();
+ 		}
+ 	}
+@@ -158,6 +158,11 @@ var FileRenderer = class {
+ 		if (this.renderCache == null) return;
+ 		const { file, result } = this.renderCache;
+ 		if (result == null) return;
++		// kora: the worker's queued work and cached AST describe the old text.
++		if (this.workerManager != null) {
++			this.workerManager.cleanUpTasks(this);
++			if (file.cacheKey != null) this.workerManager.evictFileFromCache(file.cacheKey);
++		}
+ 		const lineCache = this.lineCache != null && isLineCacheForFile(this.lineCache, file) ? this.lineCache : void 0;
+ 		for (const [line, tokens] of dirtyLines) {
+ 			if (lineCache != null && line < lineCache.lines.length) {
+@@ -265,6 +270,7 @@ var FileRenderer = class {
+ 		};
+ 		const lines = this.getOrCreateLineCache(file);
+ 		const hasContent = file.contents.length > 0;
++		this.computedLang = file.lang ?? getFiletypeFromFileName(file.name);
+ 		const forcePlainText = !hasContent || isFilePlainText(file) || isFileMassive(lines.length, this.getTokenizeMaxLength());
+ 		const newContent = !areFilesEqual(file, this.renderCache.file);
+ 		const newRenderRange = !areRenderRangesEqual(this.renderCache.renderRange, renderRange);
+@@ -278,7 +284,6 @@ var FileRenderer = class {
+ 			}
+ 			if (!forcePlainText && hasContent && (!this.renderCache.highlighted || forceHighlight)) this.workerManager.highlightFileAST(this, file);
+ 		} else {
+-			this.computedLang = file.lang ?? getFiletypeFromFileName(file.name);
+ 			const hasThemes = this.highlighter != null && areThemesAttached(options.theme);
+ 			const hasLangs = this.highlighter != null && areLanguagesAttached(this.computedLang);
+ 			const canHighlight = !forcePlainText && hasLangs;

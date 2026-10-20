@@ -1,0 +1,22 @@
+{
+  "id": "T2-callers-backoff",
+  "title": "Who calls computeBackoff?",
+  "kind": "callers",
+  "repo": "taskflow",
+  "prompts": [
+    "I'm planning to change `computeBackoff(attempt, policy)` so it takes a single options object instead. Before I do, list every function that calls it directly (file and function name) and every test file that calls it directly. List only real call sites, not places that merely mention the name. Do not change any code."
+  ],
+  "timeLimitSec": 420,
+  "maxTurns": 30,
+  "startState": { "visibleTests": "pass" },
+  "grade": {
+    "mustNotEdit": true,
+    "answer": {
+      "all": ["nextDelay", "rescheduleAfterFailure", "estimateRetryWindow", "describeRetryPlan", "retry-info", "retry.js", "scheduler.js", "metrics.js", "audit.js", "retry.test.js"],
+      "none": ["formatRetryNotice", "slack-notify"],
+      "exceptLine": "comment|not (a )?(real )?(call|caller)|doesn.t|does not|only mention|only references?|merely|isn.t|no call|never call|not call"
+    }
+  },
+  "reference": { "answer": "reference/answer.md" },
+  "notes": "Five direct callers in five files, one decoy that only mentions the name in a comment, plus a wrapper (nextDelay) that the worker calls. Graded mechanically on the final message: every required name must appear, the decoy must not be named as a caller, and the repository must be unchanged."
+}

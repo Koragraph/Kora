@@ -1,0 +1,26 @@
+{
+  // Windows-portability lint (pnpm lint:win; docs/windows/DEV.md). Only the kora/* portability rules run here.
+  // A rule is an error once its hits are cleared (CI fails on it); no-posix-only-paths stays a warning while tests
+  // still hold /tmp fake paths.
+  "plugins": [],
+  "categories": { "correctness": "off", "suspicious": "off", "perf": "off" },
+  "jsPlugins": [{ "name": "kora", "specifier": "../packages/oxlint-plugin-kora/index.ts" }],
+  "ignorePatterns": ["**/node_modules/**", "**/dist/**", "**/koragraph/**", "**/*.d.ts"],
+  "rules": {
+    "kora/no-raw-cli-spawn": "error",
+    "kora/no-posix-only-paths": "warn",
+    "kora/no-slash-split-path": "error",
+    "kora/no-negative-pid-kill": "error"
+  },
+  "overrides": [
+    {
+      // The helpers themselves: they hold the names, paths and kills the rules point everyone else at.
+      "files": ["packages/runtime/src/util/win-exec.ts", "packages/ui-server/src/winSpawn.ts"],
+      "rules": {
+        "kora/no-raw-cli-spawn": "off",
+        "kora/no-posix-only-paths": "off",
+        "kora/no-negative-pid-kill": "off"
+      }
+    }
+  ]
+}

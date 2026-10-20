@@ -1,0 +1,46 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build output
+apps/*/dist/
+apps/*/dist-electron/
+apps/desktop/.electron-runtime/
+/dist/
+packages/*/dist/
+packages/runtime/ui/
+packages/runtime/bench-out/
+native/**/target/
+*.tsbuildinfo
+.vite-plus/
+.vitest-*
+__screenshots__/
+.tanstack/
+apps/web/.playwright/
+apps/web/playwright-report/
+
+# machine-local
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+.idea/
+
+# signing material: never commit (scripts/release-setup.sh puts it in GitHub secrets + the keychain)
+*.p8
+*.p12
+*.pfx
+*.mobileprovision
+*.keychain
+*.keychain-db
+AuthKey_*
+
+# written by the kora runtime into any repo an agent runs in (absolute paths to this machine's node + checkout)
+.claude/settings.local.json
+.mcp.json
+.cursor/rules/kora.mdc
+.gemini/settings.json
+opencode.json
+/.generated/
+__pycache__/

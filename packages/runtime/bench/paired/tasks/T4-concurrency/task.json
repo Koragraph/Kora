@@ -1,0 +1,18 @@
+{
+  "id": "T4-concurrency",
+  "title": "Long session: explain, build, test and expose a concurrency limit",
+  "kind": "long-session",
+  "repo": "taskflow",
+  "prompts": [
+    "I'm new to this codebase. Walk me through what happens, step by step, from `scheduler.scheduleJob(job)` until the job's handler has run and the job is finished, including what happens when the handler throws. Cite the files and functions involved. Don't change anything yet.",
+    "Now add a per-queue concurrency limit. `new Queue({ concurrency: n })` takes a positive integer (default 1, which is today's behaviour) and exposes it as `queue.concurrency`; invalid values (zero, negative, non-integer, not a number) must throw. A `Worker` must run up to `queue.concurrency` jobs of that queue at the same time, never more, still taking jobs in priority order. `runUntilIdle()` must resolve only when no job is ready and none is still running. A failing job frees its slot.",
+    "Add tests for it in test/concurrency.test.js: the limit is respected, priority order is kept, a failure frees the slot, and invalid values throw. Run the suite.",
+    "Expose it in the CLI: `taskflow worker --concurrency N`. `parseArgs` in src/cli/index.js reads it as a number and throws an Error that mentions \"concurrency\" for an invalid value; the worker command applies it to the queue before it runs the jobs. Document the option in README.md."
+  ],
+  "timeLimitSec": 1500,
+  "maxTurns": 60,
+  "startState": { "visibleTests": "pass" },
+  "grade": { "hidden": "hidden", "hiddenMode": "add", "commands": [["--test"]] },
+  "reference": { "overlay": "reference" },
+  "notes": "Four prompts in ONE session (each resumes the previous one): explain, implement, test, expose. A long session re-reads its growing context on every call, which is where cache-read cost, and so any saving from smaller reads, accumulates. Only the final state is graded."
+}

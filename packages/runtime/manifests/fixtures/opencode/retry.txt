@@ -1,0 +1,14 @@
+# synthesized from source packages/tui/src/component/prompt/index.tsx:1520-1583 @v1.18.32; confirm live at CP2
+# expect: working (retrying). On retry the right-hand footer (usage / commands) is hidden.
+---8<---
+  ┃  Add a trailing-comma test to src/config/parse.test.ts
+  ┃
+
+     I'll read the parser first.
+
+  ┃
+  ┃  Ask anything… "Fix a TODO in the codebase"
+  ┃
+  ┃  Build  Qwen3 Coder OpenRouter
+  ╹▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+   ■■⬝⬝⬝⬝⬝⬝  Rate limit exceeded: free-models-per-day [retrying in 1m 5s attempt #2]      esc interrupt

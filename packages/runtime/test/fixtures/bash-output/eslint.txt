@@ -1,0 +1,71 @@
+
+/tmp/fx/inst/t.js
+   1:5   error  'a' is assigned a value but never used    no-unused-vars
+   2:5   error  'b' is assigned a value but never used    no-unused-vars
+   2:11  error  Unnecessary semicolon                     no-extra-semi
+   3:10  error  'f' is defined but never used             no-unused-vars
+   3:22  error  'x' is not defined                        no-undef
+   4:5   error  'v1' is assigned a value but never used   no-unused-vars
+   4:10  error  'undefinedThing1' is not defined          no-undef
+   5:5   error  'v2' is assigned a value but never used   no-unused-vars
+   5:10  error  'undefinedThing2' is not defined          no-undef
+   6:5   error  'v3' is assigned a value but never used   no-unused-vars
+   6:10  error  'undefinedThing3' is not defined          no-undef
+   7:5   error  'v4' is assigned a value but never used   no-unused-vars
+   7:10  error  'undefinedThing4' is not defined          no-undef
+   8:5   error  'v5' is assigned a value but never used   no-unused-vars
+   8:10  error  'undefinedThing5' is not defined          no-undef
+   9:5   error  'v6' is assigned a value but never used   no-unused-vars
+   9:10  error  'undefinedThing6' is not defined          no-undef
+  10:5   error  'v7' is assigned a value but never used   no-unused-vars
+  10:10  error  'undefinedThing7' is not defined          no-undef
+  11:5   error  'v8' is assigned a value but never used   no-unused-vars
+  11:10  error  'undefinedThing8' is not defined          no-undef
+  12:5   error  'v9' is assigned a value but never used   no-unused-vars
+  12:10  error  'undefinedThing9' is not defined          no-undef
+  13:5   error  'v10' is assigned a value but never used  no-unused-vars
+  13:11  error  'undefinedThing10' is not defined         no-undef
+  14:5   error  'v11' is assigned a value but never used  no-unused-vars
+  14:11  error  'undefinedThing11' is not defined         no-undef
+  15:5   error  'v12' is assigned a value but never used  no-unused-vars
+  15:11  error  'undefinedThing12' is not defined         no-undef
+  16:5   error  'v13' is assigned a value but never used  no-unused-vars
+  16:11  error  'undefinedThing13' is not defined         no-undef
+  17:5   error  'v14' is assigned a value but never used  no-unused-vars
+  17:11  error  'undefinedThing14' is not defined         no-undef
+  18:5   error  'v15' is assigned a value but never used  no-unused-vars
+  18:11  error  'undefinedThing15' is not defined         no-undef
+  19:5   error  'v16' is assigned a value but never used  no-unused-vars
+  19:11  error  'undefinedThing16' is not defined         no-undef
+  20:5   error  'v17' is assigned a value but never used  no-unused-vars
+  20:11  error  'undefinedThing17' is not defined         no-undef
+  21:5   error  'v18' is assigned a value but never used  no-unused-vars
+  21:11  error  'undefinedThing18' is not defined         no-undef
+  22:5   error  'v19' is assigned a value but never used  no-unused-vars
+  22:11  error  'undefinedThing19' is not defined         no-undef
+  23:5   error  'v20' is assigned a value but never used  no-unused-vars
+  23:11  error  'undefinedThing20' is not defined         no-undef
+  24:5   error  'v21' is assigned a value but never used  no-unused-vars
+  24:11  error  'undefinedThing21' is not defined         no-undef
+  25:5   error  'v22' is assigned a value but never used  no-unused-vars
+  25:11  error  'undefinedThing22' is not defined         no-undef
+  26:5   error  'v23' is assigned a value but never used  no-unused-vars
+  26:11  error  'undefinedThing23' is not defined         no-undef
+  27:5   error  'v24' is assigned a value but never used  no-unused-vars
+  27:11  error  'undefinedThing24' is not defined         no-undef
+  28:5   error  'v25' is assigned a value but never used  no-unused-vars
+  28:11  error  'undefinedThing25' is not defined         no-undef
+  29:5   error  'v26' is assigned a value but never used  no-unused-vars
+  29:11  error  'undefinedThing26' is not defined         no-undef
+  30:5   error  'v27' is assigned a value but never used  no-unused-vars
+  30:11  error  'undefinedThing27' is not defined         no-undef
+  31:5   error  'v28' is assigned a value but never used  no-unused-vars
+  31:11  error  'undefinedThing28' is not defined         no-undef
+  32:5   error  'v29' is assigned a value but never used  no-unused-vars
+  32:11  error  'undefinedThing29' is not defined         no-undef
+  33:5   error  'v30' is assigned a value but never used  no-unused-vars
+  33:11  error  'undefinedThing30' is not defined         no-undef
+
+✖ 65 problems (65 errors, 0 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+

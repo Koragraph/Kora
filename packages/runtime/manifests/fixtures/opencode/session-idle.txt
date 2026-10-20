@@ -1,0 +1,22 @@
+# synthesized from source packages/tui/src/component/prompt/index.tsx:1645-1680 @v1.18.32; confirm live at CP2
+# expect: idle (idle_prompt). The numbered list the agent printed must NOT read as a blocker.
+---8<---
+  ┃  List the exported functions in src/config/parse.ts
+  ┃
+
+     The file exports three functions:
+
+     1. parse(text) — src/config/parse.ts:12
+     2. parseFile(path) — src/config/parse.ts:40
+     3. validate(config) — src/config/parse.ts:71
+
+     I wrote the report to /tmp/wt/.kora/swarm/s3.md.
+
+     ▣ Build · big-pickle · 6.1s
+
+  ┃
+  ┃  Ask anything… "Fix a TODO in the codebase"
+  ┃
+  ┃  Build  Big Pickle OpenCode Zen
+  ╹▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+   ~/.kora/worktrees/app/kora-opencode-3            12.4K (1%) · $0.00  ctrl+p commands

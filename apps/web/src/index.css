@@ -1,0 +1,1825 @@
+@import "tailwindcss";
+
+/* `dark` is the class on <html> (hooks/useTheme); `wco` is Window Controls Overlay. */
+@custom-variant wco (&:is(.wco, .wco *));
+@custom-variant light (&:not(.dark, .dark *));
+@custom-variant dark (&:is(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------------------------
+   Theme: fonts and radii stay live (runtime-overridable), colours are wired to the variables below.
+   --------------------------------------------------------------------------------------------- */
+
+@theme {
+  --font-mono:
+    ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+
+@theme inline {
+  --animate-status-ping: status-ping 2s infinite;
+  --animate-status-pulse: status-pulse 2s infinite;
+  --animate-skeleton: skeleton 2.4s infinite;
+  --color-sidebar-row-selected: var(--sidebar-row-selected);
+  --color-sidebar-row-active: var(--sidebar-row-active);
+  --color-sidebar-row-hover: var(--sidebar-row-hover);
+  --color-sidebar-control-surface: var(--sidebar-control-surface);
+  --color-sidebar-border: var(--contrast-sidebar-border);
+  --color-sidebar-muted-foreground: var(--contrast-sidebar-muted-foreground);
+  --color-sidebar-foreground: var(--contrast-sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-message-action-hover: var(--message-action-hover);
+  --color-message-action-foreground: var(--message-action-foreground);
+  --color-message-action: var(--message-action);
+  --color-message-foreground: var(--contrast-message-foreground);
+  --color-message: var(--message-surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-foreground: var(--contrast-foreground);
+  --color-background: var(--background);
+  --color-card-foreground: var(--contrast-card-foreground);
+  --color-card: var(--card);
+  --color-popover-foreground: var(--contrast-popover-foreground);
+  --color-popover: var(--popover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-secondary-foreground: var(--contrast-secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-icon-muted: var(--contrast-icon-muted);
+  --color-secondary-label: var(--contrast-secondary-label);
+  --color-placeholder: var(--contrast-placeholder);
+  --color-muted-foreground: var(--contrast-muted-foreground);
+  --color-muted: var(--muted);
+  --color-accent-foreground: var(--contrast-accent-foreground);
+  --color-accent: var(--accent);
+  --color-border: var(--contrast-border);
+  --color-input: var(--contrast-input);
+  --color-control-checked-foreground: var(--control-checked-foreground);
+  --color-control-checked: var(--control-checked);
+  --color-ring: var(--ring);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive: var(--destructive);
+  --color-info-foreground: var(--info-foreground);
+  --color-info: var(--info);
+  --color-diff-deletion-foreground: var(--diff-deletion-foreground);
+  --color-diff-deletion: var(--diff-deletion);
+  --color-diff-addition-foreground: var(--diff-addition-foreground);
+  --color-diff-addition: var(--diff-addition);
+  --color-success-foreground: var(--success-foreground);
+  --color-success: var(--success);
+  --color-update-surface: var(--update-surface);
+  --color-update-foreground: var(--update-foreground);
+  --color-update: var(--update);
+  --color-tool-error-icon: var(--tool-error-icon);
+  --color-error-surface: var(--error-surface);
+  --color-error-foreground: var(--error-foreground);
+  --color-error: var(--error);
+  --color-warning-surface: var(--warning-surface);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning: var(--warning);
+  --color-zinc-25: oklch(99.2% 0 0);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Geometry tokens
+   --------------------------------------------------------------------------------------------- */
+
+:root {
+  --workspace-titlebar-scroll-fade-height: 1.5rem;
+  --workspace-titlebar-control-gap: 0.75rem;
+  --workspace-titlebar-control-size: 1.75rem;
+  --workspace-native-controls-inset: 0px;
+  --workspace-controls-right: calc(env(safe-area-inset-right) + 0.75rem);
+  --workspace-controls-left: calc(env(safe-area-inset-left) + 0.75rem);
+  --workspace-controls-top: 0px;
+  --workspace-topbar-height: 52px;
+  --desktop-window-right-resize-inset: 0px;
+  --glass-saturation: 1.14;
+  --glass-opacity: 80%;
+  --glass-blur: 12px;
+  --floating-content-inset: 0.75rem;
+  --command-content-inset: 1rem;
+  --command-shell-inset: 0.5rem;
+  --sidebar-row-content-inset: 0.625rem;
+  --sidebar-icon-color: color-mix(
+    in oklab,
+    var(--sidebar) 40%,
+    var(--contrast-sidebar-muted-foreground)
+  );
+  --sidebar-control-gap: 0.5rem;
+  --sidebar-content-inset: 0.5rem;
+  --surface-radius: 0.75rem;
+  --control-radius: 0.375rem;
+  --appearance-contrast-target: black;
+  --appearance-contrast-border-boost: 0%;
+  --appearance-contrast-boost: 0%;
+  --appearance-contrast-base: 100%;
+  --app-scrollbar-thumb-hover: rgb(9 9 11 / 22%);
+  --app-scrollbar-thumb: rgb(9 9 11 / 14%);
+  --app-scrollbar-width: 6px;
+  --radius: 0.5rem;
+
+  @variant dark {
+    --glass-saturation: 1;
+    --glass-opacity: 100%;
+    --glass-blur: 0px;
+    --appearance-contrast-target: white;
+    --app-scrollbar-thumb-hover: rgb(255 255 255 / 12%);
+    --app-scrollbar-thumb: rgb(255 255 255 / 8%);
+  }
+}
+
+.native-windows {
+  --desktop-window-right-resize-inset: 6px;
+}
+
+.wco {
+  --workspace-native-controls-inset: calc(
+    100vw - env(titlebar-area-width, 100vw) - env(titlebar-area-x, 0px) + 0.75rem
+  );
+  --workspace-controls-right: calc(
+    100vw - env(titlebar-area-width, 100vw) - env(titlebar-area-x, 0px) + 0.75rem
+  );
+  --workspace-controls-left: calc(env(titlebar-area-x, 0px) + 0.75rem);
+  --workspace-controls-top: env(titlebar-area-y, 0px);
+  --workspace-topbar-height: env(titlebar-area-height, 52px);
+}
+
+/* Paper grain behind the light surfaces; the dark appearance has none. */
+:root {
+  --surface-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  --surface-grain-size: 256px 256px;
+
+  @variant dark {
+    --surface-grain: none;
+  }
+}
+
+:root {
+  @variant dark {
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Palette. Light is `:root`; dark (the only runtime theme) lives in @variant dark and is kept in step.
+   Ink surfaces carry no hue; only the semantic red / amber / green below do.
+   --------------------------------------------------------------------------------------------- */
+
+:root {
+  color-scheme: light;
+  --terminal-selection-background: --alpha(var(--ink-black) / 14%);
+  --terminal-cursor: #09090b;
+  --terminal-foreground: var(--foreground);
+  --terminal-background: #efeff1;
+  --code-foreground: var(--foreground);
+  --code-background: color-mix(in srgb, var(--card) 90%, var(--background));
+  --sidebar-border: --alpha(var(--ink-black) / 10%);
+  --sidebar-row-selected: --alpha(var(--ink-black) / 8%);
+  --sidebar-row-active: --alpha(var(--ink-black) / 8%);
+  --sidebar-row-hover: --alpha(var(--ink-black) / 5%);
+  --sidebar-control-surface: --alpha(var(--ink-black) / 5%);
+  --sidebar-muted-foreground: var(--muted-foreground);
+  --sidebar-foreground: var(--foreground);
+  --sidebar: #efeff1;
+  --update-surface: --alpha(var(--update) / 10%);
+  --update-foreground: #16171a;
+  --update: #09090b;
+  --warning-surface: --alpha(var(--warning) / 14%);
+  --warning-foreground: #92400e;
+  --warning: #b45309;
+  --success-foreground: #047857;
+  --success: #059669;
+  --info-foreground: #16171a;
+  --info: #6b6e76;
+  --control-checked-foreground: var(--primary-foreground);
+  --control-checked: var(--primary);
+  --ring: var(--primary);
+  --input: --alpha(var(--ink-black) / 14%);
+  --border: --alpha(var(--ink-black) / 10%);
+  --destructive-foreground: var(--error-foreground);
+  --destructive: var(--error);
+  --error-surface: --alpha(var(--error) / 14%);
+  --tool-error-icon: var(--error);
+  --error-foreground: #b91c1c;
+  --error: #dc2626;
+  --accent-foreground: #09090b;
+  --accent: --alpha(var(--ink-black) / 5%);
+  --message-action-hover: color-mix(in srgb, var(--primary) 90%, var(--background));
+  --message-action-foreground: var(--primary-foreground);
+  --message-action: var(--primary);
+  --message-foreground: var(--foreground);
+  --message-surface: var(--accent);
+  --icon-muted: var(--muted-foreground);
+  --secondary-label: var(--muted-foreground);
+  --placeholder: var(--muted-foreground);
+  --muted-foreground: #63666d;
+  --muted: --alpha(var(--ink-black) / 4%);
+  --secondary-foreground: #16171a;
+  --secondary: --alpha(var(--ink-black) / 4%);
+  --primary-foreground: #ffffff;
+  --primary: #09090b;
+  --popover-foreground: #16171a;
+  --popover: #ffffff;
+  --card-foreground: #16171a;
+  --card: #ffffff;
+  --foreground: #16171a;
+  --surface-raised: #f3f3f5;
+  --composer-outline: --alpha(var(--ink-black) / 10%);
+  --composer-surface: #ffffff;
+  --toolbar-control-hover: var(--accent);
+  --toolbar-control-foreground: var(--foreground);
+  --toolbar-control: var(--popover);
+  --toolbar-border: var(--border);
+  --toolbar-foreground: var(--foreground);
+  --toolbar-background: var(--app-chrome-background);
+  --app-chrome-background: var(--background);
+  --background: #fbfbfc;
+  --app-frame: #efeff1;
+  --ink-white: #ffffff;
+  --ink-black: #09090b;
+
+  @variant dark {
+    color-scheme: dark;
+    /* Flat (2026-10-13): no gradients, no top highlights, no inset wells; separation is a 7% hairline. */
+    --lift-inset-shadow: 0 0 #0000;
+    --lift-soft-shadow: 0 0 #0000;
+    --lift-shadow: 0 0 #0000;
+    --lift-highlight: 0 0 #0000;
+    --lift-border-soft: rgb(255 255 255 / 5%);
+    --lift-border: rgb(255 255 255 / 7%);
+    --lift-pill-bg: #1d1d20;
+    --lift-inset-bg: #0b0b0c;
+    --lift-select-bg: linear-gradient(#151517, #151517);
+    --lift-bg: linear-gradient(#111113, #111113);
+    --bubble-assistant: #0a0a0b;
+    --bubble-user: #1b1b1e;
+    --terminal-selection-background: --alpha(var(--ink-white) / 18%);
+    --terminal-cursor: #f2f2f4;
+    --terminal-background: #000000;
+    --sidebar-border: --alpha(var(--ink-white) / 7%);
+    --sidebar-row-selected: --alpha(var(--ink-white) / 8%);
+    --sidebar-row-active: --alpha(var(--ink-white) / 8%);
+    --sidebar-row-hover: --alpha(var(--ink-white) / 5%);
+    --sidebar-control-surface: --alpha(var(--ink-white) / 5%);
+    --sidebar: #000000;
+    --update-surface: --alpha(var(--update) / 16%);
+    --update-foreground: #f2f2f4;
+    --update: var(--primary);
+    --warning-surface: --alpha(var(--warning) / 16%);
+    --warning-foreground: #fbbf24;
+    --warning: #fbbf24;
+    --success-foreground: #34d399;
+    --success: #34d399;
+    --info-foreground: #f2f2f4;
+    --info: #9a9da5;
+    --control-checked: var(--primary);
+    --ring: var(--primary);
+    --input: --alpha(var(--ink-white) / 12%);
+    --border: --alpha(var(--ink-white) / 7%);
+    --error-surface: --alpha(var(--error) / 16%);
+    --tool-error-icon: #fca5a5;
+    --error-foreground: #f87171;
+    --error: #f87171;
+    --accent-foreground: var(--ink-white);
+    --accent: --alpha(var(--ink-white) / 6%);
+    --message-surface: #1b1b1e;
+    --muted-foreground: #8b8d95;
+    --muted: --alpha(var(--ink-white) / 4%);
+    --secondary-foreground: #f2f2f4;
+    --secondary: --alpha(var(--ink-white) / 6%);
+    --primary-foreground: #000000;
+    --primary: #f2f2f4;
+    --popover-foreground: #f2f2f4;
+    --popover: #101012;
+    --card-foreground: #f2f2f4;
+    --card: #0e0e10;
+    --foreground: #f2f2f4;
+    --surface-raised: #0a0a0b;
+    --composer-highlight: transparent;
+    --composer-outline: transparent;
+    --composer-surface: #111113;
+    --background: #000000;
+    --app-frame: #000000;
+  }
+}
+
+/* Diff colours follow the semantic green / red unless the user picked the colour-blind pair. */
+:root {
+  --diff-deletion-foreground: light-dark(var(--color-red-600), var(--color-red-400));
+  --diff-addition-foreground: light-dark(var(--color-emerald-600), var(--color-emerald-400));
+  --diff-deletion: var(--destructive);
+  --diff-addition: var(--success);
+}
+
+:root[data-diff-color-scheme="blue-orange"] {
+  --trees-git-untracked-color-override: var(--diff-addition);
+  --trees-git-deleted-color-override: var(--diff-deletion);
+  --trees-git-added-color-override: var(--diff-addition);
+  --trees-status-untracked-override: var(--diff-addition);
+  --trees-status-deleted-override: var(--diff-deletion);
+  --trees-status-added-override: var(--diff-addition);
+  --diffs-deletion-color-override: var(--diff-deletion);
+  --diffs-addition-color-override: var(--diff-addition);
+  --diff-deletion-foreground: var(--diff-deletion);
+  --diff-addition-foreground: var(--diff-addition);
+  --diff-deletion: light-dark(var(--color-orange-600), var(--color-orange-400));
+  --diff-addition: light-dark(var(--color-blue-600), var(--color-blue-400));
+}
+
+/* The sidebar re-declares its own palette step so it can differ from the page behind it. */
+[data-app-sidebar] {
+  --sidebar-row-selected: --alpha(var(--ink-black) / 8%);
+  --sidebar-row-active: --alpha(var(--ink-black) / 8%);
+  --sidebar-row-hover: --alpha(var(--ink-black) / 5%);
+  --sidebar-control-surface: --alpha(var(--ink-black) / 5%);
+  --sidebar: var(--background);
+  --input: --alpha(var(--ink-black) / 14%);
+  --border: --alpha(var(--ink-black) / 10%);
+  --muted-foreground: #63666d;
+  --muted: --alpha(var(--ink-black) / 4%);
+  --accent: --alpha(var(--ink-black) / 5%);
+  --card: #ffffff;
+  --foreground: #16171a;
+  --background: #efeff1;
+
+  @variant dark {
+    /* Flat fills (sidebar redesign): a selected row is a plain #111113 step above the black, hover a hair above it. */
+    --sidebar-row-selected: #111113;
+    --sidebar-row-active: #111113;
+    --sidebar-row-hover: #0b0b0c;
+    --sidebar-control-surface: #0b0b0c;
+    --input: --alpha(var(--ink-white) / 12%);
+    --border: --alpha(var(--ink-white) / 7%);
+    --muted-foreground: #8b8d95;
+    --muted: --alpha(var(--ink-white) / 4%);
+    --accent: --alpha(var(--ink-white) / 6%);
+    --card: #0e0e10;
+    --foreground: #f2f2f4;
+    --background: #000000;
+  }
+}
+
+/* Surfaces that are dark whatever the appearance (the Graph Explorer). */
+[data-dark-surface] {
+  color-scheme: dark;
+  --terminal-selection-background: rgb(255 255 255 / 18%);
+  --terminal-cursor: #f2f2f4;
+  --terminal-foreground: #f2f2f4;
+  --terminal-background: #000000;
+  --ring: #ffffff;
+  --input: rgb(255 255 255 / 12%);
+  --border: rgb(255 255 255 / 8%);
+  --accent-foreground: #ffffff;
+  --accent: rgb(255 255 255 / 6%);
+  --muted-foreground: #8b8d95;
+  --muted: rgb(255 255 255 / 4%);
+  --popover: #101012;
+  --card: #0e0e10;
+  --foreground: #f2f2f4;
+  --background: #000000;
+  --appearance-contrast-target: white;
+}
+
+/* Contrast variants are derived, not declared: mix toward the page, then toward the boost target.
+   They are recomputed wherever a palette is re-declared so scoped palettes stay consistent. */
+:root,
+[data-app-sidebar],
+[data-dark-surface] {
+  --contrast-sidebar-border: color-mix(
+    in srgb,
+    var(--sidebar-foreground) var(--appearance-contrast-border-boost),
+    color-mix(in srgb, var(--sidebar-border) var(--appearance-contrast-base), transparent)
+  );
+  --contrast-toolbar-border: color-mix(
+    in srgb,
+    var(--toolbar-foreground) var(--appearance-contrast-border-boost),
+    color-mix(in srgb, var(--toolbar-border) var(--appearance-contrast-base), transparent)
+  );
+  --contrast-input: color-mix(
+    in srgb,
+    var(--foreground) var(--appearance-contrast-border-boost),
+    color-mix(in srgb, var(--input) var(--appearance-contrast-base), transparent)
+  );
+  --contrast-border: color-mix(
+    in srgb,
+    var(--foreground) var(--appearance-contrast-border-boost),
+    color-mix(in srgb, var(--border) var(--appearance-contrast-base), transparent)
+  );
+  --contrast-toolbar-control-foreground: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(
+      in oklab,
+      var(--toolbar-control-foreground) var(--appearance-contrast-base),
+      var(--toolbar-control)
+    )
+  );
+  --contrast-toolbar-foreground: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(
+      in oklab,
+      var(--toolbar-foreground) var(--appearance-contrast-base),
+      var(--toolbar-background)
+    )
+  );
+  --contrast-sidebar-muted-foreground: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(
+      in oklab,
+      var(--sidebar-muted-foreground) var(--appearance-contrast-base),
+      var(--sidebar)
+    )
+  );
+  --contrast-sidebar-foreground: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(in oklab, var(--sidebar-foreground) var(--appearance-contrast-base), var(--sidebar))
+  );
+  --contrast-message-foreground: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(
+      in oklab,
+      var(--message-foreground) var(--appearance-contrast-base),
+      var(--message-surface)
+    )
+  );
+  --contrast-secondary-foreground: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(
+      in oklab,
+      var(--secondary-foreground) var(--appearance-contrast-base),
+      var(--secondary)
+    )
+  );
+  --contrast-accent-foreground: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(in oklab, var(--accent-foreground) var(--appearance-contrast-base), var(--accent))
+  );
+  --contrast-popover-foreground: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(in oklab, var(--popover-foreground) var(--appearance-contrast-base), var(--popover))
+  );
+  --contrast-card-foreground: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(in oklab, var(--card-foreground) var(--appearance-contrast-base), var(--card))
+  );
+  --contrast-icon-muted: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(in oklab, var(--icon-muted) var(--appearance-contrast-base), var(--background))
+  );
+  --contrast-secondary-label: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(in oklab, var(--secondary-label) var(--appearance-contrast-base), var(--background))
+  );
+  --contrast-placeholder: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(in oklab, var(--placeholder) var(--appearance-contrast-base), var(--background))
+  );
+  --contrast-muted-foreground: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(in oklab, var(--muted-foreground) var(--appearance-contrast-base), var(--background))
+  );
+  --contrast-foreground: color-mix(
+    in oklab,
+    var(--appearance-contrast-target) var(--appearance-contrast-boost),
+    color-mix(in oklab, var(--foreground) var(--appearance-contrast-base), var(--background))
+  );
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Keyframes
+   --------------------------------------------------------------------------------------------- */
+
+@keyframes skeleton {
+  0%,
+  42% {
+    opacity: 1;
+    animation-timing-function: steps(4, end);
+  }
+  50%,
+  92% {
+    opacity: 0.55;
+    animation-timing-function: steps(4, end);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes status-pulse {
+  0%,
+  40% {
+    opacity: 1;
+    animation-timing-function: steps(6, end);
+  }
+  50%,
+  90% {
+    opacity: 0.5;
+    animation-timing-function: steps(6, end);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Status dots hold still when the system asks for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-status-pulse,
+  .animate-pulse {
+    animation: none;
+  }
+}
+
+@keyframes status-ping {
+  0% {
+    animation-timing-function: steps(8);
+    transform: scale(0.75);
+    opacity: 0.9;
+  }
+  40%,
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+@keyframes graph-glyph-node {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: scale(0.85);
+  }
+  12% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+  30% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+}
+
+@keyframes graph-glyph-edge {
+  from {
+    stroke-dashoffset: 26;
+  }
+  to {
+    stroke-dashoffset: -26;
+  }
+}
+
+/* A sidebar thread row with a running turn (ThreadNav `WorkingFx`, Settings › Projects › "Working threads").
+   White only; motion stops for reduced-motion and the mark stays as a still outline / rail / line.
+   Every style moves only `transform` / `opacity` of a layer painted once, so the GPU replays it without a repaint.
+   Animating a gradient angle, `background-position` or `left` repainted each working row on every frame: about one
+   core of renderer + GPU process with a few chats working (2026-10-16). Keep new styles to transform / opacity. */
+
+/* No border-radius here: the row's corner comes from WorkingFx's `rounded-*` class, and an unlayered rule would beat
+   that utility (it once inherited the list item's square corner). */
+.nav-working-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* The span is masked down to its 1px padding ring; a conic square wider than the row's diagonal turns inside it. */
+.nav-working-fx[data-style="outline"] {
+  padding: 1px;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08);
+  mask:
+    linear-gradient(black, black) content-box,
+    linear-gradient(black, black);
+  mask-composite: exclude;
+}
+.nav-working-fx[data-style="outline"]::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 150%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  background: conic-gradient(
+    transparent 0 70%,
+    rgb(255 255 255 / 0.15) 78%,
+    #fff 88%,
+    transparent 92%
+  );
+  animation: nav-working-orbit 2.4s linear infinite;
+}
+
+/* Rail, line and scan: the span is the track and clips the moving light. */
+.nav-working-fx[data-style="rail"] {
+  inset: 8px auto 8px 2px;
+  width: 2px;
+  border-radius: 2px;
+  background: rgb(255 255 255 / 0.18);
+}
+.nav-working-fx[data-style="rail"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, #fff, transparent);
+  animation: nav-working-rail 1.6s linear infinite;
+}
+
+.nav-working-fx[data-style="line"] {
+  inset: auto 12px 2px;
+  height: 1.5px;
+  border-radius: 2px;
+}
+.nav-working-fx[data-style="line"]::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 35%;
+  background: linear-gradient(90deg, transparent, #fff, transparent);
+  animation: nav-working-line 1.4s ease-in-out infinite;
+}
+
+/* A soft sheen sweeping across the whole card. */
+.nav-working-fx[data-style="sweep"]::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 250%;
+  background: linear-gradient(
+    100deg,
+    transparent 35%,
+    rgb(255 255 255 / 0.07) 50%,
+    transparent 65%
+  );
+  animation: nav-working-sweep 2.2s linear infinite;
+}
+
+/* The outline breathes in and out. */
+.nav-working-fx[data-style="pulse"]::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  border-radius: inherit;
+  animation: nav-working-pulse 1.8s ease-in-out infinite;
+  box-shadow: inset 0 0 0 1px #fff;
+}
+
+/* Marching dashes: top and bottom edges slide one dash right, the sides slide one dash down. Each layer is a dash
+   longer than the card and the span clips it. */
+.nav-working-fx[data-style="dash"]::before,
+.nav-working-fx[data-style="dash"]::after {
+  content: "";
+  position: absolute;
+  opacity: 0.55;
+}
+.nav-working-fx[data-style="dash"]::before {
+  inset: 0 0 0 -8px;
+  background:
+    linear-gradient(90deg, #fff 50%, transparent 0) repeat-x top left / 8px 1px,
+    linear-gradient(90deg, #fff 50%, transparent 0) repeat-x bottom left / 8px 1px;
+  animation: nav-working-dash-x 0.6s linear infinite;
+}
+.nav-working-fx[data-style="dash"]::after {
+  inset: -8px 0 0;
+  background:
+    linear-gradient(0deg, #fff 50%, transparent 0) repeat-y top left / 1px 8px,
+    linear-gradient(0deg, #fff 50%, transparent 0) repeat-y top right / 1px 8px;
+  animation: nav-working-dash-y 0.6s linear infinite;
+}
+
+/* Four corner brackets that blink in turn. */
+.nav-working-fx[data-style="corners"]::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  --c: rgb(255 255 255 / 0.85);
+  background:
+    linear-gradient(var(--c), var(--c)) top left / 8px 1.5px no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / 1.5px 8px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 8px 1.5px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 1.5px 8px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 8px 1.5px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 1.5px 8px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 8px 1.5px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 1.5px 8px no-repeat;
+  animation: nav-working-corners 1.4s steps(2, jump-none) infinite;
+}
+
+/* A thin scan line passing left to right: the line sits at the left edge of a card-wide layer that slides across. */
+.nav-working-fx[data-style="scan"] {
+  inset: 6px 0;
+}
+.nav-working-fx[data-style="scan"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, #fff, transparent) no-repeat left / 1.5px 100%;
+  animation: nav-working-scan 1.8s ease-in-out infinite;
+}
+
+/* "Just Kora": no mark on the card, only the sprite. */
+.nav-working-fx[data-style="off"] {
+  display: none;
+}
+
+@keyframes nav-working-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes nav-working-rail {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+@keyframes nav-working-line {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(286%);
+  }
+}
+@keyframes nav-working-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(40%);
+  }
+}
+@keyframes nav-working-pulse {
+  0%,
+  100% {
+    opacity: 0.08;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+@keyframes nav-working-dash-x {
+  to {
+    transform: translateX(8px);
+  }
+}
+@keyframes nav-working-dash-y {
+  to {
+    transform: translateY(8px);
+  }
+}
+@keyframes nav-working-corners {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+@keyframes nav-working-scan {
+  0% {
+    transform: translateX(2%);
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(98%);
+    opacity: 0;
+  }
+}
+
+/* The Settings picker's 36×16 previews: the row insets above leave the rail 0px tall and the line 12px wide. */
+.nav-working-fx-mini[data-style="rail"] {
+  top: 3px;
+  bottom: 3px;
+}
+.nav-working-fx-mini[data-style="line"] {
+  left: 3px;
+  right: 3px;
+}
+.nav-working-fx-mini[data-style="corners"]::before {
+  inset: 1px;
+}
+.nav-working-fx-mini[data-style="scan"] {
+  top: 2px;
+  bottom: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* [data-style] so this outranks each style's own animation rule (0,2,1); a bare ::before lost to them. */
+  .nav-working-fx[data-style]::before,
+  .nav-working-fx[data-style]::after {
+    animation: none;
+  }
+  .nav-working-fx[data-style="pulse"]::before {
+    opacity: 0.3;
+  }
+  .nav-working-fx[data-style="sweep"]::before {
+    background: rgb(255 255 255 / 0.04);
+  }
+  .nav-working-fx[data-style="scan"]::before {
+    transform: translateX(2px);
+  }
+  .nav-working-fx[data-style="outline"]::before {
+    background: rgb(255 255 255 / 0.35);
+  }
+  .nav-working-fx[data-style="rail"]::before {
+    background: rgb(255 255 255 / 0.5);
+  }
+  .nav-working-fx[data-style="line"]::before {
+    width: 100%;
+    background: rgb(255 255 255 / 0.5);
+  }
+}
+
+@keyframes prefs-search-target-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 70%, transparent);
+  }
+}
+
+@keyframes capture-contents-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes preview-load-creep {
+  0% {
+    transform: scaleX(0.04);
+  }
+  100% {
+    transform: scaleX(0.9);
+  }
+}
+
+/* Hidden for the first frames of a drag, then shown (step-end), so a quick click never flashes the label. */
+@keyframes drag-label-delay {
+  0% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: visible;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Base layer
+   --------------------------------------------------------------------------------------------- */
+
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--color-border);
+    outline-color: color-mix(in oklab, var(--color-ring) 50%, transparent);
+  }
+
+  .dark {
+    accent-color: var(--ring);
+  }
+
+  .dark ::selection {
+    background-color: color-mix(in srgb, var(--ring) 28%, transparent);
+  }
+
+  /* Popups manage their own focus treatment. */
+  [role="menu"]:focus,
+  [role="menu"]:focus-visible,
+  [role="listbox"]:focus,
+  [role="listbox"]:focus-visible,
+  [data-slot="popover-popup"]:focus,
+  [data-slot="popover-popup"]:focus-visible {
+    outline: none;
+    --tw-ring-shadow: 0 0 #0000;
+  }
+
+  html,
+  body {
+    background: var(--app-frame, var(--app-chrome-background));
+    overscroll-behavior: none;
+  }
+
+  body {
+    background-size: var(--surface-grain-size);
+    background-repeat: repeat;
+    background-image: var(--surface-grain);
+    font-family: var(--font-sans);
+    color: var(--color-foreground);
+    overflow: hidden;
+    min-height: calc(100svh + env(safe-area-inset-top));
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    position: relative;
+  }
+
+  #root {
+    padding-right: var(--desktop-window-right-resize-inset);
+    padding-top: max(env(safe-area-inset-top), 0px);
+    overscroll-behavior-y: none;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    overflow-x: clip;
+    max-width: 100%;
+    height: 100%;
+    width: 100%;
+  }
+
+  pre,
+  code {
+    font-family: var(--font-mono);
+  }
+
+  :root {
+    --diffs-header-font-family: var(--font-sans);
+    --diffs-font-family: var(--font-mono);
+  }
+
+  /* Drag regions sit in the base layer so explicit utilities on children can still win. */
+  .drag-region a,
+  .drag-region select,
+  .drag-region textarea,
+  .drag-region input,
+  .drag-region button {
+    -webkit-app-region: no-drag;
+  }
+
+  .drag-region > * {
+    -webkit-app-region: initial;
+  }
+
+  .drag-region {
+    -webkit-app-region: drag;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--app-scrollbar-thumb-hover);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: var(--app-scrollbar-thumb);
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar {
+    height: var(--app-scrollbar-width);
+    width: var(--app-scrollbar-width);
+  }
+}
+
+/* Transitions collapse to a blink; animations keep their end events and infinite indicators keep running. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-starting-style],
+  [data-ending-style] {
+    animation-duration: 0.01ms;
+  }
+}
+
+.no-transitions *::after,
+.no-transitions *::before,
+.no-transitions *,
+.no-transitions {
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Component layer
+   --------------------------------------------------------------------------------------------- */
+
+[data-slot="animated-height"] [data-slot="collapsible-panel"] {
+  height: auto;
+  transition: none;
+}
+
+[data-slot="animated-height"] [data-slot="collapsible-panel"][data-closed] {
+  display: none;
+}
+
+/* The settings search lands on a row or a section header and pulses it twice. */
+[data-prefs-page-scroll] div.prefs-search-target-pulse,
+[data-prefs-page-scroll] section.prefs-search-target-pulse > [data-prefs-scroll-target] {
+  border-radius: 0.75rem;
+  animation: prefs-search-target-pulse 650ms ease-in-out 2;
+}
+
+.prefs-search-target-pulse:focus {
+  outline: none;
+}
+
+.prefs-slider {
+  --settings-slider-fill-offset: 0.5rem;
+  cursor: pointer;
+  background: transparent;
+  height: 1.5rem;
+  appearance: none;
+}
+
+.prefs-slider::-webkit-slider-runnable-track {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--contrast-border) 55%, transparent);
+  background: linear-gradient(
+    to right,
+    var(--control-checked)
+      calc(var(--settings-slider-progress) + var(--settings-slider-fill-offset)),
+    color-mix(in srgb, var(--contrast-muted-foreground) 22%, transparent) 0
+  );
+  border-radius: 9999px;
+  height: 0.375rem;
+}
+
+.prefs-slider::-moz-range-track {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--contrast-border) 55%, transparent);
+  background: color-mix(in srgb, var(--contrast-muted-foreground) 22%, transparent);
+  border-radius: 9999px;
+  height: 0.375rem;
+}
+
+.prefs-slider::-moz-range-progress {
+  background: var(--control-checked);
+  border-radius: 9999px;
+  height: 0.375rem;
+}
+
+.prefs-slider::-webkit-slider-thumb {
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--foreground) 12%, transparent);
+  background: var(--background);
+  border: 2px solid var(--control-checked);
+  border-radius: 9999px;
+  margin-top: -0.3125rem;
+  height: 1rem;
+  width: 1rem;
+  appearance: none;
+}
+
+.prefs-slider::-moz-range-thumb {
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--foreground) 12%, transparent);
+  background: var(--background);
+  border: 2px solid var(--control-checked);
+  border-radius: 9999px;
+  height: 1rem;
+  width: 1rem;
+}
+
+.prefs-slider:hover::-webkit-slider-thumb {
+  transform: scale(1.08);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--foreground) 20%, transparent);
+}
+
+.prefs-slider:hover::-moz-range-thumb {
+  transform: scale(1.08);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--foreground) 20%, transparent);
+}
+
+.prefs-slider:active::-webkit-slider-thumb {
+  transform: scale(0.94);
+}
+
+.prefs-slider:active::-moz-range-thumb {
+  transform: scale(0.94);
+}
+
+.prefs-slider:focus-visible {
+  outline: none;
+}
+
+.prefs-slider:focus-visible::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 3px var(--background),
+    0 0 0 5px var(--ring);
+}
+
+.prefs-slider:focus-visible::-moz-range-thumb {
+  box-shadow:
+    0 0 0 3px var(--background),
+    0 0 0 5px var(--ring);
+}
+
+@media (forced-colors: active) {
+  .prefs-slider {
+    appearance: auto;
+    accent-color: Highlight;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Pitch: the dark appearance's elevation, glow and grain
+   --------------------------------------------------------------------------------------------- */
+
+.dark .bg-card:not(.lift-none, .lift) {
+  background-image: var(--lift-bg);
+}
+
+.dark [data-slot="sidebar"][data-side="left"] [data-slot="sidebar-inner"] {
+  box-shadow: inset 0 0 0 1px var(--lift-border);
+}
+
+.dark .bg-message {
+  box-shadow: var(--lift-soft-shadow);
+}
+
+/* Flat by design (2026-10-13): no ambient glow, no film grain, no gradient on the composer, cards, pills or popovers. */
+
+/* ---------------------------------------------------------------------------------------------
+   Custom utilities
+   --------------------------------------------------------------------------------------------- */
+
+@utility surface-glass {
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  background-color: color-mix(in srgb, var(--background) var(--glass-opacity), transparent);
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background-color: var(--background);
+  }
+}
+
+@utility alert-glass {
+  background-image: linear-gradient(
+    color-mix(in srgb, var(--alert-tint) 4%, transparent),
+    color-mix(in srgb, var(--alert-tint) 4%, transparent)
+  );
+  --alert-tint: transparent;
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  background-color: color-mix(in srgb, var(--background) var(--glass-opacity), transparent);
+
+  &[data-variant="error"] {
+    --alert-tint: var(--destructive);
+  }
+  &[data-variant="info"] {
+    --alert-tint: var(--info);
+  }
+  &[data-variant="success"] {
+    --alert-tint: var(--success);
+  }
+  &[data-variant="warning"] {
+    --alert-tint: var(--warning);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background-color: var(--background);
+  }
+}
+
+@utility dialog-glass {
+  box-shadow: 0 24px 64px -24px rgb(0 0 0 / 65%);
+  border-color: color-mix(in srgb, var(--contrast-foreground) 10%, transparent);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  background-color: color-mix(in srgb, var(--background) var(--glass-opacity), transparent);
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background-color: var(--background);
+  }
+
+  @variant dark {
+    box-shadow: none;
+    border-color: var(--lift-border);
+    background-image: var(--lift-bg);
+    background-color: transparent;
+  }
+}
+
+@utility dialog-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background-color: color-mix(in srgb, var(--background) 60%, transparent);
+
+  @variant dark {
+    background-color: rgb(0 0 0 / 72%);
+  }
+}
+
+@utility dropdown-glass {
+  border: 1px solid color-mix(in srgb, var(--contrast-foreground) 10%, transparent);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  background-color: color-mix(in srgb, var(--popover) var(--glass-opacity), transparent);
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background-color: var(--popover);
+  }
+
+  @variant dark {
+    box-shadow: var(--lift-shadow);
+    border-color: var(--lift-border);
+    background-image: var(--lift-bg);
+    background-color: transparent;
+  }
+}
+
+/* Soft fade under the window controls; the scrollbar lane stays fully opaque. */
+@utility topbar-scroll-fade {
+  mask-repeat: no-repeat;
+  mask-position:
+    left top,
+    left bottom,
+    right top;
+  mask-size:
+    calc(100% - var(--app-scrollbar-width)) var(--fade-height),
+    calc(100% - var(--app-scrollbar-width)) calc(100% - var(--fade-height) + 1px),
+    var(--app-scrollbar-width) 100%;
+  mask-image:
+    linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0%) 0,
+      rgb(0 0 0 / 0.1) 10%,
+      rgb(0 0 0 / 0.3) 24%,
+      rgb(0 0 0 / 0.58) 42%,
+      rgb(0 0 0 / 0.82) 62%,
+      rgb(0 0 0 / 0.96) 82%,
+      #000 100%
+    ),
+    linear-gradient(#000, #000), linear-gradient(#000, #000);
+  --fade-height: calc(var(--workspace-titlebar-scroll-fade-height) + 1px);
+}
+
+@utility virtualized-scroll-fade {
+  mask-repeat: no-repeat;
+  mask-position:
+    left top,
+    right top;
+  mask-size:
+    calc(100% - var(--app-scrollbar-width)) 100%,
+    var(--app-scrollbar-width) 100%;
+  mask-image: var(--virtualized-scroll-fade-mask), linear-gradient(#000, #000);
+}
+
+@utility graph-glyph-node {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0.28;
+  animation: graph-glyph-node 1.8s ease-out infinite;
+  animation-delay: calc(var(--graph-node-index, 0) * 0.3s);
+  animation-play-state: var(--visible-animation-state, paused);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+@utility graph-glyph-edge {
+  stroke-dasharray: 6 20;
+  animation: graph-glyph-edge 1.8s linear infinite;
+  animation-play-state: var(--visible-animation-state, paused);
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 0.35;
+    stroke-dasharray: none;
+    animation: none;
+  }
+}
+
+@utility visible-animate-spin {
+  will-change: var(--visible-animation-will-change, auto);
+  animation: var(--animate-spin);
+  animation-play-state: var(--visible-animation-state, paused);
+}
+
+@utility pr-safe {
+  padding-right: max(env(safe-area-inset-right), 0px);
+}
+@utility pl-safe {
+  padding-left: max(env(safe-area-inset-left), 0px);
+}
+@utility pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+@utility pt-safe {
+  padding-top: max(env(safe-area-inset-top), 0px);
+}
+
+@utility surface-grain {
+  background-size: var(--surface-grain-size);
+  background-repeat: repeat;
+  background-image: var(--surface-grain);
+}
+
+/* Elevation exists only in the dark appearance. */
+@utility lift {
+  @variant dark {
+    box-shadow: var(--lift-shadow);
+    border-color: var(--lift-border);
+    background-image: var(--lift-bg);
+  }
+}
+
+@utility lift-select {
+  @variant dark {
+    background-image: var(--lift-select-bg);
+    box-shadow: var(--lift-soft-shadow);
+  }
+}
+
+@utility lift-inset {
+  @variant dark {
+    background-color: var(--lift-inset-bg);
+    box-shadow: var(--lift-inset-shadow);
+  }
+}
+
+/* A marker: surfaces that opt out of the automatic card lift. */
+@utility lift-none {
+  --lift-none: 1;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Assistant citation highlights
+   --------------------------------------------------------------------------------------------- */
+
+@property --assistant-citation-highlight-opacity {
+  initial-value: 0;
+  inherits: true;
+  syntax: "<number>";
+}
+
+::highlight(kora-assistant-citation) {
+  background-color: color-mix(
+    in oklab,
+    var(--control-checked) calc(var(--assistant-citation-highlight-opacity) * 100%),
+    transparent
+  );
+}
+
+::highlight(kora-assistant-citation-comment) {
+  background-color: color-mix(in oklab, var(--control-checked) 45%, transparent);
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Chat markdown
+   --------------------------------------------------------------------------------------------- */
+
+.reply-md > :first-child {
+  margin-top: 0;
+}
+
+.reply-md > :last-child {
+  margin-bottom: 0;
+}
+
+.reply-md p,
+.reply-md ul,
+.reply-md ol,
+.reply-md blockquote,
+.reply-md pre,
+.reply-md .reply-md-table-container {
+  margin: 0.65rem 0;
+}
+
+.reply-md h1,
+.reply-md h2,
+.reply-md h3,
+.reply-md h4,
+.reply-md h5,
+.reply-md h6 {
+  color: var(--contrast-foreground);
+  line-height: 1.3;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+}
+
+.reply-md h1 {
+  font-size: 1.25rem;
+}
+.reply-md h2 {
+  font-size: 1.125rem;
+}
+.reply-md h3 {
+  font-size: 1rem;
+}
+.reply-md h4,
+.reply-md h5,
+.reply-md h6 {
+  font-size: 0.875rem;
+}
+.reply-md h6 {
+  color: var(--contrast-muted-foreground);
+}
+
+.reply-md ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  --list-gutter: 1.25rem;
+}
+.reply-md ul ul {
+  list-style: circle;
+}
+.reply-md ul ul ul {
+  list-style: square;
+}
+
+/* The renderer widens the gutter inline when a list has multi-character markers. */
+.reply-md ol {
+  list-style: decimal;
+  padding-left: var(--list-gutter);
+  --list-gutter: 1.25rem;
+}
+.reply-md ol li::marker {
+  font-variant-numeric: tabular-nums;
+}
+.reply-md ol ol {
+  list-style: lower-alpha;
+}
+.reply-md ol ol ol {
+  list-style: lower-roman;
+}
+
+.reply-md li + li {
+  margin-top: 0.25rem;
+}
+
+.reply-md li.task-list-item {
+  list-style: none;
+}
+.reply-md li.task-list-item input[type="checkbox"] {
+  margin: 0 0.35em 0.15em calc(-1 * var(--list-gutter));
+  vertical-align: middle;
+}
+
+.reply-md img {
+  display: inline-block;
+}
+
+.reply-md a {
+  color: var(--info-foreground);
+  text-decoration: none;
+}
+.reply-md a:not(.reply-md-file-link):hover,
+.reply-md a:not(.reply-md-file-link):focus-visible {
+  background-size: 4px 2px;
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  background-image: radial-gradient(circle, currentColor 0.75px, transparent 1px);
+}
+
+.reply-md blockquote {
+  color: var(--contrast-muted-foreground);
+  padding-left: 0.8rem;
+  border-left: 2px solid var(--contrast-border);
+}
+
+.reply-md section[data-footnotes] {
+  font-size: 0.75rem;
+  color: var(--contrast-muted-foreground);
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--contrast-border);
+  margin-top: 1.25rem;
+}
+.reply-md section[data-footnotes] ol {
+  margin: 0;
+}
+.reply-md section[data-footnotes] li + li {
+  margin-top: 0.35rem;
+}
+.reply-md a[data-footnote-ref],
+.reply-md a[data-footnote-backref] {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  border-radius: 0.25rem;
+  min-width: 1rem;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+}
+
+.reply-md :not(pre) > code {
+  font-size: 0.75rem;
+  color: var(--contrast-foreground);
+  padding: 0.1rem 0.35rem;
+  background: var(--muted);
+  border-radius: 0.375rem;
+  border: 1px solid var(--contrast-border);
+}
+
+.reply-md .reply-md-file-link {
+  color: var(--contrast-foreground);
+  text-decoration: none;
+}
+.reply-md .reply-md-file-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ring) 70%, transparent);
+}
+
+.reply-md pre {
+  scrollbar-color: color-mix(in srgb, var(--border) 78%, transparent) transparent;
+  scrollbar-width: thin;
+  padding: 0.8rem 0.9rem;
+  background: var(--muted);
+  border-radius: 0.75rem;
+  border: 1px solid var(--contrast-border);
+  overflow-x: auto;
+  max-width: 100%;
+}
+.reply-md pre::-webkit-scrollbar {
+  height: 7px;
+}
+.reply-md pre::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--border) 78%, transparent);
+}
+.reply-md pre code {
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.reply-md .reply-md-shiki .shiki,
+.reply-md pre code {
+  font-size: var(--font-size-code, inherit);
+}
+
+.reply-md .reply-md-codeblock-header {
+  color: color-mix(in srgb, var(--contrast-foreground) 72%, transparent);
+}
+.reply-md .reply-md-chrome-action {
+  color: color-mix(in srgb, var(--contrast-foreground) 72%, transparent);
+}
+.reply-md .reply-md-chrome-action:hover {
+  color: var(--contrast-foreground);
+}
+.reply-md .reply-md-chrome-action[aria-pressed="true"] {
+  color: var(--contrast-foreground);
+  background: color-mix(in srgb, var(--contrast-foreground) 8%, transparent);
+}
+
+.reply-md .reply-md-codeblock pre {
+  background: transparent;
+  border-radius: 0;
+  border: 0;
+  margin: 0;
+}
+.reply-md .reply-md-codeblock[data-wrap="true"] pre,
+.reply-md .reply-md-codeblock[data-wrap="true"] code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.reply-md .reply-md-shiki .shiki {
+  background: transparent !important;
+}
+
+/* New content fades in while a reply streams; finished threads never replay it. */
+@media (prefers-reduced-motion: no-preference) {
+  .reply-md[data-streaming] > *,
+  .reply-md-shiki {
+    transition: opacity 600ms ease-out;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+}
+
+.reply-md table {
+  font-size: 0.75rem;
+  white-space: normal;
+  border-collapse: collapse;
+  min-width: max-content;
+  width: 100%;
+}
+.reply-md th,
+.reply-md td {
+  padding: 0.45rem 0.75rem;
+  text-align: left;
+}
+.reply-md thead th {
+  white-space: nowrap;
+  font-weight: 600;
+  padding-block: 0.55rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--contrast-border) 60%, transparent);
+}
+.reply-md tbody td {
+  border-bottom: 1px solid color-mix(in srgb, var(--contrast-border) 60%, transparent);
+}
+.reply-md .reply-md-table-container[data-expanded="false"] td,
+.reply-md .reply-md-table-container[data-expanded="false"] th {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 24rem;
+  overflow: hidden;
+}
+.reply-md .reply-md-table-container[data-expanded="true"] td {
+  max-width: 24rem;
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Misc component classes
+   --------------------------------------------------------------------------------------------- */
+
+.diff-canvas diffs-container,
+.file-viewer-virtualizer diffs-container {
+  color: var(--code-foreground);
+  background: var(--code-background);
+  overflow: clip;
+  border-radius: 0;
+  border: 0;
+}
+
+.file-viewer-virtualizer diffs-container {
+  color: var(--code-foreground) !important;
+  background: var(--code-background) !important;
+  --diffs-dark-bg: var(--code-background) !important;
+  --diffs-light-bg: var(--code-background) !important;
+  --diffs-bg: var(--code-background) !important;
+}
+
+.deep-think-frame {
+  position: relative;
+}
+
+.deep-think-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    120deg,
+    #ff6b6b 0%,
+    rgb(245 158 11) 18%,
+    rgb(34 197 94) 36%,
+    rgb(20 184 166) 54%,
+    rgb(59 130 246) 72%,
+    rgb(236 72 153) 90%,
+    #ff6b6b 100%
+  );
+  background-size: 220% 220%;
+  filter: saturate(0.82) brightness(0.92);
+  background-position: 0% 50%;
+  -webkit-mask:
+    linear-gradient(black, black) content-box,
+    linear-gradient(black, black);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(black, black) content-box exclude,
+    linear-gradient(black, black);
+  pointer-events: none;
+}
+
+.deep-think-frame > * {
+  position: relative;
+}
+
+.deep-think-chroma {
+  filter: saturate(1.2);
+}
+
+.preview-load-bar {
+  transition:
+    transform 150ms ease-out,
+    opacity 150ms ease-out 220ms;
+  transform: scaleX(1);
+  opacity: 0;
+}
+
+.preview-load-bar[data-loading="true"] {
+  opacity: 1;
+  animation: preview-load-creep 5.3s cubic-bezier(0.1, 0.5, 0.2, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview-load-bar {
+    transition: none;
+  }
+
+  .preview-load-bar[data-loading="true"] {
+    animation: none;
+    transform: scaleX(0.9);
+  }
+}
+
+.nav-drag-boundary-label {
+  animation: drag-label-delay 200ms step-end;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Settings surface. The selector is tripled so it outranks the theme selectors it overrides.
+   --------------------------------------------------------------------------------------------- */
+
+[data-prefs-surface][data-prefs-surface][data-prefs-surface] {
+  /* Controls here are rectangular, not pills. */
+  --control-radius: 0.5rem;
+  background: var(--settings-ground);
+  --sidebar-border: var(--settings-line);
+  --sidebar-row-selected: color-mix(in srgb, var(--settings-ink) 10%, transparent);
+  --sidebar-row-active: color-mix(in srgb, var(--settings-ink) 10%, transparent);
+  --sidebar-row-hover: var(--settings-hover);
+  --sidebar-control-surface: var(--settings-raised);
+  --sidebar-muted-foreground: var(--settings-dim);
+  --sidebar-foreground: var(--settings-ink);
+  --sidebar: var(--settings-ground);
+  --contrast-icon-muted: var(--settings-faint);
+  --contrast-secondary-label: var(--settings-dim);
+  --contrast-placeholder: var(--settings-faint);
+  --contrast-input: color-mix(in srgb, var(--settings-ink) 16%, transparent);
+  --contrast-border: var(--settings-line);
+  --contrast-muted-foreground: var(--settings-dim);
+  --contrast-foreground: var(--settings-ink);
+  --surface-raised: var(--settings-raised);
+  --icon-muted: var(--settings-faint);
+  --secondary-label: var(--settings-dim);
+  --placeholder: var(--settings-faint);
+  --ring: var(--settings-ink);
+  --input: color-mix(in srgb, var(--settings-ink) 16%, transparent);
+  --border: var(--settings-line);
+  --accent: var(--settings-hover);
+  --muted-foreground: var(--settings-dim);
+  --muted: var(--settings-raised);
+  --secondary: var(--settings-raised);
+  --primary-foreground: var(--settings-ground);
+  --primary: var(--settings-ink);
+  --popover: var(--settings-popover);
+  --card: var(--settings-card);
+  --foreground: var(--settings-ink);
+  --background: var(--settings-ground);
+  --settings-faint: color-mix(in srgb, var(--settings-ink) 38%, transparent);
+  --settings-dim: color-mix(in srgb, var(--settings-ink) 55%, transparent);
+  --settings-hover: color-mix(in srgb, var(--settings-ink) 6%, transparent);
+  --settings-raised: color-mix(in srgb, var(--settings-ink) 4%, transparent);
+  --settings-line: color-mix(in srgb, var(--settings-ink) 10%, transparent);
+  --settings-popover: #101012;
+  --settings-card: #0e0e10;
+  --settings-ground: #000000;
+  --settings-ink: #f2f2f4;
+
+  @variant light {
+    --settings-faint: #878a93;
+    --settings-dim: #63666d;
+    --settings-popover: #ffffff;
+    --settings-card: #fbfbfc;
+    --settings-ground: #fbfbfc;
+    --settings-ink: #16171a;
+  }
+}
+
+[data-prefs-surface][data-prefs-surface][data-prefs-surface] [data-slot="select-trigger"],
+[data-prefs-surface][data-prefs-surface][data-prefs-surface]
+  [data-slot="menu-trigger"].rounded-full {
+  border-radius: var(--control-radius) !important;
+}
+
+[data-prefs-surface][data-prefs-surface][data-prefs-surface] [data-slot="select-trigger"]::before {
+  border-radius: var(--control-radius) !important;
+}
+
+[data-prefs-surface] [data-prefs-nav-item] {
+  position: relative;
+}
+
+[data-prefs-surface] [data-prefs-nav-item][data-active="true"]::before {
+  background: var(--settings-ink);
+  border-radius: 1px;
+  width: 2px;
+  inset-inline-start: 0;
+  inset-block: 6px;
+  position: absolute;
+  content: "";
+}

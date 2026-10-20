@@ -1,0 +1,48 @@
+✔ b passes 1 (1.138959ms)
+✔ b passes 2 (0.051875ms)
+✔ b passes 3 (0.040166ms)
+✔ b passes 4 (0.034708ms)
+✔ b passes 5 (0.0595ms)
+✔ b passes 6 (0.03075ms)
+✔ b passes 7 (0.053583ms)
+✔ b passes 8 (0.039833ms)
+✔ b passes 9 (0.043834ms)
+✔ b passes 10 (0.078875ms)
+✔ b passes 11 (0.051417ms)
+✔ b passes 12 (0.029125ms)
+✔ b passes 13 (0.025167ms)
+✔ b passes 14 (0.024834ms)
+✔ b passes 15 (0.018167ms)
+✔ b passes 16 (0.021125ms)
+✔ b passes 17 (0.0205ms)
+✔ b passes 18 (0.0165ms)
+✔ b passes 19 (0.018334ms)
+✔ b passes 20 (0.052084ms)
+✔ b passes 21 (0.055416ms)
+✔ b passes 22 (0.024667ms)
+✔ b passes 23 (0.018292ms)
+✔ b passes 24 (0.016541ms)
+✔ b passes 25 (0.015625ms)
+✔ b passes 26 (0.015ms)
+✔ b passes 27 (0.015083ms)
+✔ b passes 28 (0.015333ms)
+✔ b passes 29 (0.018417ms)
+✔ b passes 30 (0.015792ms)
+✔ b passes 31 (0.016334ms)
+✔ b passes 32 (0.023625ms)
+✔ b passes 33 (0.030334ms)
+✔ b passes 34 (0.023792ms)
+✔ b passes 35 (0.015875ms)
+✔ b passes 36 (0.020125ms)
+✔ b passes 37 (0.016916ms)
+✔ b passes 38 (0.018292ms)
+✔ b passes 39 (0.013792ms)
+✔ b passes 40 (0.0135ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 44.473708

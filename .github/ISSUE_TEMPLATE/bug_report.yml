@@ -1,0 +1,46 @@
+name: Something is broken
+description: Kora did something it should not, or did not do something it should.
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. A diagnostics bundle answers most of our questions at once:
+        **Settings › Diagnostics › Export diagnostics** (or `kora doctor --export`). It is redacted; attach it below.
+        Security problems go to the private form in SECURITY.md, not here.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what Kora did instead.
+      placeholder: "I approved two Codex workers; the second pane stayed on 'Starting…' and kora_wait never returned."
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to make it happen again
+      description: The smallest set of steps you know of. "It happened once" is useful too.
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Agent involved
+      multiple: true
+      options: [Claude Code, Codex, OpenCode, Antigravity, Not agent-specific]
+  - type: input
+    id: version
+    attributes:
+      label: Kora version
+      description: Kora › About, or `kora version`.
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      placeholder: "15.1"
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics and logs
+      description: Attach the diagnostics bundle, or paste the relevant lines of `~/.kora/server.log`.

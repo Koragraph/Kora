@@ -1,0 +1,8 @@
+{
+  "name": "koragraph",
+  "source": "https://github.com/Koragraph/KoragraphMCP",
+  "commit": "b5e287d",
+  "vendoredAt": "2026-09-10",
+  "modified": true,
+  "note": "The Koragraph engine, vendored. Engine logic is unchanged from the source commit; the only edits are wording (comments, one log line, one summary string, one SQL alias) listed in PATCHES.md. Every kora adaptation (result slimming, trimmed MCP schema, per-call repo scoping, hiding the memory tools) lives in packages/runtime/src/graph and packages/runtime/src/cli/commands/mcp.ts. To update: replace koragraph/src, koragraph/bin, koragraph/KORAINIT.md and koragraph/.claude/hooks from the source repository, re-apply PATCHES.md, bump commit here, run the runtime tests."
+}

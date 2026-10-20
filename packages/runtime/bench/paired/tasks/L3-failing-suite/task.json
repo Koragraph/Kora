@@ -1,0 +1,15 @@
+{
+  "id": "L3-failing-suite",
+  "title": "The test suite is red",
+  "kind": "fix-failing-tests",
+  "repo": "ledgerkit",
+  "prompts": [
+    "`npm test` is failing in this repo after a recent change. Fix the code so the whole suite passes again. Do not edit, skip or delete any tests."
+  ],
+  "timeLimitSec": 600,
+  "maxTurns": 40,
+  "startState": { "overlay": "overlay", "visibleTests": "fail" },
+  "grade": { "hidden": "hidden", "hiddenMode": "replace-test-dir", "commands": [["--test"]] },
+  "reference": { "revert": ["src/dates.js", "src/tax.js", "src/discount.js"] },
+  "notes": "Three regressions across dates.js (Sunday counted as a business day, holiday compare against a full ISO string), tax.js (floor instead of round in splitInclusive) and discount.js (fixed discount no longer clamps). Six visible tests fail. Grading replaces test/ with the original suite plus extra cases, so editing tests cannot pass."
+}

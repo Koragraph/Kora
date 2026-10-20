@@ -1,0 +1,10 @@
+{
+  // oxfmt/oxlint through the oxc extension; the workspace TypeScript (7, native) for the editor.
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": { "source.fixAll.oxc": "always" },
+  "oxc.unusedDisableDirectives": "warn",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "files.exclude": { "**/.vite-plus": true },
+  "search.exclude": { "**/dist": true, "packages/runtime/ui": true, "pnpm-lock.yaml": true }
+}

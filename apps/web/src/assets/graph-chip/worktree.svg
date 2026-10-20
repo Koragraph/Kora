@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!-- Worktree glyph: a branch forking off the trunk. Line-art, currentColor. -->
+  <path d="M7 8.5v7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+  <path d="M17 10.2c0 2.9-2.2 4-5 4.2-2.2.2-4.4.6-5 1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+  <circle cx="7" cy="6" r="2.5" stroke="currentColor" stroke-width="1.7"/>
+  <circle cx="7" cy="18" r="2.5" stroke="currentColor" stroke-width="1.7"/>
+  <circle cx="17" cy="8" r="2.5" stroke="currentColor" stroke-width="1.7"/>
+</svg>

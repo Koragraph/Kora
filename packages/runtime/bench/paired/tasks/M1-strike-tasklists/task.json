@@ -1,0 +1,15 @@
+{
+  "id": "M1-strike-tasklists",
+  "title": "Add strikethrough and task lists",
+  "kind": "feature",
+  "repo": "mdlite",
+  "prompts": [
+    "Add two GitHub-style features to mdlite and test them.\n\n1. Strikethrough: `~~text~~` renders as `<del>text</del>`, and it nests with the other inline markup. The opening `~~` must not be followed by whitespace and the closing `~~` must not be preceded by whitespace; a lone `~`, `~~ spaced ~~` and an unclosed `~~` stay literal text. A backslash escapes it, and code spans and fenced code keep their tildes.\n2. Task lists: a list item whose text starts with `[ ] ` or `[x] ` (also `[X] `) renders its checkbox first. Unchecked: `<li><input type=\"checkbox\" disabled> text</li>`; checked: `<li><input type=\"checkbox\" checked disabled> text</li>`. It works in bullet and ordered lists and with nested lists and inline markup. A bracket pair that is not followed by a space (`[x]no`, `[]`, `[ab]`) is ordinary text.\n\nAdd tests under test/ and run the whole suite."
+  ],
+  "timeLimitSec": 900,
+  "maxTurns": 50,
+  "startState": { "visibleTests": "pass" },
+  "grade": { "hidden": "hidden", "hiddenMode": "add", "commands": [["--test"]] },
+  "reference": { "overlay": "reference" },
+  "notes": "Needs coordinated edits in the inline scanner, the list parser and the HTML renderer (a 500-line file). Exact output strings are in the prompt."
+}

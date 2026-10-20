@@ -1,0 +1,10 @@
+{
+  "name": "mdlite",
+  "version": "0.8.1",
+  "description": "A small Markdown to HTML converter with a plugin hook and a plain-text renderer.",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": { "mdlite": "src/cli.js" },
+  "scripts": { "test": "node --test" },
+  "license": "MIT"
+}

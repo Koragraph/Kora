@@ -1,0 +1,11 @@
+// Electron main + preload (bundled by Vite) and their build helpers.
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "lib": ["ESNext", "DOM", "esnext.disposable"],
+    "types": ["electron", "node"]
+  },
+  "include": ["src", "scripts/pick-main-world-plugin.ts", "vite.config.ts", "../../scripts/lib"]
+}

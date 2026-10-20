@@ -1,0 +1,8 @@
+{
+  "name": "koragraph-embedded",
+  "version": "0.1.7",
+  "private": true,
+  "description": "Koragraph code graph + memory layer, embedded in koraplex. Source of truth: koraplex/koragraph/src. Dependencies resolve from koraplex/node_modules.",
+  "license": "MIT",
+  "main": "src/mcp/tool-handlers.js"
+}

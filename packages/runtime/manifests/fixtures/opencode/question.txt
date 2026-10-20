@@ -1,0 +1,15 @@
+# synthesized from source packages/tui/src/routes/session/question.tsx:355-512 @v1.18.32; confirm live at CP2
+# expect: blocked (question_dialog). Swarm workers normally never see it: OPENCODE_PERMISSION sets question=deny.
+---8<---
+  ┃  Set up the test runner
+  ┃
+
+  ┃
+  ┃  Which package manager should I use?
+  ┃  1. pnpm
+  ┃     Matches the lockfile
+  ┃  2. npm
+  ┃     The default
+  ┃  3. Type your own answer
+  ┃
+  ┃  ↑↓ select  enter submit  esc dismiss

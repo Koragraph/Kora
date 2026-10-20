@@ -1,0 +1,15 @@
+{
+  "id": "P1-grace-days",
+  "title": "Grace period for overdue",
+  "kind": "feature",
+  "repo": "ledgerkit",
+  "prompts": [
+    "Add a grace period to the overdue calculation in ledgerkit.\n\n`daysOverdue` on an invoice takes a new required second argument, `graceDays`. The result is the number of days past the due date minus `graceDays`, never below zero. `graceDays` must be a non-negative integer: anything else, including leaving it out, throws a `ValidationError` (src/errors.js).\n\nEverything that works out days overdue has to follow, and grace defaults to 0 everywhere so existing calls keep their results:\n- the invoice status takes `graceDays` as a second argument after `asOf`;\n- `agingReport(invoices, asOf, currency, { graceDays })` buckets by the reduced days;\n- `remindersDue(invoices, asOf, { graceDays })` picks stages from the reduced days;\n- the `aging` CLI command takes an optional fourth argument, `[graceDays]` (for example `ledgerkit aging invoices.json 2025-03-10 5`). A value that is not a non-negative integer prints a message to stderr and exits with code 2. Update the usage line too.\n\nAdd tests and run the whole suite when you're done."
+  ],
+  "timeLimitSec": 900,
+  "maxTurns": 50,
+  "startState": { "visibleTests": "pass" },
+  "grade": { "hidden": "hidden", "hiddenMode": "add", "commands": [["--test"]] },
+  "reference": { "overlay": "reference" },
+  "notes": "P1 signature change. Invoice#daysOverdue gains a required parameter; its callers are Invoice#status, agingReport and remindersDue (three different files), plus the CLI aging command that has to pass the value through. The prompt names no file, so finding the callers is the planning. The reference touches src/invoice.js, src/aging.js, src/reminders.js and src/cli.js."
+}

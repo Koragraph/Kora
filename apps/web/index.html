@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kora</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"
+    />
+    <meta name="theme-color" content="#000000" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" sizes="48x48" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Runs before first paint; an external classic script because the packaged app's CSP refuses inline scripts. -->
+    <script src="/boot-frame.js"></script>
+    <style>
+      /* Splash until React mounts: the sprite on the black frame; bootError.ts swaps in an error or a wait note. */
+      html,
+      body,
+      #root {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+      }
+      body {
+        background: #000000;
+        color: #f2f2f4;
+        font:
+          14px/1.4 -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          system-ui,
+          sans-serif;
+      }
+      .kora-splash {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100%;
+      }
+      .kora-splash > svg {
+        width: 56px;
+        height: 56px;
+      }
+      .kora-splash-error {
+        display: grid;
+        gap: 16px;
+        justify-items: center;
+        max-width: 600px;
+        padding: 24px;
+        text-align: center;
+      }
+      .kora-splash-error p {
+        margin: 0;
+        overflow-wrap: anywhere;
+      }
+      .kora-splash-error button {
+        cursor: pointer;
+        padding: 8px 16px;
+        color: inherit;
+        font: inherit;
+        background: none;
+        border: 1px solid currentColor;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <main id="kora-splash" class="kora-splash" aria-label="Kora is starting">
+        <svg viewBox="0 0 8 8" shape-rendering="crispEdges" role="img" aria-label="Kora">
+          <path
+            fill="#ededf0"
+            d="M2 0h4v1H2zM1 1h5v1H1zM0 2h7v1H0zM0 3h1v1H0zM2 3h3v1H2zM6 3h1v1H6zM0 4h1v1H0zM2 4h3v1H2zM6 4h1v1H6zM0 5h7v1H0zM1 6h5v1H1zM1 7h1v1H1zM5 7h1v1H5z"
+          />
+          <path
+            fill="#a9abb3"
+            d="M6 1h1v1H6zM7 2h1v1H7zM7 3h1v1H7zM7 4h1v1H7zM7 5h1v1H7zM6 6h1v1H6zM2 7h1v1H2zM6 7h1v1H6z"
+          />
+          <path fill="#0a0a0b" d="M1 3h1v1H1zM5 3h1v1H5zM1 4h1v1H1zM5 4h1v1H5z" />
+        </svg>
+      </main>
+    </div>
+    <script src="/src/startup.ts" type="module"></script>
+  </body>
+</html>
